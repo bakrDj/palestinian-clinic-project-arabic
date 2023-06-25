@@ -1,0 +1,170 @@
+[
+  {
+    "wilaya_name_ascii": "Abyān",
+    "wilaya_code": "ABY",
+    "wilaya_name": "أبين",
+    "Status": "Gov",
+    "Capital": "Zinjibār",
+    "Area\n<span data-inv=\"A (km²)\" class=\"unit\">A (km²)": "16,500"
+  },
+  {
+    "wilaya_name_ascii": "Amānah al-'Āṣmah [Sana'a City]",
+    "wilaya_code": "AAA",
+    "Status": "Cap",
+    "wilaya_name": "أمانة العاصمة",
+    "Capital": "Ṣan'ā'",
+    "Area\n<span data-inv=\"A (km²)\" class=\"unit\">A (km²)": "400"
+  },
+  {
+    "wilaya_name_ascii": "Ibb",
+    "wilaya_code": "IBB",
+    "Status": "Gov",
+    "wilaya_name": "إب",
+    "Capital": "Ibb",
+    "Area\n<span data-inv=\"A (km²)\" class=\"unit\">A (km²)": "5,400"
+  },
+  {
+    "wilaya_name_ascii": "Al-Bayḍā'",
+    "wilaya_code": "BAY",
+    "Status": "Gov",
+    "wilaya_name": "البيضاء",
+    "Capital": "Al-Bayḍā'",
+    "Area\n<span data-inv=\"A (km²)\" class=\"unit\">A (km²)": "9,300"
+  },
+  {
+    "wilaya_name_ascii": "Al-Jawf",
+    "wilaya_code": "JAW",
+    "Status": "Gov",
+    "wilaya_name": "الجوف",
+    "Capital": "Al-Ḥazm",
+    "Area\n<span data-inv=\"A (km²)\" class=\"unit\">A (km²)": "39,500"
+  },
+  {
+    "wilaya_name_ascii": "Al-Ḥudaydah",
+    "wilaya_code": "HUD",
+    "Status": "Gov",
+    "wilaya_name": "الحديدة",
+    "Capital": "Al-Ḥudaydah",
+    "Area\n<span data-inv=\"A (km²)\" class=\"unit\">A (km²)": "13,300"
+  },
+  {
+    "wilaya_name_ascii": "Aḍ-Ḍāli' [Dhale]",
+    "wilaya_code": "DAL",
+    "Status": "Gov",
+    "wilaya_name": "الضالع",
+    "Capital": "Aḍ-Ḍāli'",
+    "Area\n<span data-inv=\"A (km²)\" class=\"unit\">A (km²)": "4,000"
+  },
+  {
+    "wilaya_name_ascii": "Al-Maḥwīt [Mahweet]",
+    "wilaya_code": "MAH",
+    "Status": "Gov",
+    "wilaya_name": "المحويت",
+    "Capital": "Al-Maḥwīt",
+    "Area\n<span data-inv=\"A (km²)\" class=\"unit\">A (km²)": "2,300"
+  },
+  {
+    "wilaya_name_ascii": "Al-Mahrah",
+    "wilaya_code": "MAR",
+    "Status": "Gov",
+    "wilaya_name": "المهرة",
+    "Capital": "Al-Ghayḍah",
+    "Area\n<span data-inv=\"A (km²)\" class=\"unit\">A (km²)": "67,000"
+  },
+  {
+    "wilaya_name_ascii": "Ta'izz [Taiz]",
+    "wilaya_code": "TAI",
+    "Status": "Gov",
+    "wilaya_name": "تعز",
+    "Capital": "Ta'izz",
+    "Area\n<span data-inv=\"A (km²)\" class=\"unit\">A (km²)": "10,000"
+  },
+  {
+    "wilaya_name_ascii": "Ḥajjah",
+    "wilaya_code": "HAJ",
+    "Status": "Gov",
+    "wilaya_name": "حجة",
+    "Capital": "Ḥajjah",
+    "Area\n<span data-inv=\"A (km²)\" class=\"unit\">A (km²)": "8,300"
+  },
+  {
+    "wilaya_name_ascii": "Ḥaḍramaūt [Hadhramaut]",
+    "wilaya_code": "HAD",
+    "Status": "Gov",
+    "wilaya_name": "حضرموت",
+    "Capital": "Al-Mukallā",
+    "Area\n<span data-inv=\"A (km²)\" class=\"unit\">A (km²)": "167,000"
+  },
+  {
+    "wilaya_name_ascii": "Dhamār",
+    "wilaya_code": "DHA",
+    "Status": "Gov",
+    "wilaya_name": "ذمار",
+    "Capital": "Dhamār",
+    "Area\n<span data-inv=\"A (km²)\" class=\"unit\">A (km²)": "7,600"
+  },
+  {
+    "wilaya_name_ascii": "Raymah",
+    "wilaya_code": "RAY",
+    "Status": "Gov",
+    "wilaya_name": "ريمه",
+    "Capital": "",
+    "Area\n<span data-inv=\"A (km²)\" class=\"unit\">A (km²)": "1,900"
+  },
+  {
+    "wilaya_name_ascii": "Shabwah",
+    "wilaya_code": "SHA",
+    "Status": "Gov",
+    "wilaya_name": "شبوة",
+    "Capital": "'Atāq",
+    "Area\n<span data-inv=\"A (km²)\" class=\"unit\">A (km²)": "39,000"
+  },
+  {
+    "wilaya_name_ascii": "Ṣa'dah",
+    "wilaya_code": "SAD",
+    "Status": "Gov",
+    "wilaya_name": "صعده",
+    "Capital": "Ṣa'dah",
+    "Area\n<span data-inv=\"A (km²)\" class=\"unit\">A (km²)": "12,400"
+  },
+  {
+    "wilaya_name_ascii": "Ṣan'ā'",
+    "wilaya_code": "SAN",
+    "Status": "Gov",
+    "wilaya_name": "صنعاء",
+    "Capital": "Ṣan'ā'",
+    "Area\n<span data-inv=\"A (km²)\" class=\"unit\">A (km²)": "11,900"
+  },
+  {
+    "wilaya_name_ascii": "'Adan [Aden]",
+    "wilaya_code": "ADA",
+    "Status": "Gov",
+    "wilaya_name": "عدن",
+    "Capital": "'Adan",
+    "Area\n<span data-inv=\"A (km²)\" class=\"unit\">A (km²)": "750"
+  },
+  {
+    "wilaya_name_ascii": "'Amrān",
+    "wilaya_code": "AMR",
+    "Status": "Gov",
+    "wilaya_name": "عمران",
+    "Capital": "'Amrān",
+    "Area\n<span data-inv=\"A (km²)\" class=\"unit\">A (km²)": "7,900"
+  },
+  {
+    "wilaya_name_ascii": "Laḥij [Laheg]",
+    "wilaya_code": "LAH",
+    "Status": "Gov",
+    "wilaya_name": "لحج",
+    "Capital": "Laḥij",
+    "Area\n<span data-inv=\"A (km²)\" class=\"unit\">A (km²)": "12,700"
+  },
+  {
+    "wilaya_name_ascii": "Ma'rib [Mareb]",
+    "wilaya_code": "MAR",
+    "wilaya_name": "مأرب",
+    "Status": "Gov",
+    "Capital": "Ma'rib",
+    "Area\n<span data-inv=\"A (km²)\" class=\"unit\">A (km²)": "17,500"
+  }
+]
