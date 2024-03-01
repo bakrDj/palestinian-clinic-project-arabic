@@ -18,8 +18,8 @@ const sortByRecentTime = (iteration: any, data: object[], dateFormat?: string) =
       i++;
     }
 
-    let timeA = dayjs(a, dateFormat || "DD/MM/YYYY HH:mm:ss").valueOf();
-    let timeB = dayjs(b, dateFormat || "DD/MM/YYYY HH:mm:ss").valueOf();
+    let timeA = dayjs(a, dateFormat || "YYYY-MM-DD[T]HH:mm:ss[Z]").valueOf();
+    let timeB = dayjs(b, dateFormat || "YYYY-MM-DD[T]HH:mm:ss[Z]").valueOf();
 
     if (timeA < timeB) {
       return 1;

@@ -261,11 +261,11 @@ export const Header: React.FC<Props> = (props) => {
                     // sx={{columnGap: {xs: ''}}}
                     spacing={{ xs: 2, md: 3 }}
                   >
-                    {(userData?.person && (
+                    {(userData?.Person && (
                       <IconButton size="small" {...bindTrigger(popupProfileState)}>
                         <RAvatar
                           size="42px"
-                          name={userData?.person?.first_name + " " + userData?.person?.last_name}
+                          name={userData?.Person?.first_name + " " + userData?.Person?.last_name}
                           round
                           style={{ fontFamily: "Heebo" }}
                           maxInitials={1}
@@ -330,9 +330,9 @@ export const Header: React.FC<Props> = (props) => {
         </Notification>
       </Box>
       <Profile
-        fullname={userData?.person?.first_name + " " + userData?.person?.last_name}
-        email={userData?.person?.email}
-        clientId={userData?.person?.id}
+        fullname={userData?.Person?.first_name + " " + userData?.Person?.last_name}
+        email={userData?.Person?.email}
+        clientId={userData?.Person?.id}
         {...bindPopover(popupProfileState)}
         anchorOrigin={{
           vertical: "bottom",

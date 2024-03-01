@@ -3,7 +3,9 @@
   "name": "palestinian-clinic-project",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 4000",
+    "dev:backend": "cd /d \"D:/old Code/Projects/Personal-Projects/clinic-backend-api\" && npx ts-node-dev --transpile-only --no-notify src/index.ts",
+    "dev:both": "concurrently \"npm run dev:backend\" \"npm run dev\"",
     "lint": "next lint",
     "build": "next build && next export",
     "export": "next export",
@@ -31,6 +33,7 @@
     "dayjs": "^1.10.7",
     "exceljs": "^4.3.0",
     "file-saver": "^2.0.5",
+    "firebase": "^9.23.0",
     "graphql": "^16.3.0",
     "html-react-parser": "^3.0.4",
     "immer": "^9.0.12",
@@ -75,6 +78,7 @@
     "@types/react-infinite-scroller": "^1.2.2",
     "@types/react-swipeable-views": "^0.13.1",
     "@types/stylis": "^4.0.2",
+    "concurrently": "^8.2.0",
     "eslint": "8.7.0",
     "eslint-config-next": "12.0.9",
     "typescript": "4.5.5"

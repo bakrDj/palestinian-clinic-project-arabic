@@ -28,7 +28,7 @@ import algerian_provinces from "../../utilities/data/api/yaman_provinces.json";
 import { useSnackbar } from "notistack";
 import ReactImageUploading from "react-images-uploading";
 import { useCreatePatient, useUpdatePatient } from "../../graphql/hooks/patient";
-import { All_Sicks } from "../../graphql/hooks/patient/useGetAllPatients";
+import { Get_All_Patients } from "../../graphql/hooks/patient/useGetAllPatients";
 import { Alert } from "@mui/lab";
 interface Props {
   open: boolean;
@@ -85,7 +85,7 @@ const EditPatientModal = ({ open, onClose, dataInfo }: Props) => {
           },
         },
       },
-      refetchQueries: [All_Sicks],
+      refetchQueries: [Get_All_Patients],
     })
       .then(() => {
         enqueueSnackbar("لقد تم التحديث بنجاح", {

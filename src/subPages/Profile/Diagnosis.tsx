@@ -51,7 +51,7 @@ const Diagnosis = React.forwardRef(function Diagnosis(props: Props, ref) {
   //     useGetZoneTransaction();
 
   let [getVitalSignLazy, { data: dataRequested }] = useGetDiagnosis({
-    id: route.query?.id as any,
+    id: parseInt(route.query?.id as any),
   });
   const [OpenAddModal, setOpenAddModal] = React.useState(false);
   const [OpenAddTemplateModal, setOpenAddTemplateModal] = React.useState(false);
@@ -124,7 +124,7 @@ const Diagnosis = React.forwardRef(function Diagnosis(props: Props, ref) {
             <Plus size={45} color={slate[300]} />
           </Box>
         </Grid>
-        {sortByRecentTime(["createdAt"], dataRequested?.allDiagnosis)?.map(
+        {sortByRecentTime(["createdAt"], dataRequested?.GetAllDiagnosesByPatientID)?.map(
           (item: any, i: number) => (
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Box
@@ -153,7 +153,9 @@ const Diagnosis = React.forwardRef(function Diagnosis(props: Props, ref) {
                         marginTop="1px"
                         sx={{ direction: "rtl" }}
                       >
-                        {dayjs(item?.createdAt, "DD/MM/YYYY HH:mm:ss").format("DD/MM/YYYY HH:mm")}
+                        {dayjs(item?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").format(
+                          "DD/MM/YYYY HH:mm"
+                        )}
                       </Typography>
                     </Stack>
                     <Stack justifyContent={"center"}>
@@ -309,7 +311,9 @@ const Diagnosis = React.forwardRef(function Diagnosis(props: Props, ref) {
               query: {
                 diagnosis: true,
                 sickID: route?.query?.id,
-                date: dayjs(CardDataInfo?.createdAt, "DD/MM/YYYY HH:mm:ss").format("YYYY-MM-DD"),
+                date: dayjs(CardDataInfo?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").format(
+                  "YYYY-MM-DD"
+                ),
                 // bordereau: true,
                 // format: "pdf",
               },

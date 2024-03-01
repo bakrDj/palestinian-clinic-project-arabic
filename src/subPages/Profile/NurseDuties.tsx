@@ -1,18 +1,5 @@
 import { CalendarDaysIcon, CalendarIcon, EyeIcon } from "@heroicons/react/24/outline";
-import {
-  alpha,
-  Box,
-  Button,
-  Grid,
-  Chip as MuiChip,
-  Stack,
-  Typography,
-  IconButton,
-  DialogContentText,
-  ListItemIcon,
-  MenuItem,
-  CardActionArea,
-} from "@mui/material";
+import { alpha, Box, Button, Grid, Chip as MuiChip, Stack, Typography, IconButton, DialogContentText, ListItemIcon, MenuItem, CardActionArea } from "@mui/material";
 import { blue, green, grey } from "@mui/material/colors";
 import { AlertCircle, ArrowLeftRight, ListMinus, Edit2 } from "lucide-react";
 import { useRouter } from "next/router";
@@ -30,11 +17,7 @@ import dayjs from "dayjs";
 import AddAlbumModal from "../../components/Modal/AddAlbumModal";
 import EditAlbumModal from "../../components/Modal/EditAlbumModal";
 import dynamic from "next/dynamic";
-import {
-  useDeleteNurseDuty,
-  useGetNurseDuty,
-  useUpdateNurseDuty,
-} from "../../graphql/hooks/nurseDuty";
+import { useDeleteNurseDuty, useGetNurseDuty, useUpdateNurseDuty } from "../../graphql/hooks/nurseDuty";
 import AddNurseDutyModal from "../../components/Modal/AddNurseDutyModal";
 import { All_NurseOrder } from "../../graphql/hooks/nurseDuty/useGetNurseDuty";
 import EditNurseDutyModal from "../../components/Modal/EditNurseDutyModal";
@@ -65,7 +48,7 @@ const NurseDuties = React.forwardRef(function NurseDuties(props: Props, ref) {
   //     useGetZoneTransaction();
 
   let [getVitalSignLazy, { data: dataRequested }] = useGetNurseDuty({
-    id: route.query?.id as any,
+    id: parseInt(route.query?.id as any),
   });
   const [OpenAddModal, setOpenAddModal] = React.useState(false);
   const [OpenEditModal, setOpenEditModal] = React.useState(false);
@@ -115,8 +98,18 @@ const NurseDuties = React.forwardRef(function NurseDuties(props: Props, ref) {
         overflow: "hidden",
       }}
     >
-      <Grid container width={"100%"} spacing={1.5}>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
+      <Grid
+        container
+        width={"100%"}
+        spacing={1.5}
+      >
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          md={4}
+          lg={3}
+        >
           <Box
             onClick={() => setOpenAddModal(true)}
             sx={{
@@ -135,153 +128,179 @@ const NurseDuties = React.forwardRef(function NurseDuties(props: Props, ref) {
               },
             }}
           >
-            <Plus size={45} color={slate[300]} />
+            <Plus
+              size={45}
+              color={slate[300]}
+            />
           </Box>
         </Grid>
 
-        {sortByRecentTime(["createdAt"], dataRequested?.allNurseOrder)?.map(
-          (item: any, i: number) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
-              <Box
-                sx={{
-                  height: "216px",
-                  width: "100%",
-                  borderRadius: "2px",
-                  background: "#FFF",
-                  border: `1px solid ${item?.completed ? green[500] : slate[200]}`,
-                }}
-              >
-                <Stack sx={{ width: "100%", height: "100%" }}>
-                  {/* upper-section */}
+        {sortByRecentTime(["createdAt"], dataRequested?.GetAllNurseTasksByPatientID)?.map((item: any, i: number) => (
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={3}
+            key={i}
+          >
+            <Box
+              sx={{
+                height: "216px",
+                width: "100%",
+                borderRadius: "2px",
+                background: "#FFF",
+                border: `1px solid ${item?.checked ? green[500] : slate[200]}`,
+              }}
+            >
+              <Stack sx={{ width: "100%", height: "100%" }}>
+                {/* upper-section */}
+                <Stack
+                  direction="row"
+                  justifyContent={"space-between"}
+                  minHeight="48px"
+                  padding="0 16px"
+                  borderBottom={`1px solid ${item?.checked ? green[500] : slate[200]}`}
+                >
                   <Stack
-                    direction="row"
-                    justifyContent={"space-between"}
-                    minHeight="48px"
-                    padding="0 16px"
-                    borderBottom={`1px solid ${item?.completed ? green[500] : slate[200]}`}
+                    direction={"row"}
+                    alignItems="center"
+                    gap={"4px"}
                   >
-                    <Stack direction={"row"} alignItems="center" gap={"4px"}>
-                      <CalendarDaysIcon color={slate[400]} width={"20px"} height={"24px"} />
+                    <CalendarDaysIcon
+                      color={slate[400]}
+                      width={"20px"}
+                      height={"24px"}
+                    />
+                    <Typography
+                      variant="xs"
+                      color={slate[500]}
+                      marginTop="1px"
+                      sx={{ direction: "rtl" }}
+                    >
+                      {dayjs(item?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").format("DD/MM/YYYY HH:mm")}
+                    </Typography>
+                  </Stack>
+                  <Stack justifyContent={"center"}>
+                    <IconButton
+                      size={"small"}
+                      {...bindTrigger(popupState)}
+                      onClick={(e) => {
+                        setCardDataInfo(item);
+
+                        bindTrigger(popupState).onClick(e);
+                      }}
+                    >
+                      <MoreHorizontal
+                        color={grey[500]}
+                        size={18}
+                      />
+                    </IconButton>
+                  </Stack>
+                </Stack>
+                {/* lower-section */}
+                <Stack
+                  padding={"16px"}
+                  gap={"16px"}
+                  height="100%"
+                >
+                  <Stack
+                    justifyContent={"space-between"}
+                    gap="10px"
+                    height="100%"
+                  >
+                    <Stack gap="12px">
                       <Typography
-                        variant="xs"
-                        color={slate[500]}
-                        marginTop="1px"
-                        sx={{ direction: "rtl" }}
+                        component={"span"}
+                        variant="2xs"
+                        color={slate[400]}
+                        lineHeight="142%"
                       >
-                        {dayjs(item?.createdAt, "DD/MM/YYYY HH:mm:ss").format("DD/MM/YYYY HH:mm")}
+                        {item?.note.length < 296 ? (!item?.note ? "(ללא הערה)" : item?.note) : `${item?.note} ...`}
+                        <Typography
+                          display={item?.note.length < 296 ? "none" : "inline"}
+                          component={"span"}
+                          variant="2xs"
+                          color={blue[400]}
+                          sx={{ cursor: "pointer", ":hover": { textDecoration: "underline" } }}
+                          onClick={() => {
+                            setconfirmProcessDialog(true);
+                            setconfirmProcessContent({
+                              content: item?.note,
+                              onAction: false,
+                            });
+                          }}
+                        >
+                          להראות יותר
+                        </Typography>
                       </Typography>
                     </Stack>
-                    <Stack justifyContent={"center"}>
+                    <Stack
+                      justifyContent={"flex-start"}
+                      width="100%"
+                    >
                       <IconButton
                         size={"small"}
-                        {...bindTrigger(popupState)}
-                        onClick={(e) => {
-                          setCardDataInfo(item);
-
-                          bindTrigger(popupState).onClick(e);
-                        }}
+                        disableRipple
+                        disableTouchRipple
+                        sx={{ justifyContent: "flex-end", padding: "0" }}
                       >
-                        <MoreHorizontal color={grey[500]} size={18} />
+                        <CardActionArea
+                          sx={{
+                            color: blue[800],
+                            // marginTop: "4px",
+                            // marginRight: "4px",
+                            display: "inline",
+                            borderRadius: "50%",
+                            width: "24px",
+                          }}
+                          onClick={() => {
+                            updateCardMutation({
+                              variables: {
+                                updateNurseOrderId: item?.id,
+                                content: {
+                                  id_sick: route?.query?.id as any,
+                                  completed: !item?.checked,
+                                },
+                              },
+                              refetchQueries: [All_NurseOrder],
+                            });
+                          }}
+                        >
+                          <Box
+                            component={"button"}
+                            sx={{
+                              border: "none",
+                              backgroundColor: item?.checked ? green[300] : "#F2F1F5",
+                              cursor: "pointer",
+                              borderRadius: "50%",
+                              width: "24px",
+                              height: "24px",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              zIndex: 10,
+                              position: "relative",
+                              padding: "0 !important",
+                            }}
+                          >
+                            <div>
+                              <Check
+                                size={16}
+                                strokeWidth="3"
+                                color={item?.checked ? "#FFF" : "#D7D4E1"}
+                              />
+                            </div>
+                          </Box>
+                        </CardActionArea>
                       </IconButton>
                     </Stack>
                   </Stack>
-                  {/* lower-section */}
-                  <Stack padding={"16px"} gap={"16px"} height="100%">
-                    <Stack justifyContent={"space-between"} gap="10px" height="100%">
-                      <Stack gap="12px">
-                        <Typography
-                          component={"span"}
-                          variant="2xs"
-                          color={slate[400]}
-                          lineHeight="142%"
-                        >
-                          {item?.nurse_order.length < 296
-                            ? !item?.nurse_order
-                              ? "(ללא הערה)"
-                              : item?.nurse_order
-                            : `${item?.nurse_order} ...`}
-                          <Typography
-                            display={item?.nurse_order.length < 296 ? "none" : "inline"}
-                            component={"span"}
-                            variant="2xs"
-                            color={blue[400]}
-                            sx={{ cursor: "pointer", ":hover": { textDecoration: "underline" } }}
-                            onClick={() => {
-                              setconfirmProcessDialog(true);
-                              setconfirmProcessContent({
-                                content: item?.nurse_order,
-                                onAction: false,
-                              });
-                            }}
-                          >
-                            להראות יותר
-                          </Typography>
-                        </Typography>
-                      </Stack>
-                      <Stack justifyContent={"flex-start"} width="100%">
-                        <IconButton
-                          size={"small"}
-                          disableRipple
-                          disableTouchRipple
-                          sx={{ justifyContent: "flex-end", padding: "0" }}
-                        >
-                          <CardActionArea
-                            sx={{
-                              color: blue[800],
-                              // marginTop: "4px",
-                              // marginRight: "4px",
-                              display: "inline",
-                              borderRadius: "50%",
-                              width: "24px",
-                            }}
-                            onClick={() => {
-                              updateCardMutation({
-                                variables: {
-                                  updateNurseOrderId: item?.id,
-                                  content: {
-                                    id_sick: route?.query?.id as any,
-                                    completed: !item?.completed,
-                                  },
-                                },
-                                refetchQueries: [All_NurseOrder],
-                              });
-                            }}
-                          >
-                            <Box
-                              component={"button"}
-                              sx={{
-                                border: "none",
-                                backgroundColor: item?.completed ? green[300] : "#F2F1F5",
-                                cursor: "pointer",
-                                borderRadius: "50%",
-                                width: "24px",
-                                height: "24px",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                zIndex: 10,
-                                position: "relative",
-                                padding: "0 !important",
-                              }}
-                            >
-                              <div>
-                                <Check
-                                  size={16}
-                                  strokeWidth="3"
-                                  color={item?.completed ? "#FFF" : "#D7D4E1"}
-                                />
-                              </div>
-                            </Box>
-                          </CardActionArea>
-                        </IconButton>
-                      </Stack>
-                    </Stack>
-                  </Stack>
                 </Stack>
-              </Box>
-            </Grid>
-          )
-        )}
+              </Stack>
+            </Box>
+          </Grid>
+        ))}
       </Grid>
 
       <AddNurseDutyModal
@@ -309,7 +328,10 @@ const NurseDuties = React.forwardRef(function NurseDuties(props: Props, ref) {
           }}
         >
           <ListItemIcon>
-            <Edit2 size={18} strokeWidth={2} />
+            <Edit2
+              size={18}
+              strokeWidth={2}
+            />
           </ListItemIcon>
           تعديل الامر
         </MenuItem>
@@ -337,7 +359,10 @@ const NurseDuties = React.forwardRef(function NurseDuties(props: Props, ref) {
           }}
         >
           <ListItemIcon>
-            <Trash2 size={18} strokeWidth={2} />
+            <Trash2
+              size={18}
+              strokeWidth={2}
+            />
           </ListItemIcon>
           حذف الامر
         </MenuItem>
@@ -348,7 +373,10 @@ const NurseDuties = React.forwardRef(function NurseDuties(props: Props, ref) {
         open={confirmProcessDialog}
         onClose={() => setconfirmProcessDialog(false)}
         title={
-          <Typography variant="base" color={grey[800]}>
+          <Typography
+            variant="base"
+            color={grey[800]}
+          >
             {confirmProcessContent.title}
           </Typography>
         }
@@ -373,9 +401,7 @@ const NurseDuties = React.forwardRef(function NurseDuties(props: Props, ref) {
           </>
         }
       >
-        <DialogContentText id="alert-dialog-description">
-          {confirmProcessContent.content}
-        </DialogContentText>
+        <DialogContentText id="alert-dialog-description">{confirmProcessContent.content}</DialogContentText>
       </Dialog>
     </Box>
   );

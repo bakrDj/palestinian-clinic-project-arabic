@@ -28,7 +28,7 @@ import algerian_provinces from "../../utilities/data/api/yaman_provinces.json";
 import { useSnackbar } from "notistack";
 import ReactImageUploading from "react-images-uploading";
 import { useCreatePatient } from "../../graphql/hooks/patient";
-import { All_Sicks } from "../../graphql/hooks/patient/useGetAllPatients";
+import { Get_All_Patients } from "../../graphql/hooks/patient/useGetAllPatients";
 import { useCreateUser } from "../../graphql/hooks/users";
 import { ALL_USERS } from "../../graphql/hooks/users/useGetAllUsers";
 import { Alert } from "@mui/lab";

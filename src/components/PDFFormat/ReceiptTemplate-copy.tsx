@@ -167,7 +167,7 @@ const ReceiptTemplate = ({ shipmentDataList, userData }: Props) => {
                               margin: 2,
                             }}
                           >
-                            {dayjs().format("DD/MM/YYYY HH:mm:ss")}
+                            {dayjs().format("YYYY-MM-DD[T]HH:mm:ss[Z]")}
                           </Text>
                           <Text
                             style={{

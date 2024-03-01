@@ -1,21 +1,9 @@
 import { CalendarDaysIcon, CalendarIcon, EyeIcon } from "@heroicons/react/24/outline";
-import {
-  alpha,
-  Box,
-  Button,
-  Grid,
-  Chip as MuiChip,
-  Stack,
-  Typography,
-  IconButton,
-  DialogContentText,
-  ListItemIcon,
-  MenuItem,
-} from "@mui/material";
+import { alpha, Box, Button, Grid, Chip as MuiChip, Stack, Typography, IconButton, DialogContentText, ListItemIcon, MenuItem } from "@mui/material";
 import { blue, grey } from "@mui/material/colors";
 import { AlertCircle, ArrowLeftRight, ListMinus, Edit2 } from "lucide-react";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { MoreHorizontal, Plus, Trash2 } from "react-feather";
 import Dialog from "../../components/Dialog/Dialog";
 import Menu from "../../components/Menu/Menu";
@@ -29,6 +17,7 @@ import dayjs from "dayjs";
 import AddAlbumModal from "../../components/Modal/AddAlbumModal";
 import EditAlbumModal from "../../components/Modal/EditAlbumModal";
 import dynamic from "next/dynamic";
+import { getDownloadURL, getStorage, ref as googleRef } from "firebase/storage";
 
 const Viewer = dynamic(
   () => {
@@ -56,9 +45,10 @@ const Album = React.forwardRef(function Album(props: Props, ref) {
   //     useGetZoneTransaction();
 
   let [getVitalSignLazy, { data: dataRequested }] = useGetAlbum({
-    id: route.query?.id as any,
+    id: parseInt(route.query?.id as any),
   });
-  console.log("🚀 ~ file: Diagnosis.tsx ~ line 51 ~ Diagnosis ~ dataRequested", dataRequested);
+
+  console.log("dataRequested: ", dataRequested);
   const [OpenAddModal, setOpenAddModal] = React.useState(false);
   const [OpenEditModal, setOpenEditModal] = React.useState(false);
   const [visibleImage, setVisibleImage] = React.useState<boolean>(false);
@@ -74,6 +64,40 @@ const Album = React.forwardRef(function Album(props: Props, ref) {
     content: "",
     onAction: "",
   });
+
+  /** google storage */
+  let [radiologyImageURLArr, setRadiologyImageURLArr] = useState<any>([[]]);
+  const storage = getStorage();
+  const storageRef = googleRef(storage, "radiology");
+  useEffect(() => {
+    // (async function () {
+    let fetchImages = async () => {
+      let urlPromises = dataRequested?.GetOneRadiology?.map((item: any) => Promise.all(item.images.map((imgName: any) => fetchOneImage(imgName))));
+
+      let urls = await Promise.all(urlPromises || []);
+      console.log("🚀 ~ fetchImages ~ urls:", urls);
+
+      // let urls = await Promise.all(
+      //   dataRequested?.GetOneRadiology?.map(
+      //     // async (item: any) => await fetchOneImage(item.images[0])
+      //     (item: any) => item.images.map((imgName: any) => fetchOneImage(imgName))
+      //   )
+      // );
+
+      console.log("🚀 ~ file: Album.tsx:86 ~ fetchImages ~ fetchImages:", urls, urlPromises);
+
+      setRadiologyImageURLArr(urls);
+    };
+    fetchImages();
+    // })();
+  }, [dataRequested]);
+
+  async function fetchOneImage(imageName: string) {
+    console.log("🚀 ~ file: Album.tsx:99 ~ fetchOneImage ~ url:", googleRef(storage, "x.png"));
+    let url = await getDownloadURL(googleRef(storage, "x.png"));
+    return url;
+  }
+  /** google storage */
 
   let [deleteCardMutation] = useDeleteAlbum();
 
@@ -112,7 +136,7 @@ const Album = React.forwardRef(function Album(props: Props, ref) {
           setVisibleImage(false);
         }}
         images={images?.map((pic: any) => ({
-          src: `https://clinic-api.qafilaty.com/images/${pic?.name}`,
+          src: `${pic}`,
           alt: "",
         }))}
         zIndex={9999}
@@ -120,8 +144,18 @@ const Album = React.forwardRef(function Album(props: Props, ref) {
         rotatable={false}
         scalable={false}
       />
-      <Grid container width={"100%"} spacing={1.5}>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
+      <Grid
+        container
+        width={"100%"}
+        spacing={1.5}
+      >
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          md={4}
+          lg={3}
+        >
           <Box
             onClick={() => setOpenAddModal(true)}
             sx={{
@@ -140,12 +174,22 @@ const Album = React.forwardRef(function Album(props: Props, ref) {
               },
             }}
           >
-            <Plus size={45} color={slate[300]} />
+            <Plus
+              size={45}
+              color={slate[300]}
+            />
           </Box>
         </Grid>
 
-        {sortByRecentTime(["createdAt"], dataRequested?.allAlbum)?.map((item: any, i: number) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
+        {sortByRecentTime(["createdAt"], dataRequested?.GetOneRadiology)?.map((item: any, i: number) => (
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={3}
+            key={i}
+          >
             <Box
               sx={{
                 height: "336px",
@@ -164,15 +208,23 @@ const Album = React.forwardRef(function Album(props: Props, ref) {
                   padding="0 16px"
                   borderBottom={"1px solid " + slate[200]}
                 >
-                  <Stack direction={"row"} alignItems="center" gap={"4px"}>
-                    <CalendarDaysIcon color={slate[400]} width={"20px"} height={"24px"} />
+                  <Stack
+                    direction={"row"}
+                    alignItems="center"
+                    gap={"4px"}
+                  >
+                    <CalendarDaysIcon
+                      color={slate[400]}
+                      width={"20px"}
+                      height={"24px"}
+                    />
                     <Typography
                       variant="xs"
                       color={slate[500]}
                       marginTop="1px"
                       sx={{ direction: "rtl" }}
                     >
-                      {dayjs(item?.createdAt, "DD/MM/YYYY HH:mm:ss").format("DD/MM/YYYY HH:mm")}
+                      {dayjs(item?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").format("DD/MM/YYYY HH:mm")}
                     </Typography>
                   </Stack>
                   <Stack justifyContent={"center"}>
@@ -185,16 +237,23 @@ const Album = React.forwardRef(function Album(props: Props, ref) {
                         bindTrigger(popupState).onClick(e);
                       }}
                     >
-                      <MoreHorizontal color={grey[500]} size={18} />
+                      <MoreHorizontal
+                        color={grey[500]}
+                        size={18}
+                      />
                     </IconButton>
                   </Stack>
                 </Stack>
                 {/* lower-section */}
-                <Stack padding={"16px"} gap={"16px"} height="100%">
+                <Stack
+                  padding={"16px"}
+                  gap={"16px"}
+                  height="100%"
+                >
                   <Box
                     onClick={() => {
-                      setImages(item?.pictures);
-                      item?.pictures?.[0] && setVisibleImage(true);
+                      setImages(radiologyImageURLArr?.[i]);
+                      radiologyImageURLArr?.[i] && setVisibleImage(true);
                     }}
                     sx={{
                       position: "relative",
@@ -228,29 +287,39 @@ const Album = React.forwardRef(function Album(props: Props, ref) {
                         position: "absolute",
                         bottom: "12px",
                         right: "12px",
-                        display: item?.pictures?.[0] ? "none" : "none !important",
+                        display: radiologyImageURLArr?.[i]?.[0] ? "none" : "none !important",
                       }}
                     />
                     <Box
-                      component={item?.pictures?.[0] ? "img" : "div"}
-                      src={`https://clinic-api.qafilaty.com/images/${item?.pictures?.[0]?.name}`}
+                      component={radiologyImageURLArr?.[i]?.[0] ? "img" : "div"}
+                      src={`${radiologyImageURLArr?.[i]?.[0]}`}
                       height={128}
                       sx={{
                         borderRadius: "4px",
                         width: "100%",
-                        backgroundColor: item?.pictures?.[0] ? slate[50] : slate[200],
+                        backgroundColor: radiologyImageURLArr?.[i]?.[0] ? slate[50] : slate[200],
                       }}
                       style={{ objectFit: "cover" }}
                     />
                   </Box>
 
-                  <Stack justifyContent={"space-between"} gap="10px" height="100%">
+                  <Stack
+                    justifyContent={"space-between"}
+                    gap="10px"
+                    height="100%"
+                  >
                     <Stack gap="12px">
                       <Stack gap="4px">
-                        <Typography variant="2xs" color={secondary[400]}>
-                          {item?.pictures?.length} תְמוּנָה
+                        <Typography
+                          variant="2xs"
+                          color={secondary[400]}
+                        >
+                          {radiologyImageURLArr?.[i]?.length} صورة
                         </Typography>
-                        <Typography variant="xs" color={slate[500]}>
+                        <Typography
+                          variant="xs"
+                          color={slate[500]}
+                        >
                           {item?.title}
                         </Typography>
                       </Stack>
@@ -260,11 +329,7 @@ const Album = React.forwardRef(function Album(props: Props, ref) {
                         color={slate[400]}
                         lineHeight="142%"
                       >
-                        {item?.description.length < 190
-                          ? !item?.description
-                            ? "(ללא הערה)"
-                            : item?.description
-                          : `${item?.description} ...`}
+                        {item?.description.length < 190 ? (!item?.description ? "(ללא הערה)" : item?.description) : `${item?.description} ...`}
                         <Typography
                           display={item?.description.length < 190 ? "none" : "inline"}
                           component={"span"}
@@ -316,7 +381,10 @@ const Album = React.forwardRef(function Album(props: Props, ref) {
           }}
         >
           <ListItemIcon>
-            <Edit2 size={18} strokeWidth={2} />
+            <Edit2
+              size={18}
+              strokeWidth={2}
+            />
           </ListItemIcon>
           تعديل الصور
         </MenuItem>
@@ -344,7 +412,10 @@ const Album = React.forwardRef(function Album(props: Props, ref) {
           }}
         >
           <ListItemIcon>
-            <Trash2 size={18} strokeWidth={2} />
+            <Trash2
+              size={18}
+              strokeWidth={2}
+            />
           </ListItemIcon>
           حذف الصور
         </MenuItem>
@@ -355,7 +426,10 @@ const Album = React.forwardRef(function Album(props: Props, ref) {
         open={confirmProcessDialog}
         onClose={() => setconfirmProcessDialog(false)}
         title={
-          <Typography variant="base" color={grey[800]}>
+          <Typography
+            variant="base"
+            color={grey[800]}
+          >
             {confirmProcessContent.title}
           </Typography>
         }
@@ -380,9 +454,7 @@ const Album = React.forwardRef(function Album(props: Props, ref) {
           </>
         }
       >
-        <DialogContentText id="alert-dialog-description">
-          {confirmProcessContent.content}
-        </DialogContentText>
+        <DialogContentText id="alert-dialog-description">{confirmProcessContent.content}</DialogContentText>
       </Dialog>
     </Box>
   );

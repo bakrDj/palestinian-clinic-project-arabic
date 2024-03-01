@@ -170,7 +170,7 @@ const VitalSignTemplate = ({ dataList, userData }: Props) => {
                           >
                             08-644-1313
                             {/* תאריך מודפס: */}
-                            {/* {dayjs().format("DD/MM/YYYY HH:mm:ss")} */}
+                            {/* {dayjs().format("YYYY-MM-DD[T]HH:mm:ss[Z]")} */}
                           </Text>
                           <Text
                             style={{
@@ -775,7 +775,7 @@ const VitalSignTemplate = ({ dataList, userData }: Props) => {
                             // height: '32px',
                           }}
                         >
-                          {dayjs(shipment?.createdAt, "DD/MM/YYYY HH:mm:ss").format("HH:mm")}
+                          {dayjs(shipment?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").format("HH:mm")}
                         </Text>
                       </View>
                     </View>

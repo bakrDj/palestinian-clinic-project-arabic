@@ -1,12 +1,13 @@
 import { gql, useLazyQuery, useQuery } from "@apollo/client";
 
 export const All_NurseOrder = gql`
-  query AllNurseOrder($idSick: ID) {
-    allNurseOrder(id_sick: $idSick) {
-      id
-      nurse_order
-      completed
+  query GetAllNurseTasksByPatientID($patientsId: Int!) {
+    GetAllNurseTasksByPatientID(patientsId: $patientsId) {
+      checked
       createdAt
+      id
+      note
+      patientsId
       updatedAt
     }
   }
@@ -14,10 +15,10 @@ export const All_NurseOrder = gql`
 
 interface Props {}
 
-const useGetNurseDuty = ({ id }: { id: string }) => {
+const useGetNurseDuty = ({ id }: { id: string | number }) => {
   let res = useLazyQuery(All_NurseOrder, {
     variables: {
-      idSick: id,
+      patientsId: id,
     },
     // fetchPolicy: "cache-first",
     // nextFetchPolicy: "cache-first",

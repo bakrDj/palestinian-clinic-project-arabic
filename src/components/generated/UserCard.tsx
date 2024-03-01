@@ -49,7 +49,7 @@ import { IdentificationIcon, EnvelopeIcon } from "@heroicons/react/24/outline";
 import dayjs from "dayjs";
 import Dialog from "../Dialog/Dialog";
 import useDeletePatient from "../../graphql/hooks/patient/useDeletePatient";
-import { All_Sicks } from "../../graphql/hooks/patient/useGetAllPatients";
+import { Get_All_Patients } from "../../graphql/hooks/patient/useGetAllPatients";
 import { useActivateUser, useDeleteUser } from "../../graphql/hooks/users";
 import { ALL_USERS } from "../../graphql/hooks/users/useGetAllUsers";
 

@@ -169,7 +169,7 @@ const PrescriptionTemplate = ({ dataList, userData }: Props) => {
                           >
                             08-644-1313
                             {/* תאריך מודפס: */}
-                            {/* {dayjs().format("DD/MM/YYYY HH:mm:ss")} */}
+                            {/* {dayjs().format("YYYY-MM-DD[T]HH:mm:ss[Z]")} */}
                           </Text>
                           <Text
                             style={{

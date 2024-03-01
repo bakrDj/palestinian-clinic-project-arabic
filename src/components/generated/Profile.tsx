@@ -16,6 +16,7 @@ import { default as RAvatar } from "react-avatar";
 import { useLogout } from "../../graphql/hooks/users";
 import { useRouter } from "next/router";
 import useStore from "../../store/useStore";
+import { getAuth, signOut } from "firebase/auth";
 
 interface Props extends PopoverProps {
   fullname?: string;
@@ -47,6 +48,8 @@ const StyledPopOver = styled(Popover)(({ theme, color }: { theme: any; color?: a
 
 export const Profile = (props: Props) => {
   const [logoutMutation] = useLogout();
+  const auth = getAuth();
+
   const route = useRouter();
   return (
     <StyledPopOver {...(props as any)}>
@@ -74,10 +77,15 @@ export const Profile = (props: Props) => {
         <Box
           flex={"1"}
           onClick={() => {
-            logoutMutation().then(() => {
-              useStore.setState({ userData: {} });
+            signOut(auth).then(() => {
+              // Logout successful
+              console.log("User logged out successfully");
+              route.push("/signin");
             });
-            route.push("/signin");
+
+            // logoutMutation().then(() => {
+            //   useStore.setState({ userData: {} });
+            // });
           }}
         >
           <CardActionArea style={{ height: "100%" }}>

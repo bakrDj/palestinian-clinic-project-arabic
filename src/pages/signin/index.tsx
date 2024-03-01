@@ -14,7 +14,14 @@ import {
   useResendEmailVerification,
 } from "../../graphql/hooks/users";
 import useStore from "../../store/useStore";
-
+import { app } from "../../lib/firebase";
+import {
+  browserLocalPersistence,
+  getAuth,
+  onAuthStateChanged,
+  setPersistence,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 interface Props {}
 
 const SignIn = (props: Props) => {
@@ -43,83 +50,105 @@ const SignIn = (props: Props) => {
   } = useForm();
 
   let onFormSubmit = ({ email, password }: any) => {
-    authenticateClientMutation({
-      variables: {
-        content: {
-          email: email,
-          password: password,
-        },
-      },
-    }).then(
-      ({ data: { authenticateUser } }) => {
-        useStore.setState({ token: authenticateUser?.token });
-        useStore.setState({ isAuth: true });
-        route.push("/");
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log("🚀 ~ file: index.tsx:132 ~ .then ~ userCredential:", userCredential);
 
-        getCurrentUserLazy().then(({ data }) => {
-          useStore.setState({ userData: data?.currentUser });
-        });
-        // reset({ /* email: "", */ password: "" });
-      },
-      (err) => {
-        setEmail(email);
-        reset({ /* email: "", */ password: "" });
+        getCurrentUserLazy({ variables: { googleAccountId: userCredential?.user?.uid } })
+          .then(({ data }) => {
+            useStore.setState({ userData: data?.GetOneUserByGoogleId[0] });
+          })
+          .then(() => {
+            route.push("/");
+          });
 
-        if (
-          err?.graphQLErrors[0]?.extensions?.code == "USER_NOT_EXIST" ||
-          err?.graphQLErrors[0]?.extensions?.code == "MANAGER_NOT_EXIST"
-        ) {
-          setAlert({
-            code: err?.graphQLErrors[0]?.extensions?.code,
-            status: "error",
-            msg: "لا يوجد مستخدم لهاذا الإيميل/ الباسوورد",
-          });
-        }
-        if (err?.graphQLErrors[0]?.extensions?.code == "EMAIL_NOT_VERIFY") {
-          setAlert({
-            code: err?.graphQLErrors[0]?.extensions?.code,
-            status: "error",
-            msg: "هذا الحساب غير مفعل، قم بالتحقق من صندوق البريد لتفعيله.",
-          });
-        }
-        if (err?.graphQLErrors[0]?.extensions?.code == "PASSWORD_INCORRECT") {
-          setAlert({
-            status: "error",
-            msg: " كلمة المرور غير صحيحة، يرجى إعادة المحاولة.",
-          });
-        }
+        // Signed in
+        // ...
+      })
+      .catch((error) => {
+        console.log("🚀 ~ file: index.tsx:137 ~ useEffect ~ error:", error);
+      });
 
-        if (err?.graphQLErrors[0]?.extensions?.code == "ACCOUNT_NOT_ACTIVE") {
-          setAlert({
-            code: err?.graphQLErrors[0]?.extensions?.code,
-            status: "error",
-            msg: "تم حظر حسابك من قبل المسؤول",
-          });
-        }
+    // authenticateClientMutation({
+    //   variables: {
+    //     content: {
+    //       email: email,
+    //       password: password,
+    //     },
+    //   },
+    // }).then(
+    //   ({ data: { authenticateUser } }) => {
+    //     useStore.setState({ token: authenticateUser?.token });
+    //     useStore.setState({ isAuth: true });
+    //     route.push("/");
 
-        if (err?.graphQLErrors[0]?.extensions?.code == "STOCK_NOT_ACTIVE") {
-          setAlert({
-            code: err?.graphQLErrors[0]?.extensions?.code,
-            status: "error",
-            msg: "المكتب الذي تنتمي اليه محظور",
-          });
-        }
+    //     getCurrentUserLazy().then(({ data }) => {
+    //       useStore.setState({ userData: data?.currentUser });
+    //     });
+    //     // reset({ /* email: "", */ password: "" });
+    //   },
+    //   (err) => {
+    //     setEmail(email);
+    //     reset({ /* email: "", */ password: "" });
 
-        if (err?.graphQLErrors[0]?.extensions?.code == "COMPANY_NOT_ACTIVE") {
-          setAlert({
-            code: err?.graphQLErrors[0]?.extensions?.code,
-            status: "error",
-            msg: "الشركة التي تنتمي اليه محظورة",
-          });
-        }
-      }
-    );
+    //     if (
+    //       err?.graphQLErrors[0]?.extensions?.code == "USER_NOT_EXIST" ||
+    //       err?.graphQLErrors[0]?.extensions?.code == "MANAGER_NOT_EXIST"
+    //     ) {
+    //       setAlert({
+    //         code: err?.graphQLErrors[0]?.extensions?.code,
+    //         status: "error",
+    //         msg: "لا يوجد مستخدم لهاذا الإيميل/ الباسوورد",
+    //       });
+    //     }
+    //     if (err?.graphQLErrors[0]?.extensions?.code == "EMAIL_NOT_VERIFY") {
+    //       setAlert({
+    //         code: err?.graphQLErrors[0]?.extensions?.code,
+    //         status: "error",
+    //         msg: "هذا الحساب غير مفعل، قم بالتحقق من صندوق البريد لتفعيله.",
+    //       });
+    //     }
+    //     if (err?.graphQLErrors[0]?.extensions?.code == "PASSWORD_INCORRECT") {
+    //       setAlert({
+    //         status: "error",
+    //         msg: " كلمة المرور غير صحيحة، يرجى إعادة المحاولة.",
+    //       });
+    //     }
+
+    //     if (err?.graphQLErrors[0]?.extensions?.code == "ACCOUNT_NOT_ACTIVE") {
+    //       setAlert({
+    //         code: err?.graphQLErrors[0]?.extensions?.code,
+    //         status: "error",
+    //         msg: "تم حظر حسابك من قبل المسؤول",
+    //       });
+    //     }
+
+    //     if (err?.graphQLErrors[0]?.extensions?.code == "STOCK_NOT_ACTIVE") {
+    //       setAlert({
+    //         code: err?.graphQLErrors[0]?.extensions?.code,
+    //         status: "error",
+    //         msg: "المكتب الذي تنتمي اليه محظور",
+    //       });
+    //     }
+
+    //     if (err?.graphQLErrors[0]?.extensions?.code == "COMPANY_NOT_ACTIVE") {
+    //       setAlert({
+    //         code: err?.graphQLErrors[0]?.extensions?.code,
+    //         status: "error",
+    //         msg: "الشركة التي تنتمي اليه محظورة",
+    //       });
+    //     }
+    //   }
+    // );
   };
+  const auth = getAuth();
 
   // Watchers
 
   useEffect(() => {
     useStore.setState({ isLayoutDisabled: true });
+    console.log;
   }, []);
 
   useEffect(() => {

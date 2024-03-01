@@ -501,7 +501,7 @@ const ShipPickUpModal = (props: Props) => {
                                 ></Chip>
                               </Typography>
                               <Typography variant="2xs" flex="1 0" color={grey[700]}>
-                                {dayjs(pickUp?.createdAt, "DD/MM/YYYY HH:mm:ss").format(
+                                {dayjs(pickUp?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").format(
                                   "DD / MMMM / YYYY"
                                 )}
                               </Typography>

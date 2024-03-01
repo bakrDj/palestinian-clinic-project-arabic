@@ -1,24 +1,21 @@
 import { gql, useQuery } from "@apollo/client";
 
-export const All_Sicks = gql`
-  query AllSicks {
-    allSicks {
+export const Get_All_Patients = gql`
+  query GetAllPatients {
+    GetAllPatients {
       id
-      age
-      lastUpdate
-      history {
-        id
-        createdAt
-        updatedAt
-      }
-      person {
+      createdAt
+      updatedAt
+      personsId
+      Person {
         id
         first_name
         last_name
-        email
-        phone
+        age
+        gender
         address
-        ID_number
+        phone
+        identification_number
         createdAt
         updatedAt
       }
@@ -29,14 +26,14 @@ export const All_Sicks = gql`
 interface Props {}
 
 const useGetAllPatients = ({ id }: { id?: string }) => {
-  let { data, loading, refetch } = useQuery(All_Sicks, {
+  let { data, loading, refetch } = useQuery(Get_All_Patients, {
     variables: {
       idSick: id,
     },
     // fetchPolicy: "cache-first",
     // nextFetchPolicy: "cache-first",
   });
-  return [data?.allSicks || [], loading, refetch];
+  return [data?.GetAllPatients || [], loading, refetch];
 };
 
 export default useGetAllPatients;

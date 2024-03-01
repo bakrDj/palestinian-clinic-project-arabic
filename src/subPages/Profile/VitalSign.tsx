@@ -28,7 +28,7 @@ import Dialog from "../../components/Dialog/Dialog";
 import AddVitalSignModal from "../../components/Modal/AddVitalSignModal";
 import EditPatientModal from "../../components/Modal/EditPatientModal";
 import EditVitalSignModal from "../../components/Modal/EditVitalSignModal";
-import { All_Sicks } from "../../graphql/hooks/patient/useGetAllPatients";
+import { Get_All_Patients } from "../../graphql/hooks/patient/useGetAllPatients";
 import { All_VitalSigns } from "../../graphql/hooks/vitalSign/useGetVitalSign";
 import Divider from "@mui/material/Divider";
 import Link from "next/link";
@@ -52,7 +52,7 @@ const VitalSign = React.forwardRef(function VitalSign(props: Props, ref) {
   //     useGetZoneTransaction();
 
   let [getVitalSignLazy, { data: dataRequested }] = useGetVitalSign({
-    id: route.query?.id as any,
+    id: parseInt(route.query?.id as any),
   });
   const [OpenAddModal, setOpenAddModal] = React.useState(false);
   const [OpenEditModal, setOpenEditModal] = React.useState(false);
@@ -115,7 +115,7 @@ const VitalSign = React.forwardRef(function VitalSign(props: Props, ref) {
           </Box>
         </Grid>
 
-        {sortByRecentTime(["createdAt"], dataRequested?.allVitalSigns)?.map(
+        {sortByRecentTime(["createdAt"], dataRequested?.GetAllVitalSignsByPatientID)?.map(
           (vitalSign: any, i: number) => (
             <Grid item xs={12} sm={6} md={4} lg={4} key={i}>
               <Box
@@ -144,7 +144,7 @@ const VitalSign = React.forwardRef(function VitalSign(props: Props, ref) {
                         marginTop="1px"
                         sx={{ direction: "rtl" }}
                       >
-                        {dayjs(vitalSign?.createdAt, "DD/MM/YYYY HH:mm:ss").format(
+                        {dayjs(vitalSign?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").format(
                           "DD/MM/YYYY HH:mm"
                         )}
                       </Typography>

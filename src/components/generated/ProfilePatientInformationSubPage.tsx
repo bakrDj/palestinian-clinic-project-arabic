@@ -31,7 +31,7 @@ import AddPatientModal from "../Modal/AddPatientModal";
 import EditPatientModal from "../Modal/EditPatientModal";
 import { grey } from "@mui/material/colors";
 import Dialog from "../Dialog/Dialog";
-import { All_Sicks } from "../../graphql/hooks/patient/useGetAllPatients";
+import { Get_All_Patients } from "../../graphql/hooks/patient/useGetAllPatients";
 import Head from "next/head";
 import Tab3 from "../Tabs/Tab3";
 import Tabs3 from "../Tabs/Tabs3";
@@ -58,8 +58,9 @@ const ProfilePatientInformationSubPage = (props: Props) => {
   let [deleteCardMutation] = useDeletePatient();
 
   let [patientData] = useGetOnePatients({
-    id: route?.query?.id as any,
+    id: parseInt(route?.query?.id as any),
   });
+  patientData = patientData[0];
 
   const popupState = usePopupState({ variant: "popover", popupId: "demoMenu" });
 
@@ -87,7 +88,7 @@ const ProfilePatientInformationSubPage = (props: Props) => {
       <Head>
         <title>
           {patientData?.person
-            ? patientData?.person?.first_name + " " + patientData?.person?.last_name + " | نبض"
+            ? patientData?.Person?.first_name + " " + patientData?.Person?.last_name + " | نبض"
             : ""}
         </title>
       </Head>
@@ -168,7 +169,7 @@ const ProfilePatientInformationSubPage = (props: Props) => {
                 >
                   <RAvatar
                     size="108px"
-                    name={patientData?.person?.first_name}
+                    name={patientData?.Person?.first_name}
                     round={"4px"}
                     style={{
                       fontFamily: "Heebo",
@@ -179,13 +180,13 @@ const ProfilePatientInformationSubPage = (props: Props) => {
                 </Box>
                 <Stack justifyContent={"space-between"} gap="14px">
                   <Typography variant="sm" color={slate[600]}>
-                    {patientData?.person?.first_name + " " + patientData?.person?.last_name}{" "}
+                    {patientData?.Person?.first_name + " " + patientData?.Person?.last_name}{" "}
                     <Typography
                       component={"span"}
                       variant="inherit"
                       color={slate[400]}
-                      display={patientData?.age === "0" ? "none" : ""}
-                    >{`( ${patientData?.age} سنة )`}</Typography>
+                      display={patientData?.Person?.age === "0" ? "none" : ""}
+                    >{`( ${patientData?.Person?.age} سنة )`}</Typography>
                   </Typography>
                   <Stack direction={"row"} gap="24px" height={"100%"}>
                     <Stack justifyContent={"space-between"} height="100%">
@@ -197,7 +198,7 @@ const ProfilePatientInformationSubPage = (props: Props) => {
                           </Typography>
                         </Stack>
                         <Typography variant="xs" color={slate[500]}>
-                          {patientData?.person?.ID_number || "?????????"}
+                          {patientData?.Person?.ID_number || "?????????"}
                         </Typography>
                       </Stack>
                       <Stack gap={"4px"}>
@@ -208,7 +209,7 @@ const ProfilePatientInformationSubPage = (props: Props) => {
                           </Typography>
                         </Stack>
                         <Typography variant="xs" color={slate[500]} sx={{ direction: "rtl" }}>
-                          {dayjs(patientData?.person?.createdAt, "DD/MM/YYYY HH:mm:ss").format(
+                          {dayjs(patientData?.Person?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").format(
                             "DD/MM/YYYY HH:mm"
                           )}
                         </Typography>
@@ -223,7 +224,7 @@ const ProfilePatientInformationSubPage = (props: Props) => {
                           </Typography>
                         </Stack>
                         <Typography variant="xs" color={slate[500]}>
-                          {patientData?.person?.phone || "?????????"}
+                          {patientData?.Person?.phone || "?????????"}
                         </Typography>
                       </Stack>
 
@@ -251,7 +252,7 @@ const ProfilePatientInformationSubPage = (props: Props) => {
                           </Stack>
                         </Stack>
                         <Typography variant="xs" color={slate[500]} sx={{ direction: "rtl" }}>
-                          {dayjs(patientData?.lastUpdate, "DD/MM/YYYY HH:mm:ss").format(
+                          {dayjs(patientData?.lastUpdate, "YYYY-MM-DD[T]HH:mm:ss[Z]").format(
                             "DD/MM/YYYY HH:mm"
                           )}
                         </Typography>
@@ -331,7 +332,7 @@ const ProfilePatientInformationSubPage = (props: Props) => {
                     variables: {
                       idPerson: patientData?.id,
                     },
-                    refetchQueries: [All_Sicks],
+                    refetchQueries: [Get_All_Patients],
                   }).then(() => {
                     route.push("/");
                   });

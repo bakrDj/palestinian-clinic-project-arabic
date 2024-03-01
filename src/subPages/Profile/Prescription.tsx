@@ -1,18 +1,5 @@
 import { CalendarDaysIcon, CalendarIcon } from "@heroicons/react/24/outline";
-import {
-  alpha,
-  Box,
-  Button,
-  Grid,
-  Chip as MuiChip,
-  Stack,
-  Typography,
-  IconButton,
-  MenuItem,
-  ListItemIcon,
-  DialogContentText,
-  Divider,
-} from "@mui/material";
+import { alpha, Box, Button, Grid, Chip as MuiChip, Stack, Typography, IconButton, MenuItem, ListItemIcon, DialogContentText, Divider } from "@mui/material";
 import { blue, grey } from "@mui/material/colors";
 import { AlertCircle, ArrowLeftRight, ListMinus, Edit2 } from "lucide-react";
 import { useRouter } from "next/router";
@@ -54,8 +41,9 @@ const Prescription = React.forwardRef(function Prescription(props: Props, ref) {
   //     useGetZoneTransaction();
 
   let [getVitalSignLazy, { data: dataRequested }] = useGetPrescription({
-    id: route.query?.id as any,
+    id: parseInt(route.query?.id as any),
   });
+  console.log("dataRequested: ", dataRequested);
 
   const [OpenAddModal, setOpenAddModal] = React.useState(false);
   const [OpenEditModal, setOpenEditModal] = React.useState(false);
@@ -133,9 +121,15 @@ const Prescription = React.forwardRef(function Prescription(props: Props, ref) {
             justifyContent={"center"}
           >
             <div style={{ marginTop: -1 }}>
-              <Plus size={14} color={primary[400]} />
+              <Plus
+                size={14}
+                color={primary[400]}
+              />
             </div>
-            <Typography variant="xs" color={primary[400]}>
+            <Typography
+              variant="xs"
+              color={primary[400]}
+            >
               إضافة روشيتا جديدة
             </Typography>
           </Stack>
@@ -148,162 +142,250 @@ const Prescription = React.forwardRef(function Prescription(props: Props, ref) {
           ></Box>
         </Stack>
 
-        {sortByRecentTime(["createdAt"], dataRequested?.allPrescription)?.map(
-          (item: any, i: number) => (
-            <Stack gap="16px">
+        {sortByRecentTime(["createdAt"], dataRequested?.GetAllPrescriptionsByPatientID)?.map((item: any, i: number) => (
+          <Stack gap="16px">
+            <Stack
+              sx={{
+                height: "36px",
+                width: "100%",
+                borderBottom: "1px solid " + slate[300],
+              }}
+              justifyContent="space-between"
+              alignItems={"center"}
+              direction="row"
+            >
               <Stack
-                sx={{
-                  height: "36px",
-                  width: "100%",
-                  borderBottom: "1px solid " + slate[300],
-                }}
-                justifyContent="space-between"
                 alignItems={"center"}
                 direction="row"
+                gap="10px"
               >
-                <Stack alignItems={"center"} direction="row" gap="10px">
-                  {item?.title && (
-                    <>
-                      <Typography variant="xs" color={grey[600]}>
-                        {item?.title}
-                      </Typography>
-                      <Box
-                        sx={{
-                          width: 4,
-                          height: 4,
-                          borderRadius: 4,
-                          backgroundColor: secondary[400],
-                        }}
-                      ></Box>
-                    </>
-                  )}
-                  <Typography variant="2xs" color={slate[400]}>
-                    {item?.medicines.length} دواء
-                  </Typography>
-                  <Box
-                    sx={{ width: 4, height: 4, borderRadius: 4, backgroundColor: secondary[400] }}
-                  ></Box>
-                  <Typography variant="2xs" color={slate[400]}>
-                    {dayjs(item?.createdAt, "DD/MM/YYYY HH:mm:ss").format("DD/MM/YYYY HH:mm")}
-                  </Typography>
-                </Stack>
-                <Stack justifyContent={"center"}>
-                  <IconButton
-                    size={"small"}
-                    /* {...bindTrigger(popupState)} */ sx={{ bgcolor: slate[100] }}
-                    {...bindTrigger(popupState)}
-                    onClick={(e) => {
-                      setCardDataInfo(item);
-
-                      bindTrigger(popupState).onClick(e);
-                    }}
-                  >
-                    <MoreHorizontal color={grey[500]} size={14} />
-                  </IconButton>
-                </Stack>
-              </Stack>
-              <Grid container width={"100%"} spacing={1.5}>
-                <Grid item xs={12} sm={6} md={4} lg={3}>
-                  <Box
-                    onClick={() => {
-                      setOpenAddMedicineModal(true);
-                      setCardDataInfo(item);
-                    }}
-                    sx={{
-                      height: { xs: "72px", sm: "174px" },
-                      width: "100%",
-                      borderRadius: "2px",
-                      border: "2px dashed " + slate[300],
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      cursor: "pointer",
-                      transition: "all 0.2s",
-                      ":hover": {
-                        backgroundColor: slate[100],
-                        border: "2px dashed " + slate[100],
-                      },
-                    }}
-                  >
-                    <Plus size={45} color={slate[300]} />
-                  </Box>
-                </Grid>
-                {item?.medicines?.map((drug: any, i: number) => (
-                  <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
+                {item?.title && (
+                  <>
+                    <Typography
+                      variant="xs"
+                      color={grey[600]}
+                    >
+                      {item?.title}
+                    </Typography>
                     <Box
                       sx={{
-                        height: "174px",
-                        width: "100%",
-                        borderRadius: "2px",
-                        background: "#FFF",
-                        border: "1px solid " + slate[200],
+                        width: 4,
+                        height: 4,
+                        borderRadius: 4,
+                        backgroundColor: secondary[400],
                       }}
-                    >
-                      <Stack sx={{ width: "100%", height: "100%" }}>
-                        {/* upper-section */}
+                    ></Box>
+                  </>
+                )}
+                <Typography
+                  variant="2xs"
+                  color={slate[400]}
+                >
+                  {item?.Medicines?.length || "0"} دواء
+                </Typography>
+                <Box sx={{ width: 4, height: 4, borderRadius: 4, backgroundColor: secondary[400] }}></Box>
+                <Typography
+                  variant="2xs"
+                  color={slate[400]}
+                >
+                  {dayjs(item?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").format("DD/MM/YYYY HH:mm")}
+                </Typography>
+              </Stack>
+              <Stack justifyContent={"center"}>
+                <IconButton
+                  size={"small"}
+                  /* {...bindTrigger(popupState)} */ sx={{ bgcolor: slate[100] }}
+                  {...bindTrigger(popupState)}
+                  onClick={(e) => {
+                    setCardDataInfo(item);
+
+                    bindTrigger(popupState).onClick(e);
+                  }}
+                >
+                  <MoreHorizontal
+                    color={grey[500]}
+                    size={14}
+                  />
+                </IconButton>
+              </Stack>
+            </Stack>
+            <Grid
+              container
+              width={"100%"}
+              spacing={1.5}
+            >
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+              >
+                <Box
+                  onClick={() => {
+                    setOpenAddMedicineModal(true);
+                    setCardDataInfo(item);
+                  }}
+                  sx={{
+                    height: { xs: "72px", sm: "174px" },
+                    width: "100%",
+                    borderRadius: "2px",
+                    border: "2px dashed " + slate[300],
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    cursor: "pointer",
+                    transition: "all 0.2s",
+                    ":hover": {
+                      backgroundColor: slate[100],
+                      border: "2px dashed " + slate[100],
+                    },
+                  }}
+                >
+                  <Plus
+                    size={45}
+                    color={slate[300]}
+                  />
+                </Box>
+              </Grid>
+              {item?.Medicines?.map((drug: any, i: number) => (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  lg={3}
+                  key={i}
+                >
+                  <Box
+                    sx={{
+                      height: "174px",
+                      width: "100%",
+                      borderRadius: "2px",
+                      background: "#FFF",
+                      border: "1px solid " + slate[200],
+                    }}
+                  >
+                    <Stack sx={{ width: "100%", height: "100%" }}>
+                      {/* upper-section */}
+                      <Stack
+                        direction="row"
+                        // justifyContent={"space-between"}
+                        minHeight="100%"
+                        padding="16px 16px"
+                        gap="12px"
+                      >
+                        <img
+                          src="/drug.png"
+                          width="52px"
+                          height="52px"
+                        />
                         <Stack
-                          direction="row"
-                          // justifyContent={"space-between"}
-                          minHeight="100%"
-                          padding="16px 16px"
-                          gap="12px"
+                          width="100%"
+                          justifyContent={"space-between"}
+                          gap="4px"
                         >
-                          <img src="/drug.png" width="52px" height="52px" />
-                          <Stack width="100%" justifyContent={"space-between"} gap="4px">
-                            <Stack direction="row" width="100%" justifyContent={"space-between"}>
-                              <Typography variant="xs" color={grey[700]} marginTop="4px">
-                                {drug?.name}
-                              </Typography>
-                              <IconButton
-                                size={"small"}
-                                /* {...bindTrigger(popupState)} */
-                                {...bindTrigger(popupState2)}
-                                onClick={(e) => {
-                                  setCardDataInfo(drug);
+                          <Stack
+                            direction="row"
+                            width="100%"
+                            justifyContent={"space-between"}
+                          >
+                            <Typography
+                              variant="xs"
+                              color={grey[700]}
+                              marginTop="4px"
+                            >
+                              {drug?.name}
+                            </Typography>
+                            <IconButton
+                              size={"small"}
+                              /* {...bindTrigger(popupState)} */
+                              {...bindTrigger(popupState2)}
+                              onClick={(e) => {
+                                setCardDataInfo(drug);
 
-                                  bindTrigger(popupState2).onClick(e);
-                                }}
+                                bindTrigger(popupState2).onClick(e);
+                              }}
+                            >
+                              <MoreHorizontal
+                                color={grey[500]}
+                                size={14}
+                              />
+                            </IconButton>
+                          </Stack>
+
+                          <Stack
+                            gap="10px"
+                            width="100%"
+                          >
+                            <Stack
+                              direction="row"
+                              gap="8px"
+                              alignItems={"center"}
+                            >
+                              <img src="/pill.svg" />
+                              <Typography
+                                variant="2xs"
+                                color={grey[600]}
                               >
-                                <MoreHorizontal color={grey[500]} size={14} />
-                              </IconButton>
+                                {drug?.quantity || "-"}
+                              </Typography>
                             </Stack>
-
-                            <Stack gap="10px" width="100%">
-                              <Stack direction="row" gap="8px" alignItems={"center"}>
-                                <img src="/pill.svg" />
-                                <Typography variant="2xs" color={grey[600]}>
-                                  {drug?.quantity || "-"}
-                                </Typography>
-                              </Stack>
-                              <Stack direction="row" gap="8px" alignItems={"center"}>
-                                <img src="/repeat.svg" />
-                                <Typography variant="2xs" color={grey[600]}>
-                                  {drug?.times_per_day || "-"} مرة
-                                </Typography>
-                              </Stack>
-                              <Stack direction="row" gap="6px" alignItems={"center"}>
-                                <img src="/history.svg" style={{ marginRight: -2 }} />
-                                <Typography variant="2xs" color={grey[600]}>
-                                  لمدة {drug?.duration || "-"} يوم
-                                </Typography>
-                              </Stack>
-                              <Stack direction="row" gap="6px" alignItems={"center"}>
-                                <img src="/how-to-use.svg" style={{ marginRight: -1 }} />
-                                <Typography variant="2xs" color={grey[600]}>
-                                  {drug?.giving || "-"}
-                                </Typography>
-                              </Stack>
+                            <Stack
+                              direction="row"
+                              gap="8px"
+                              alignItems={"center"}
+                            >
+                              <img src="/repeat.svg" />
+                              <Typography
+                                variant="2xs"
+                                color={grey[600]}
+                              >
+                                {drug?.times_per_day || "-"} مرة
+                              </Typography>
+                            </Stack>
+                            <Stack
+                              direction="row"
+                              gap="6px"
+                              alignItems={"center"}
+                            >
+                              <img
+                                src="/history.svg"
+                                style={{ marginRight: -2 }}
+                              />
+                              <Typography
+                                variant="2xs"
+                                color={grey[600]}
+                              >
+                                لمدة {drug?.duration || "-"} يوم
+                              </Typography>
+                            </Stack>
+                            <Stack
+                              direction="row"
+                              gap="6px"
+                              alignItems={"center"}
+                            >
+                              <img
+                                src="/how-to-use.svg"
+                                style={{ marginRight: -1 }}
+                              />
+                              <Typography
+                                variant="2xs"
+                                color={grey[600]}
+                              >
+                                {drug?.giving || "-"}
+                              </Typography>
                             </Stack>
                           </Stack>
                         </Stack>
                       </Stack>
-                    </Box>
-                  </Grid>
-                ))}
-              </Grid>
-            </Stack>
-          )
-        )}
+                    </Stack>
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
+          </Stack>
+        ))}
       </Stack>
 
       <AddPrescriptionModal
@@ -344,7 +426,10 @@ const Prescription = React.forwardRef(function Prescription(props: Props, ref) {
           }}
         >
           <ListItemIcon>
-            <Edit2 size={18} strokeWidth={2} />
+            <Edit2
+              size={18}
+              strokeWidth={2}
+            />
           </ListItemIcon>
           تعديل الروشيتا
         </MenuItem>
@@ -372,7 +457,10 @@ const Prescription = React.forwardRef(function Prescription(props: Props, ref) {
           }}
         >
           <ListItemIcon>
-            <Trash2 size={18} strokeWidth={2} />
+            <Trash2
+              size={18}
+              strokeWidth={2}
+            />
           </ListItemIcon>
           حذف الروشيتا
         </MenuItem>
@@ -380,7 +468,7 @@ const Prescription = React.forwardRef(function Prescription(props: Props, ref) {
         <Box marginBottom={"6px"}>
           <Link
             href={{
-              pathname: CardDataInfo?.medicines?.length ? "/printer" : "/",
+              pathname: CardDataInfo?.Medicines?.length ? "/printer" : "/",
               query: {
                 prescriptionID: CardDataInfo?.id as any,
                 // bordereau: true,
@@ -396,7 +484,10 @@ const Prescription = React.forwardRef(function Prescription(props: Props, ref) {
                 }}
               >
                 <ListItemIcon>
-                  <Printer size={18} strokeWidth={2} />
+                  <Printer
+                    size={18}
+                    strokeWidth={2}
+                  />
                 </ListItemIcon>
                 طباعة الروشيتا
               </MenuItem>
@@ -417,7 +508,10 @@ const Prescription = React.forwardRef(function Prescription(props: Props, ref) {
           }}
         >
           <ListItemIcon>
-            <Edit2 size={18} strokeWidth={2} />
+            <Edit2
+              size={18}
+              strokeWidth={2}
+            />
           </ListItemIcon>
           تعديل الدواء
         </MenuItem>
@@ -445,7 +539,10 @@ const Prescription = React.forwardRef(function Prescription(props: Props, ref) {
           }}
         >
           <ListItemIcon>
-            <Trash2 size={18} strokeWidth={2} />
+            <Trash2
+              size={18}
+              strokeWidth={2}
+            />
           </ListItemIcon>
           حذف الدواء
         </MenuItem>
@@ -456,7 +553,10 @@ const Prescription = React.forwardRef(function Prescription(props: Props, ref) {
         open={confirmProcessDialog}
         onClose={() => setconfirmProcessDialog(false)}
         title={
-          <Typography variant="base" color={grey[800]}>
+          <Typography
+            variant="base"
+            color={grey[800]}
+          >
             {confirmProcessContent.title}
           </Typography>
         }
@@ -480,9 +580,7 @@ const Prescription = React.forwardRef(function Prescription(props: Props, ref) {
           </>
         }
       >
-        <DialogContentText id="alert-dialog-description">
-          {confirmProcessContent.content}
-        </DialogContentText>
+        <DialogContentText id="alert-dialog-description">{confirmProcessContent.content}</DialogContentText>
       </Dialog>
     </Box>
   );

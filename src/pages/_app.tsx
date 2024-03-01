@@ -133,7 +133,7 @@ const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) 
 //   credentials: "include",
 // });
 const httpLink = createUploadLink({
-  uri: "https://clinic-api.qafilaty.com/graphql",
+  uri: "http://localhost:4001/graphql",
   credentials: "include",
 });
 
@@ -177,7 +177,7 @@ const defaultSnackbarProps = {
   TransitionComponent: (props) => <Slide {...props} direction="right" />,
 };
 
-console.log = () => {};
+// console.log = () => {};
 
 function MyApp({ Component, pageProps }: AppProps) {
   const isLayoutDisabled = useStore((state: any) => state.isLayoutDisabled);

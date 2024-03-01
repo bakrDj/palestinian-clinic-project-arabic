@@ -28,7 +28,7 @@ import algerian_provinces from "../../utilities/data/api/yaman_provinces.json";
 import { useSnackbar } from "notistack";
 import ReactImageUploading from "react-images-uploading";
 import { useCreatePatient } from "../../graphql/hooks/patient";
-import { All_Sicks } from "../../graphql/hooks/patient/useGetAllPatients";
+import { Get_All_Patients } from "../../graphql/hooks/patient/useGetAllPatients";
 import { Alert } from "@mui/lab";
 interface Props {
   open: boolean;
@@ -72,19 +72,11 @@ const AddPatientModal = ({ open, onClose }: Props) => {
     setSubmitLoading(true);
     createForModal({
       variables: {
-        content: {
-          age,
-          person: {
-            address,
-            email,
-            first_name,
-            ID_number,
-            last_name,
-            phone,
-          },
+        data: {
+          personsId: "",
         },
       },
-      refetchQueries: [All_Sicks],
+      refetchQueries: [Get_All_Patients],
     })
       .then(() => {
         enqueueSnackbar("הוספת בהצלחה", {

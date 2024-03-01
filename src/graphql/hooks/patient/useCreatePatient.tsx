@@ -10,19 +10,21 @@ import {
 import { Box } from "react-feather";
 
 export const Create_Sick = gql`
-  mutation CreateSick($content: contentSick) {
-    createSick(content: $content) {
+  mutation CreatePatient($data: PatientInputType) {
+    CreatePatient(data: $data) {
       id
-      age
-      lastUpdate
-      person {
+      createdAt
+      updatedAt
+      personsId
+      Person {
         id
         first_name
         last_name
-        email
-        phone
+        age
+        gender
         address
-        ID_number
+        phone
+        identification_number
         createdAt
         updatedAt
       }
@@ -31,16 +33,8 @@ export const Create_Sick = gql`
 `;
 
 interface VariableProps {
-  content: {
-    age?: string;
-    person?: {
-      first_name?: string;
-      last_name?: string;
-      email?: string;
-      phone?: string;
-      address?: string;
-      ID_number?: string;
-    };
+  data: {
+    personsId?: string;
   };
 }
 

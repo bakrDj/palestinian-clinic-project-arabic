@@ -6,6 +6,10 @@ import Route, { useRouter } from "next/router";
 import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import { REFRESH_TOKEN } from "../../graphql/hooks/users/useGetNewToken";
 import { CURRENT_USER } from "../../graphql/hooks/users/useGetCurrentUser";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { auth } from "../../lib/firebase";
+import { Box } from "@mui/material";
+import { BeatLoader, ClockLoader } from "react-spinners";
 
 const useAuth = (client: ApolloClient<NormalizedCacheObject> | undefined) => {
   // const [getCurrentUserLazy]: any = useGetCurrentUser();
@@ -15,9 +19,9 @@ const useAuth = (client: ApolloClient<NormalizedCacheObject> | undefined) => {
   // let route = useRouter();
   let token = (useStore.getState() as any)?.token;
 
-  let checkAuth = async () => {
-    await checkRefreshToken();
-    await getCurrentUserData();
+  let checkAuth = async ({ googleAccountId }: { googleAccountId?: String } = {}) => {
+    // await checkRefreshToken();
+    await getCurrentUserData({ googleAccountId });
     return true;
   };
 
@@ -59,14 +63,17 @@ const useAuth = (client: ApolloClient<NormalizedCacheObject> | undefined) => {
     return true;
   };
 
-  let getCurrentUserData = async () => {
+  let getCurrentUserData = async ({ googleAccountId }: { googleAccountId?: String } = {}) => {
     await client
       ?.query({
         query: CURRENT_USER,
+        variables: {
+          googleAccountId: googleAccountId,
+        },
       })
       .then(
         ({ data }) => {
-          let currentUser = data?.currentUser;
+          let currentUser = data?.GetOneUserByGoogleId[0];
           if (!currentUser) {
             Route.push("/signin");
             useStore.setState({ userData: {} });
@@ -82,7 +89,7 @@ const useAuth = (client: ApolloClient<NormalizedCacheObject> | undefined) => {
 
   return {
     checkAuth,
-    checkRefreshToken,
+    // checkRefreshToken,
   };
 };
 
@@ -97,25 +104,62 @@ const ProtectedPage = ({ client, children }: Props): any => {
   let userData = useStore((state: any) => state.userData);
 
   const [loading, setloading] = React.useState(true);
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
 
   let route = useRouter();
 
   const { checkAuth } = useAuth(client);
+  // const auth = auth();
 
   useEffect(() => {
     (async function () {
-      await checkAuth();
       /* chack role */
       // if (route.pathname == "/users" && userData?.role == "Nurse") {
       //   route.push("/");
       // }
-      setloading(false);
-      /* chack role */
+
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          // User is signed in
+          // console.log("User is signed in:", user?.uid);
+          setIsAuthenticated(!!user);
+          await checkAuth({ googleAccountId: user?.uid }).finally(() => setloading(false));
+        } else {
+          // User is signed out
+          console.log("User is signed out");
+          Route.push("/signin");
+          route.events.on("routeChangeComplete", () => {
+            console.log("completed");
+            setloading(false);
+            setIsAuthenticated(["/signin"].includes(route.pathname) || !!user);
+            // window.location.reload();
+          });
+          console.log(
+            "🚀 ~ file: Auth.tsx:140 ~ ProtectedPage ~ isAuthenticated:",
+            isAuthenticated,
+            ["/signin"].includes(route.pathname)
+          );
+        }
+      });
     })();
   }, []);
 
-  if (!isAuth && loading) return <></>;
-  return <>{children}</>;
+  if (/* isAuthenticated */ loading)
+    return (
+      <>
+        <Box
+          sx={{
+            width: "100%",
+            height: "100vh",
+            display: "grid",
+            placeItems: "center",
+          }}
+        >
+          <BeatLoader color="rgb(53, 142, 144)" />
+        </Box>
+      </>
+    );
+  return <>{/* isAuthenticated &&  */ children}</>;
 };
 
 export { useAuth, ProtectedPage };

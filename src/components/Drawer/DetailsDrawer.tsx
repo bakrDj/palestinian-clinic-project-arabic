@@ -73,7 +73,7 @@ const DetailsDrawer = (props: Props) => {
                   name={`${spot.person?.first_name} ${spot.person?.last_name}`}
                   status={tracking_status[spot.status].nameAr}
                   reside={spot.stock?.name}
-                  time={dayjs(spot?.createdAt, "DD/MM/YYYY HH:mm:ss").fromNow()}
+                  time={dayjs(spot?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").fromNow()}
                   note={spot.note}
                 ></TimelineContent>
               </TimelineItem>

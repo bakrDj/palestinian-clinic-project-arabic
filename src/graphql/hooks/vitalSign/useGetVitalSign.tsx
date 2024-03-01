@@ -1,16 +1,17 @@
 import { gql, useLazyQuery, useQuery } from "@apollo/client";
 
 export const All_VitalSigns = gql`
-  query AllVitalSigns($idSick: ID) {
-    allVitalSigns(id_sick: $idSick) {
-      id
-      body_temperature
-      heart_beat
+  query GetAllVitalSignsByPatientID($patientsId: Int!) {
+    GetAllVitalSignsByPatientID(patientsId: $patientsId) {
       blood_pressure
-      number_breaths
       blood_sugar
-      oxygen_saturation
+      body_temperature
       createdAt
+      heart_beat
+      id
+      number_breaths
+      oxygen_saturation
+      patientsId
       updatedAt
     }
   }
@@ -18,10 +19,10 @@ export const All_VitalSigns = gql`
 
 interface Props {}
 
-const useGetVitalSign = ({ id }: { id: string }) => {
+const useGetVitalSign = ({ id }: { id: number | string }) => {
   let res = useLazyQuery(All_VitalSigns, {
     variables: {
-      idSick: id,
+      patientsId: id,
     },
     // fetchPolicy: "cache-first",
     // nextFetchPolicy: "cache-first",
