@@ -8,20 +8,10 @@ import { LogIn } from "react-feather";
 import { useForm } from "react-hook-form";
 import Button from "../../components/Button";
 import Input from "../../components/Input/Input";
-import {
-  useAuthenticateClient,
-  useGetCurrentUser,
-  useResendEmailVerification,
-} from "../../graphql/hooks/users";
+import { useAuthenticateClient, useGetCurrentUser, useResendEmailVerification } from "../../graphql/hooks/users";
 import useStore from "../../store/useStore";
 import { app } from "../../lib/firebase";
-import {
-  browserLocalPersistence,
-  getAuth,
-  onAuthStateChanged,
-  setPersistence,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { browserLocalPersistence, getAuth, onAuthStateChanged, setPersistence, signInWithEmailAndPassword } from "firebase/auth";
 interface Props {}
 
 const SignIn = (props: Props) => {
@@ -182,10 +172,24 @@ const SignIn = (props: Props) => {
         }}
       >
         <Box>
-          <form id="signin" onSubmit={handleSubmit(onFormSubmit)}>
-            <Stack gap={"22px"} alignItems="center">
-              <Box component={"img"} height="72px" src="/logo.png" alt="logo"></Box>
-              <Typography variant="3xl" sx={{ color: "primary.main" }}>
+          <form
+            id="signin"
+            onSubmit={handleSubmit(onFormSubmit)}
+          >
+            <Stack
+              gap={"22px"}
+              alignItems="center"
+            >
+              <Box
+                component={"img"}
+                height="72px"
+                src="/logo.png"
+                alt="logo"
+              ></Box>
+              <Typography
+                variant="3xl"
+                sx={{ color: "primary.main" }}
+              >
                 تسجيل الدخول
               </Typography>
               <Box
@@ -207,7 +211,11 @@ const SignIn = (props: Props) => {
                       onClose={() => setAlert({})}
                       action={
                         alert.code == "EMAIL_NOT_VERIFY" && (
-                          <Stack height="100%" alignItems="center" direction="row">
+                          <Stack
+                            height="100%"
+                            alignItems="center"
+                            direction="row"
+                          >
                             <MuiButton
                               variant="contained"
                               color="info"
@@ -238,23 +246,39 @@ const SignIn = (props: Props) => {
                     </Alert>
                   )}
 
-                  <Typography variant="base" color={grey[800]}>
+                  <Typography
+                    variant="base"
+                    color={grey[800]}
+                  >
                     يرجى ادخال الايميل والباسورد الخاص بك.{" "}
                   </Typography>
                   <Stack gap={"24px"}>
                     {/* email input */}
                     <Stack gap={"10px"}>
-                      <Typography variant="xs" color={grey[800]}>
+                      <Typography
+                        variant="xs"
+                        color={grey[800]}
+                      >
                         الإيميل
                       </Typography>
-                      <Input fullWidth {...register("email")}></Input>
+                      <Input
+                        fullWidth
+                        {...register("email")}
+                      ></Input>
                     </Stack>
                     {/* password input */}
                     <Stack gap={"10px"}>
-                      <Typography variant="xs" color={grey[800]}>
+                      <Typography
+                        variant="xs"
+                        color={grey[800]}
+                      >
                         كلمة المرور
                       </Typography>
-                      <Input type={"password"} fullWidth {...register("password")}></Input>
+                      <Input
+                        type={"password"}
+                        fullWidth
+                        {...register("password")}
+                      ></Input>
                       {/* <Typography
                         variant="2xs"
                         sx={{ textDecoration: "underline" }}

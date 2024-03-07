@@ -1,22 +1,9 @@
-import {
-  Box,
-  Divider,
-  Grid,
-  InputAdornment,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Grid, InputAdornment, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { amber, blue, grey, red } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
 import { Check, Plus, Trash2, Upload, X } from "react-feather";
 import { Controller, useForm } from "react-hook-form";
-import {
-  useCreateShipment,
-  useCreateUploadMultiFiles,
-  useGetProvincesPrices,
-} from "../../graphql/hooks/shipments";
+import { useCreateShipment, useCreateUploadMultiFiles, useGetProvincesPrices } from "../../graphql/hooks/shipments";
 import useStore from "../../store/useStore";
 import Button from "../Button";
 import Input from "../Input/Input";
@@ -69,11 +56,18 @@ const AddPatientModal = ({ open, onClose }: Props) => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   let onFormSubmit = ({ age, address, email, first_name, ID_number, last_name, phone }: any) => {
+    console.log("🚀 ~ onFormSubmit ~ age, address, email, first_name, ID_number, last_name, phone:", age, address, email, first_name, ID_number, last_name, phone);
     setSubmitLoading(true);
     createForModal({
       variables: {
-        data: {
-          personsId: "",
+        personData: {
+          first_name: first_name,
+          last_name: last_name,
+          address,
+          age,
+          gender: "male",
+          identification_number: ID_number,
+          phone,
         },
       },
       refetchQueries: [Get_All_Patients],
@@ -152,10 +146,20 @@ const AddPatientModal = ({ open, onClose }: Props) => {
         </>
       }
     >
-      <form id="add_shipment" onSubmit={handleSubmit(onFormSubmit)}>
-        <Grid container boxSizing={"border-box"} spacing={2}>
+      <form
+        id="add_shipment"
+        onSubmit={handleSubmit(onFormSubmit)}
+      >
+        <Grid
+          container
+          boxSizing={"border-box"}
+          spacing={2}
+        >
           {alert?.status && (
-            <Grid item xs={12}>
+            <Grid
+              item
+              xs={12}
+            >
               <Alert
                 variant="filled"
                 severity={"error"}
@@ -166,7 +170,11 @@ const AddPatientModal = ({ open, onClose }: Props) => {
               </Alert>
             </Grid>
           )}
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="الاسم الاول*"
               error={errors?.first_name}
@@ -175,7 +183,11 @@ const AddPatientModal = ({ open, onClose }: Props) => {
               {...register("first_name", { required: true })}
             ></Input>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="الاسم الثاني*"
               error={errors?.last_name}
@@ -184,7 +196,11 @@ const AddPatientModal = ({ open, onClose }: Props) => {
               {...register("last_name", { required: true })}
             ></Input>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="العمر"
               error={errors?.age}
@@ -193,7 +209,11 @@ const AddPatientModal = ({ open, onClose }: Props) => {
               {...register("age", { required: false })}
             ></Input>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="رقم الهاتف"
               error={errors?.phone}
@@ -202,7 +222,11 @@ const AddPatientModal = ({ open, onClose }: Props) => {
               {...register("phone", { required: false })}
             ></Input>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="الايميل الالكتروني"
               error={errors?.email}
@@ -211,7 +235,11 @@ const AddPatientModal = ({ open, onClose }: Props) => {
               {...register("email", { required: false })}
             ></Input>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="العنوان"
               error={errors?.address}
@@ -220,7 +248,11 @@ const AddPatientModal = ({ open, onClose }: Props) => {
               {...register("address", { required: false })}
             ></Input>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="رقم الجواز"
               error={errors?.ID_number}

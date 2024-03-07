@@ -1,22 +1,9 @@
-import {
-  Box,
-  Divider,
-  Grid,
-  InputAdornment,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Grid, InputAdornment, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { amber, blue, grey, red } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
 import { Check, Plus, Trash2, Upload, X } from "react-feather";
 import { Controller, useForm } from "react-hook-form";
-import {
-  useCreateShipment,
-  useCreateUploadMultiFiles,
-  useGetProvincesPrices,
-} from "../../graphql/hooks/shipments";
+import { useCreateShipment, useCreateUploadMultiFiles, useGetProvincesPrices } from "../../graphql/hooks/shipments";
 import useStore from "../../store/useStore";
 import Button from "../Button";
 import Input from "../Input/Input";
@@ -46,7 +33,7 @@ interface Props {
 }
 
 const initialInputs = (data?: any) => ({
-  nurse_order: data?.nurse_order,
+  nurse_order: data?.note,
 });
 
 const EditNurseDutyModal = ({ open, onClose, id, dataInfo }: Props) => {
@@ -73,10 +60,11 @@ const EditNurseDutyModal = ({ open, onClose, id, dataInfo }: Props) => {
 
     updateForModal({
       variables: {
-        updateNurseOrderId: dataInfo?.id,
-        content: {
-          nurse_order,
-          id_sick: id!,
+        updateNurseTaskId: dataInfo?.id,
+        data: {
+          note: nurse_order,
+          checked: dataInfo?.checked,
+          patientsId: parseInt(id! as any),
         },
       },
       refetchQueries: [All_NurseOrder],
@@ -134,9 +122,19 @@ const EditNurseDutyModal = ({ open, onClose, id, dataInfo }: Props) => {
         </>
       }
     >
-      <form id="add_shipment" onSubmit={handleSubmit(onFormSubmit)}>
-        <Grid container boxSizing={"border-box"} spacing={2}>
-          <Grid item xs={12}>
+      <form
+        id="add_shipment"
+        onSubmit={handleSubmit(onFormSubmit)}
+      >
+        <Grid
+          container
+          boxSizing={"border-box"}
+          spacing={2}
+        >
+          <Grid
+            item
+            xs={12}
+          >
             <TextArea
               label="الوصف*"
               placeholder="الوصف*"

@@ -1,22 +1,9 @@
-import {
-  Box,
-  Divider,
-  Grid,
-  InputAdornment,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Grid, InputAdornment, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { amber, blue, grey, red } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
 import { Check, Plus, Trash2, Upload, X } from "react-feather";
 import { Controller, useForm } from "react-hook-form";
-import {
-  useCreateShipment,
-  useCreateUploadMultiFiles,
-  useGetProvincesPrices,
-} from "../../graphql/hooks/shipments";
+import { useCreateShipment, useCreateUploadMultiFiles, useGetProvincesPrices } from "../../graphql/hooks/shipments";
 import useStore from "../../store/useStore";
 import Button from "../Button";
 import Input from "../Input/Input";
@@ -37,6 +24,9 @@ import { useCreateAlbum, useUpdateAlbum } from "../../graphql/hooks/album";
 import { slate } from "../../styles/theme";
 import { All_Album } from "../../graphql/hooks/album/useGetAlbum";
 import { useAddImage, useDeleteImage } from "../../graphql/hooks";
+import { getStorage, ref as googleRef, uploadBytes } from "firebase/storage";
+import { useRouter } from "next/router";
+import { client } from "../../pages/_app";
 interface Props {
   open: boolean;
   onClose?: () => void;
@@ -50,6 +40,7 @@ const initialInputs = (data?: any) => ({
 });
 
 const EditAlbumModal = ({ open, onClose, id, dataInfo }: Props) => {
+  console.log("🚀 ~ EditAlbumModal ~ dataInfo:", dataInfo);
   let {
     register,
     handleSubmit,
@@ -67,11 +58,12 @@ const EditAlbumModal = ({ open, onClose, id, dataInfo }: Props) => {
   let [updateForModal] = useUpdateAlbum();
   const [createDeleteImageMutation] = useDeleteImage();
   const [createAddImageMutation] = useAddImage();
+  let route = useRouter();
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-
   const [images, setImages] = React.useState([]);
-  let [savedPictures, setSavedPictures] = useState<any>(dataInfo?.pictures);
+  let [savedPictures, setSavedPictures] = useState<any>([]);
+  let [imagesUrls, setImagesUrls] = useState<any>([]);
 
   let [isdeletePrevented, SetIsDeletePrevented] = useState<any>(false);
 
@@ -83,34 +75,60 @@ const EditAlbumModal = ({ open, onClose, id, dataInfo }: Props) => {
     setImages(imageList);
   };
 
+  function addTimestampToFilename(filename: string) {
+    const timestamp = Date.now();
+    const parts = filename.split(".");
+    const extension = parts.pop();
+    const name = parts.join(".");
+    return `${name}_${timestamp}${Math.floor(Math.random() * 100)}.${extension}`;
+  }
+
   let onFormSubmit = ({ title, description, pictures }: any) => {
     setSubmitLoading(true);
 
+    let imageNames = images.map((pic: any) => addTimestampToFilename(pic.file.name));
+    // convert the image files to list or FileList
+    let list = new DataTransfer();
+    let files = images.map((pic: any) => pic.file);
+    files.length !== 0 && files?.forEach((file: any) => list.items.add(file));
+
+    const storage = getStorage();
+
     updateForModal({
       variables: {
-        updateAlbumId: dataInfo?.id,
-        content: {
+        updateRadiologyId: dataInfo?.id,
+        data: {
           title,
           description,
-          // pictures: list.files,
-          id_sick: id!,
+          images: imageNames.concat(savedPictures),
+          patientsId: parseInt(id! as any),
         },
       },
-      refetchQueries: [All_Album],
+      // refetchQueries: [All_Album],
     })
       .then(() => {
-        let list = new DataTransfer();
-        let files = images.map((pic: any) => pic.file);
-        files.length !== 0 && files?.forEach((file: any) => list.items.add(file));
-
-        createAddImageMutation({
-          variables: {
-            idAlbum: dataInfo?.id,
-            pictures: list.files,
-          },
+        // Create an array to hold all the promises for file uploads
+        const uploadPromises = files.map((file, i) => {
+          const storageRef = googleRef(storage, "radiology/" + route.query?.id + "/" + imageNames[i]);
+          console.log("🚀 ~ uploadBytes ~ file:", file);
+          return uploadBytes(storageRef, file)
+            .then((snapshot) => {
+              console.log("Uploaded a blob or file:", imageNames[i]);
+              return Promise.resolve(); // Return a resolved promise
+            })
+            .catch((error) => {
+              console.error("Error uploading file:", imageNames[i], error);
+              return Promise.reject(error); // Return a rejected promise
+            });
         });
+
+        // Wait for all file uploads to complete
+        return Promise.all(uploadPromises);
       })
-      .then(() => {
+      .then(async () => {
+        await client!.refetchQueries({
+          include: [All_Album],
+        });
         enqueueSnackbar("נערך בהצלחה", {
           variant: "success",
         });
@@ -134,7 +152,8 @@ const EditAlbumModal = ({ open, onClose, id, dataInfo }: Props) => {
   useEffect(() => {
     if (open) {
       reset(initialInputs(dataInfo));
-      setSavedPictures(dataInfo?.pictures);
+      setSavedPictures([...dataInfo?.images]);
+      setImagesUrls([...dataInfo?.imagesURLs]);
     }
   }, [open]);
   return (
@@ -167,9 +186,19 @@ const EditAlbumModal = ({ open, onClose, id, dataInfo }: Props) => {
         </>
       }
     >
-      <form id="add_shipment" onSubmit={handleSubmit(onFormSubmit)}>
-        <Grid container boxSizing={"border-box"} spacing={2}>
-          <Grid item xs={12}>
+      <form
+        id="add_shipment"
+        onSubmit={handleSubmit(onFormSubmit)}
+      >
+        <Grid
+          container
+          boxSizing={"border-box"}
+          spacing={2}
+        >
+          <Grid
+            item
+            xs={12}
+          >
             <Input
               label="عنوان*"
               error={errors?.title}
@@ -179,7 +208,10 @@ const EditAlbumModal = ({ open, onClose, id, dataInfo }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+          >
             <TextArea
               label="وصف"
               placeholder="وصف"
@@ -191,7 +223,10 @@ const EditAlbumModal = ({ open, onClose, id, dataInfo }: Props) => {
             ></TextArea>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+          >
             <ReactImageUploading
               multiple
               value={images}
@@ -200,15 +235,7 @@ const EditAlbumModal = ({ open, onClose, id, dataInfo }: Props) => {
               dataURLKey="data_url"
               acceptType={["jpg", "gif", "png", "jpeg"]}
             >
-              {({
-                imageList,
-                onImageUpload,
-                onImageRemoveAll,
-                onImageUpdate,
-                onImageRemove,
-                isDragging,
-                dragProps,
-              }) => (
+              {({ imageList, onImageUpload, onImageRemoveAll, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
                 <Box
                   bgcolor={"white"}
                   padding={"16px 16px"}
@@ -236,19 +263,38 @@ const EditAlbumModal = ({ open, onClose, id, dataInfo }: Props) => {
                         },
                       }}
                     >
-                      <Stack direction="row" gap={"8px"}>
-                        <Upload size={16} color={blue[400]} />
-                        <Typography variant="sm" color={blue[400]}>
+                      <Stack
+                        direction="row"
+                        gap={"8px"}
+                      >
+                        <Upload
+                          size={16}
+                          color={blue[400]}
+                        />
+                        <Typography
+                          variant="sm"
+                          color={blue[400]}
+                        >
                           رفع صور
                         </Typography>
                       </Stack>
                     </Box>
                     {imageList.length !== 0 && <Divider sx={{ marginBottom: "8px" }}></Divider>}
 
-                    <Grid container spacing={2}>
+                    <Grid
+                      container
+                      spacing={2}
+                    >
                       {imageList.length !== 0 &&
                         imageList.map((image, index) => (
-                          <Grid item xs={4} sm={3} md={3} sx={{ position: "relative" }} key={index}>
+                          <Grid
+                            item
+                            xs={4}
+                            sm={3}
+                            md={3}
+                            sx={{ position: "relative" }}
+                            key={index}
+                          >
                             {/* <Box
                               sx={{
                                 position: "absolute",
@@ -298,7 +344,10 @@ const EditAlbumModal = ({ open, onClose, id, dataInfo }: Props) => {
                                   onImageRemove(index);
                                 }}
                               >
-                                <Trash2 size="24" color={red[500]}></Trash2>
+                                <Trash2
+                                  size="24"
+                                  color={red[500]}
+                                ></Trash2>
                               </Box>
                             </Box>
                             <Box
@@ -321,7 +370,14 @@ const EditAlbumModal = ({ open, onClose, id, dataInfo }: Props) => {
 
                       {savedPictures?.length !== 0 &&
                         savedPictures?.map((image: any, index: number) => (
-                          <Grid item xs={4} sm={3} md={3} sx={{ position: "relative" }} key={index}>
+                          <Grid
+                            item
+                            xs={4}
+                            sm={3}
+                            md={3}
+                            sx={{ position: "relative" }}
+                            key={index}
+                          >
                             <Box
                               sx={{
                                 position: "absolute",
@@ -353,28 +409,30 @@ const EditAlbumModal = ({ open, onClose, id, dataInfo }: Props) => {
                                 onClick={(e) => {
                                   SetIsDeletePrevented(true);
 
-                                  createDeleteImageMutation({
-                                    variables: {
-                                      deleteImageId: image?.id,
-                                    },
-                                  })
-                                    .then(() => {
-                                      setSavedPictures(() => [
-                                        ...savedPictures.filter(
-                                          (pic: any) => pic.name != image.name
-                                        ),
-                                      ]);
-                                    })
-                                    .finally(() => {
-                                      SetIsDeletePrevented(false);
-                                    });
+                                  setSavedPictures(() => [...savedPictures.filter((pic: any, picIndex: number) => index != picIndex)]);
+                                  setImagesUrls(() => [...imagesUrls.filter((pic: any, picIndex: number) => index != picIndex)]);
+                                  // createDeleteImageMutation({
+                                  //   variables: {
+                                  //     deleteImageId: image?.id,
+                                  //   },
+                                  // })
+                                  //   .then(() => {
+                                  //     setSavedPictures(() => [...savedPictures.filter((pic: any, picIndex: number) => index != picIndex)]);
+                                  //     setImagesUrls(() => [...imagesUrls.filter((pic: any, picIndex: number) => index != picIndex)]);
+                                  //   })
+                                  //   .finally(() => {
+                                  SetIsDeletePrevented(false);
+                                  //   });
                                 }}
                               >
-                                <Trash2 size="24" color={red[500]}></Trash2>
+                                <Trash2
+                                  size="24"
+                                  color={red[500]}
+                                ></Trash2>
                               </Box>
                             </Box>
                             <Box
-                              src={`https://clinic-api.qafilaty.com/images/${image.name}`}
+                              src={`${imagesUrls[index]}`}
                               alt=""
                               component={"img"}
                               // width={46}

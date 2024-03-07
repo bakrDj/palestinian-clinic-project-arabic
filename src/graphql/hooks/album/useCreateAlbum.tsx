@@ -1,36 +1,26 @@
-import {
-  ApolloCache,
-  DefaultContext,
-  gql,
-  MutationTuple,
-  OperationVariables,
-  useMutation,
-  useQuery,
-} from "@apollo/client";
+import { ApolloCache, DefaultContext, gql, MutationTuple, OperationVariables, useMutation, useQuery } from "@apollo/client";
 import { Box } from "react-feather";
 
 export const Create_Album = gql`
-  mutation CreateAlbum($content: contentAlbum) {
-    createAlbum(content: $content) {
+  mutation CreateRadiology($data: RadiologyInputType) {
+    CreateRadiology(data: $data) {
+      id
       title
       description
-      id
+      images
+      patientsId
       createdAt
       updatedAt
-      pictures {
-        id
-        name
-      }
     }
   }
 `;
 
 interface VariableProps {
-  content?: {
+  data?: {
     title?: string;
+    images?: string[];
     description?: string;
-    id_sick?: string;
-    pictures?: any;
+    patientsId?: number;
   };
 }
 

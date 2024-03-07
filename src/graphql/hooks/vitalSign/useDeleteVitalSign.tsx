@@ -1,32 +1,19 @@
-import {
-  ApolloCache,
-  DefaultContext,
-  gql,
-  MutationTuple,
-  OperationVariables,
-  useMutation,
-  useQuery,
-} from "@apollo/client";
+import { ApolloCache, DefaultContext, gql, MutationTuple, OperationVariables, useMutation, useQuery } from "@apollo/client";
 import { Box } from "react-feather";
 
 export const Delete_VitalSigns = gql`
-  mutation DeleteVitalSigns($deleteVitalSignsId: ID!) {
-    deleteVitalSigns(id: $deleteVitalSignsId) {
-      status
+  mutation DeleteVitalSign($deleteVitalSignId: Int!) {
+    DeleteVitalSign(id: $deleteVitalSignId) {
+      id
     }
   }
 `;
 
 interface VariableProps {
-  deleteVitalSignsId?: string;
+  deleteVitalSignId?: number;
 }
 
-const useUpdateVitalSign = (): MutationTuple<
-  any,
-  VariableProps,
-  DefaultContext,
-  ApolloCache<any>
-> => {
+const useUpdateVitalSign = (): MutationTuple<any, VariableProps, DefaultContext, ApolloCache<any>> => {
   let res = useMutation<any, VariableProps>(Delete_VitalSigns, {
     //   update: (cache, { data: { createBox } }) => {
     //     cache.modify({

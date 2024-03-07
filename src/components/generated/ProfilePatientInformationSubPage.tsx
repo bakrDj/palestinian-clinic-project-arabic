@@ -1,16 +1,4 @@
-import {
-  Box,
-  Container,
-  DialogContentText,
-  Divider,
-  Grid,
-  ListItemIcon,
-  MenuItem,
-  Stack,
-  Tabs,
-  Typography,
-  Button as ButtinMui,
-} from "@mui/material";
+import { Box, Container, DialogContentText, Divider, Grid, ListItemIcon, MenuItem, Stack, Tabs, Typography, Button as ButtinMui } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Tab from "../Tabs/Tab";
 import useStore from "../../store/useStore";
@@ -35,23 +23,12 @@ import { Get_All_Patients } from "../../graphql/hooks/patient/useGetAllPatients"
 import Head from "next/head";
 import Tab3 from "../Tabs/Tab3";
 import Tabs3 from "../Tabs/Tabs3";
-import {
-  Timeline,
-  TimelineConnector,
-  TimelineContent,
-  timelineContentClasses,
-  TimelineDot,
-  TimelineItem,
-  TimelineOppositeContent,
-  TimelineSeparator,
-} from "@mui/lab";
+import { Timeline, TimelineConnector, TimelineContent, timelineContentClasses, TimelineDot, TimelineItem, TimelineOppositeContent, TimelineSeparator } from "@mui/lab";
 
 interface Props {}
 
 const ProfilePatientInformationSubPage = (props: Props) => {
-  const profilePatientInformationTabIndex = useStore(
-    (state: any) => state.profilePatientInformationTabIndex
-  );
+  const profilePatientInformationTabIndex = useStore((state: any) => state.profilePatientInformationTabIndex);
 
   let route = useRouter();
 
@@ -86,11 +63,7 @@ const ProfilePatientInformationSubPage = (props: Props) => {
   return (
     <>
       <Head>
-        <title>
-          {patientData?.person
-            ? patientData?.Person?.first_name + " " + patientData?.Person?.last_name + " | نبض"
-            : ""}
-        </title>
+        <title>{patientData?.person ? patientData?.Person?.first_name + " " + patientData?.Person?.last_name + " | نبض" : ""}</title>
       </Head>
       <Box
         sx={{
@@ -118,14 +91,21 @@ const ProfilePatientInformationSubPage = (props: Props) => {
             }}
           >
             <Stack paddingTop={"16px"}>
-              <Grid item xs={12}>
+              <Grid
+                item
+                xs={12}
+              >
                 <Grid
                   container
                   flexDirection={"row-reverse"}
                   justifyContent="space-between"
                   rowSpacing={3}
                 >
-                  <Grid item xs={"auto"} sm="auto">
+                  <Grid
+                    item
+                    xs={"auto"}
+                    sm="auto"
+                  >
                     <Button
                       endIcon={<MoreHorizontal />}
                       variant="contained"
@@ -141,7 +121,11 @@ const ProfilePatientInformationSubPage = (props: Props) => {
                     ></Button>
                   </Grid>
 
-                  <Grid item xs={"auto"} sm="auto">
+                  <Grid
+                    item
+                    xs={"auto"}
+                    sm="auto"
+                  >
                     <Button
                       endIcon={<ArrowRight />}
                       variant="contained"
@@ -160,7 +144,11 @@ const ProfilePatientInformationSubPage = (props: Props) => {
                 </Grid>
                 <Divider sx={{ borderBottomColor: slate[200], marginTop: "10px" }}></Divider>
               </Grid>
-              <Stack direction="row" padding={"16px 0"} gap="24px">
+              <Stack
+                direction="row"
+                padding={"16px 0"}
+                gap="24px"
+              >
                 <Box
                   sx={{
                     borderRadius: "4px",
@@ -178,8 +166,14 @@ const ProfilePatientInformationSubPage = (props: Props) => {
                     maxInitials={1}
                   ></RAvatar>
                 </Box>
-                <Stack justifyContent={"space-between"} gap="14px">
-                  <Typography variant="sm" color={slate[600]}>
+                <Stack
+                  justifyContent={"space-between"}
+                  gap="14px"
+                >
+                  <Typography
+                    variant="sm"
+                    color={slate[600]}
+                  >
                     {patientData?.Person?.first_name + " " + patientData?.Person?.last_name}{" "}
                     <Typography
                       component={"span"}
@@ -188,42 +182,90 @@ const ProfilePatientInformationSubPage = (props: Props) => {
                       display={patientData?.Person?.age === "0" ? "none" : ""}
                     >{`( ${patientData?.Person?.age} سنة )`}</Typography>
                   </Typography>
-                  <Stack direction={"row"} gap="24px" height={"100%"}>
-                    <Stack justifyContent={"space-between"} height="100%">
+                  <Stack
+                    direction={"row"}
+                    gap="24px"
+                    height={"100%"}
+                  >
+                    <Stack
+                      justifyContent={"space-between"}
+                      height="100%"
+                    >
                       <Stack gap={"4px"}>
-                        <Stack direction={"row"} gap={"4px"}>
-                          <IdentificationIcon color={slate[400]} width={14} height={14} />
-                          <Typography variant="2xs" color={slate[400]}>
+                        <Stack
+                          direction={"row"}
+                          gap={"4px"}
+                        >
+                          <IdentificationIcon
+                            color={slate[400]}
+                            width={14}
+                            height={14}
+                          />
+                          <Typography
+                            variant="2xs"
+                            color={slate[400]}
+                          >
                             رقم الجواز
                           </Typography>
                         </Stack>
-                        <Typography variant="xs" color={slate[500]}>
+                        <Typography
+                          variant="xs"
+                          color={slate[500]}
+                        >
                           {patientData?.Person?.ID_number || "?????????"}
                         </Typography>
                       </Stack>
                       <Stack gap={"4px"}>
-                        <Stack direction={"row"} gap={"4px"}>
-                          <CalendarIcon color={slate[400]} width={14} height={14} />
-                          <Typography variant="2xs" color={slate[400]}>
+                        <Stack
+                          direction={"row"}
+                          gap={"4px"}
+                        >
+                          <CalendarIcon
+                            color={slate[400]}
+                            width={14}
+                            height={14}
+                          />
+                          <Typography
+                            variant="2xs"
+                            color={slate[400]}
+                          >
                             تاريخ الإنشاء
                           </Typography>
                         </Stack>
-                        <Typography variant="xs" color={slate[500]} sx={{ direction: "rtl" }}>
-                          {dayjs(patientData?.Person?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").format(
-                            "DD/MM/YYYY HH:mm"
-                          )}
+                        <Typography
+                          variant="xs"
+                          color={slate[500]}
+                          sx={{ direction: "rtl" }}
+                        >
+                          {dayjs(patientData?.Person?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").format("DD/MM/YYYY HH:mm")}
                         </Typography>
                       </Stack>
                     </Stack>
-                    <Stack justifyContent={"space-between"} height="100%">
+                    <Stack
+                      justifyContent={"space-between"}
+                      height="100%"
+                    >
                       <Stack gap={"4px"}>
-                        <Stack direction={"row"} gap={"4px"}>
-                          <Phone color={slate[400]} width={12} height={12} />
-                          <Typography variant="2xs" color={slate[400]}>
+                        <Stack
+                          direction={"row"}
+                          gap={"4px"}
+                        >
+                          <Phone
+                            color={slate[400]}
+                            width={12}
+                            height={12}
+                          />
+                          <Typography
+                            variant="2xs"
+                            color={slate[400]}
+                          >
                             رقم الهاتف
                           </Typography>
                         </Stack>
-                        <Typography variant="xs" color={slate[500]}>
+                        <Typography
+                          variant="xs"
+                          color={slate[500]}
+                        >
                           {patientData?.Person?.phone || "?????????"}
                         </Typography>
                       </Stack>
@@ -245,16 +287,25 @@ const ProfilePatientInformationSubPage = (props: Props) => {
                               setconfirmProcessDialog2(true);
                             }}
                           >
-                            <History color={slate[400]} width={12} height={12} />
-                            <Typography variant="2xs" color={"inherit"}>
+                            <History
+                              color={slate[400]}
+                              width={12}
+                              height={12}
+                            />
+                            <Typography
+                              variant="2xs"
+                              color={"inherit"}
+                            >
                               أخر تحديث
                             </Typography>
                           </Stack>
                         </Stack>
-                        <Typography variant="xs" color={slate[500]} sx={{ direction: "rtl" }}>
-                          {dayjs(patientData?.lastUpdate, "YYYY-MM-DD[T]HH:mm:ss[Z]").format(
-                            "DD/MM/YYYY HH:mm"
-                          )}
+                        <Typography
+                          variant="xs"
+                          color={slate[500]}
+                          sx={{ direction: "rtl" }}
+                        >
+                          {dayjs(patientData?.lastUpdate, "YYYY-MM-DD[T]HH:mm:ss[Z]").format("DD/MM/YYYY HH:mm")}
                         </Typography>
                       </Stack>
                     </Stack>
@@ -315,7 +366,10 @@ const ProfilePatientInformationSubPage = (props: Props) => {
             }}
           >
             <ListItemIcon>
-              <Edit2 size={18} strokeWidth={2} />
+              <Edit2
+                size={18}
+                strokeWidth={2}
+              />
             </ListItemIcon>
             تعديل المستخدم
           </MenuItem>
@@ -330,7 +384,7 @@ const ProfilePatientInformationSubPage = (props: Props) => {
                 onAction: () => {
                   deleteCardMutation({
                     variables: {
-                      idPerson: patientData?.id,
+                      deletePatientId: patientData?.id,
                     },
                     refetchQueries: [Get_All_Patients],
                   }).then(() => {
@@ -345,7 +399,10 @@ const ProfilePatientInformationSubPage = (props: Props) => {
             }}
           >
             <ListItemIcon>
-              <Trash2 size={18} strokeWidth={2} />
+              <Trash2
+                size={18}
+                strokeWidth={2}
+              />
             </ListItemIcon>
             حذف المستخدم
           </MenuItem>
@@ -356,7 +413,10 @@ const ProfilePatientInformationSubPage = (props: Props) => {
           open={confirmProcessDialog}
           onClose={() => setconfirmProcessDialog(false)}
           title={
-            <Typography variant="base" color={grey[800]}>
+            <Typography
+              variant="base"
+              color={grey[800]}
+            >
               {confirmProcessContent.title}
             </Typography>
           }
@@ -380,9 +440,7 @@ const ProfilePatientInformationSubPage = (props: Props) => {
             </>
           }
         >
-          <DialogContentText id="alert-dialog-description">
-            {confirmProcessContent.content}
-          </DialogContentText>
+          <DialogContentText id="alert-dialog-description">{confirmProcessContent.content}</DialogContentText>
         </Dialog>
 
         {/* @ts-ignore */}
@@ -432,7 +490,11 @@ const ProfilePatientInformationSubPage = (props: Props) => {
                   {/* <TimelineOppositeContent color="textSecondary">09:30 am</TimelineOppositeContent> */}
                   <TimelineSeparator>
                     <TimelineDot sx={{ backgroundColor: slate[100] }}>
-                      <History color={primary[300]} width={15} height={15} />
+                      <History
+                        color={primary[300]}
+                        width={15}
+                        height={15}
+                      />
                     </TimelineDot>
                     <TimelineConnector
                       sx={{
@@ -442,10 +504,18 @@ const ProfilePatientInformationSubPage = (props: Props) => {
                   </TimelineSeparator>
                   <TimelineContent sx={{ flex: "1 !important", marginTop: "3px" }}>
                     <Stack width="100%">
-                      <Typography variant="sm" color={slate[500]} sx={{ flex: 1 }}>
+                      <Typography
+                        variant="sm"
+                        color={slate[500]}
+                        sx={{ flex: 1 }}
+                      >
                         {i == 0 ? "أخر تحديث:" : "تم التحديث في:"}
                       </Typography>
-                      <Typography variant="xs" color={primary[400]} sx={{ flex: 1 }}>
+                      <Typography
+                        variant="xs"
+                        color={primary[400]}
+                        sx={{ flex: 1 }}
+                      >
                         {dayjs(item.createdAt, "DD-MM-YYYY HH:mm:ss").format("DD-MM-YYYY HH:mm")}
                       </Typography>
                     </Stack>

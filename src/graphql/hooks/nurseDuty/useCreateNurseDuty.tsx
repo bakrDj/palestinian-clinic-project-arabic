@@ -1,41 +1,29 @@
-import {
-  ApolloCache,
-  DefaultContext,
-  gql,
-  MutationTuple,
-  OperationVariables,
-  useMutation,
-  useQuery,
-} from "@apollo/client";
+import { ApolloCache, DefaultContext, gql, MutationTuple, OperationVariables, useMutation, useQuery } from "@apollo/client";
 import { Box } from "react-feather";
 
-export const Create_NurseOrder = gql`
-  mutation CreateNurseOrder($content: contentNurseOrder) {
-    createNurseOrder(content: $content) {
-      nurse_order
-      completed
-      createdAt
-      updatedAt
+export const Create_NurseTask = gql`
+  mutation CreateNurseTask($data: NurseTaskInputType) {
+    CreateNurseTask(data: $data) {
       id
+      createdAt
+      checked
+      note
+      patientsId
+      updatedAt
     }
   }
 `;
 
 interface VariableProps {
-  content?: {
-    nurse_order?: string;
-    completed?: boolean;
-    id_sick?: string;
+  data?: {
+    checked?: boolean;
+    patientsId?: number;
+    note?: string;
   };
 }
 
-const useCreateNurseDuty = (): MutationTuple<
-  any,
-  VariableProps,
-  DefaultContext,
-  ApolloCache<any>
-> => {
-  let res = useMutation<any, VariableProps>(Create_NurseOrder, {
+const useCreateNurseDuty = (): MutationTuple<any, VariableProps, DefaultContext, ApolloCache<any>> => {
+  let res = useMutation<any, VariableProps>(Create_NurseTask, {
     //   update: (cache, { data: { createBox } }) => {
     //     cache.modify({
     //       fields: {

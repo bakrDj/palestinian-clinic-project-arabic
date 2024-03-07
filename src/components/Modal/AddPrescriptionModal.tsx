@@ -1,22 +1,9 @@
-import {
-  Box,
-  Divider,
-  Grid,
-  InputAdornment,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Grid, InputAdornment, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { amber, blue, grey, red } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
 import { Check, Plus, Trash2, Upload, X } from "react-feather";
 import { Controller, useForm } from "react-hook-form";
-import {
-  useCreateShipment,
-  useCreateUploadMultiFiles,
-  useGetProvincesPrices,
-} from "../../graphql/hooks/shipments";
+import { useCreateShipment, useCreateUploadMultiFiles, useGetProvincesPrices } from "../../graphql/hooks/shipments";
 import useStore from "../../store/useStore";
 import Button from "../Button";
 import Input from "../Input/Input";
@@ -68,9 +55,9 @@ const AddPrescriptionModal = ({ open, onClose, id }: Props) => {
     setSubmitLoading(true);
     createForModal({
       variables: {
-        content: {
+        data: {
           title,
-          id_sick: id!,
+          patientsId: parseInt(id! as any),
         },
       },
       refetchQueries: [All_Prescription],
@@ -128,15 +115,25 @@ const AddPrescriptionModal = ({ open, onClose, id }: Props) => {
         </>
       }
     >
-      <form id="add_shipment" onSubmit={handleSubmit(onFormSubmit)}>
-        <Grid container boxSizing={"border-box"} spacing={2}>
+      <form
+        id="add_shipment"
+        onSubmit={handleSubmit(onFormSubmit)}
+      >
+        <Grid
+          container
+          boxSizing={"border-box"}
+          spacing={2}
+        >
           {/* complaint,
     physical_examination,
     diagnosis,
     recommendations,
     nurse_order, */}
 
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+          >
             <Input
               label="عنوان"
               error={errors?.title}

@@ -257,10 +257,11 @@ const NurseDuties = React.forwardRef(function NurseDuties(props: Props, ref) {
                           onClick={() => {
                             updateCardMutation({
                               variables: {
-                                updateNurseOrderId: item?.id,
-                                content: {
-                                  id_sick: route?.query?.id as any,
-                                  completed: !item?.checked,
+                                updateNurseTaskId: item?.id,
+                                data: {
+                                  patientsId: parseInt(route?.query?.id as any),
+                                  checked: !item?.checked,
+                                  note: item?.note,
                                 },
                               },
                               refetchQueries: [All_NurseOrder],
@@ -346,7 +347,7 @@ const NurseDuties = React.forwardRef(function NurseDuties(props: Props, ref) {
               onAction: () => {
                 deleteCardMutation({
                   variables: {
-                    deleteNurseOrderId: CardDataInfo?.id,
+                    deleteNurseTaskId: CardDataInfo?.id,
                   },
                   refetchQueries: [All_NurseOrder],
                 });

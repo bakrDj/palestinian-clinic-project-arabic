@@ -1,22 +1,9 @@
-import {
-  Box,
-  Divider,
-  Grid,
-  InputAdornment,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Grid, InputAdornment, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { amber, blue, grey, red } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
 import { Check, Plus, Trash2, Upload, X } from "react-feather";
 import { Controller, useForm } from "react-hook-form";
-import {
-  useCreateShipment,
-  useCreateUploadMultiFiles,
-  useGetProvincesPrices,
-} from "../../graphql/hooks/shipments";
+import { useCreateShipment, useCreateUploadMultiFiles, useGetProvincesPrices } from "../../graphql/hooks/shipments";
 import useStore from "../../store/useStore";
 import Button from "../Button";
 import Input from "../Input/Input";
@@ -70,24 +57,18 @@ const EditDiagnosisModal = ({ open, onClose, id, dataInfo }: Props) => {
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  let onFormSubmit = ({
-    complaint,
-    physical_examination,
-    diagnosis,
-    recommendations,
-    medical_history,
-  }: any) => {
+  let onFormSubmit = ({ complaint, physical_examination, diagnosis, recommendations, medical_history }: any) => {
     setSubmitLoading(true);
     updateForModal({
       variables: {
         updateDiagnosisId: dataInfo?.id,
-        content: {
+        data: {
           complaint,
           physical_examination,
           diagnosis,
           recommendations,
           medical_history,
-          id_sick: id!,
+          patientsId: parseInt(id!),
         },
       },
       refetchQueries: [All_Diagnosis],
@@ -147,9 +128,19 @@ const EditDiagnosisModal = ({ open, onClose, id, dataInfo }: Props) => {
         </>
       }
     >
-      <form id="add_shipment" onSubmit={handleSubmit(onFormSubmit)}>
-        <Grid container boxSizing={"border-box"} spacing={2}>
-          <Grid item xs={12}>
+      <form
+        id="add_shipment"
+        onSubmit={handleSubmit(onFormSubmit)}
+      >
+        <Grid
+          container
+          boxSizing={"border-box"}
+          spacing={2}
+        >
+          <Grid
+            item
+            xs={12}
+          >
             <Input
               label="الشكوى*"
               error={errors?.complaint}
@@ -159,7 +150,10 @@ const EditDiagnosisModal = ({ open, onClose, id, dataInfo }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+          >
             <TextArea
               label="التاريخ المرضي"
               placeholder="التاريخ المرضي"
@@ -171,7 +165,10 @@ const EditDiagnosisModal = ({ open, onClose, id, dataInfo }: Props) => {
             ></TextArea>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+          >
             <TextArea
               label="الفحص البدني"
               placeholder="الفحص البدني"
@@ -183,7 +180,10 @@ const EditDiagnosisModal = ({ open, onClose, id, dataInfo }: Props) => {
             ></TextArea>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+          >
             <TextArea
               label="التشخيص"
               placeholder="التشخيص"
@@ -195,7 +195,10 @@ const EditDiagnosisModal = ({ open, onClose, id, dataInfo }: Props) => {
             ></TextArea>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+          >
             <TextArea
               label="امر الطبيب"
               placeholder="امر الطبيب"

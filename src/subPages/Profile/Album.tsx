@@ -48,7 +48,6 @@ const Album = React.forwardRef(function Album(props: Props, ref) {
     id: parseInt(route.query?.id as any),
   });
 
-  console.log("dataRequested: ", dataRequested);
   const [OpenAddModal, setOpenAddModal] = React.useState(false);
   const [OpenEditModal, setOpenEditModal] = React.useState(false);
   const [visibleImage, setVisibleImage] = React.useState<boolean>(false);
@@ -68,23 +67,17 @@ const Album = React.forwardRef(function Album(props: Props, ref) {
   /** google storage */
   let [radiologyImageURLArr, setRadiologyImageURLArr] = useState<any>([[]]);
   const storage = getStorage();
-  const storageRef = googleRef(storage, "radiology");
+  // const storageRef = googleRef(storage, "radiology");
   useEffect(() => {
     // (async function () {
+
     let fetchImages = async () => {
-      let urlPromises = dataRequested?.GetOneRadiology?.map((item: any) => Promise.all(item.images.map((imgName: any) => fetchOneImage(imgName))));
+      console.log("🚀:", "urls");
+      let sortData = sortByRecentTime(["createdAt"], dataRequested?.GetAllRadiologysByPatientID);
+      let urlPromises = sortData?.map((item: any) => Promise.all(item.images.map((imgName: any) => fetchOneImage(imgName))));
 
       let urls = await Promise.all(urlPromises || []);
       console.log("🚀 ~ fetchImages ~ urls:", urls);
-
-      // let urls = await Promise.all(
-      //   dataRequested?.GetOneRadiology?.map(
-      //     // async (item: any) => await fetchOneImage(item.images[0])
-      //     (item: any) => item.images.map((imgName: any) => fetchOneImage(imgName))
-      //   )
-      // );
-
-      console.log("🚀 ~ file: Album.tsx:86 ~ fetchImages ~ fetchImages:", urls, urlPromises);
 
       setRadiologyImageURLArr(urls);
     };
@@ -93,8 +86,8 @@ const Album = React.forwardRef(function Album(props: Props, ref) {
   }, [dataRequested]);
 
   async function fetchOneImage(imageName: string) {
-    console.log("🚀 ~ file: Album.tsx:99 ~ fetchOneImage ~ url:", googleRef(storage, "x.png"));
-    let url = await getDownloadURL(googleRef(storage, "x.png"));
+    // console.log("🚀 ~ file: Album.tsx:99 ~ fetchOneImage ~ url:", await getDownloadURL(googleRef(storage, "radiology/" + "Untitled_2x_1709771799406.png")));
+    let url = await getDownloadURL(googleRef(storage, "radiology/" + route.query?.id + "/" + imageName));
     return url;
   }
   /** google storage */
@@ -181,7 +174,7 @@ const Album = React.forwardRef(function Album(props: Props, ref) {
           </Box>
         </Grid>
 
-        {sortByRecentTime(["createdAt"], dataRequested?.GetOneRadiology)?.map((item: any, i: number) => (
+        {sortByRecentTime(["createdAt"], dataRequested?.GetAllRadiologysByPatientID)?.map((item: any, i: number) => (
           <Grid
             item
             xs={12}
@@ -232,7 +225,7 @@ const Album = React.forwardRef(function Album(props: Props, ref) {
                       size={"small"}
                       {...bindTrigger(popupState)}
                       onClick={(e) => {
-                        setCardDataInfo(item);
+                        setCardDataInfo({ ...item, imagesURLs: radiologyImageURLArr?.[i] });
 
                         bindTrigger(popupState).onClick(e);
                       }}
@@ -399,7 +392,7 @@ const Album = React.forwardRef(function Album(props: Props, ref) {
               onAction: () => {
                 deleteCardMutation({
                   variables: {
-                    deleteAlbumId: CardDataInfo?.id,
+                    deleteRadiologyId: CardDataInfo?.id,
                   },
                   refetchQueries: [All_Album],
                 });

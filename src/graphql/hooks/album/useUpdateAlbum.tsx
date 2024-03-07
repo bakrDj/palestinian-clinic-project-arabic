@@ -1,38 +1,25 @@
-import {
-  ApolloCache,
-  DefaultContext,
-  gql,
-  MutationTuple,
-  OperationVariables,
-  useMutation,
-  useQuery,
-} from "@apollo/client";
+import { ApolloCache, DefaultContext, gql, MutationTuple, OperationVariables, useMutation, useQuery } from "@apollo/client";
 import { Box } from "react-feather";
 
 export const Update_Album = gql`
-  mutation UpdateAlbum($content: contentAlbum!, $updateAlbumId: ID!) {
-    updateAlbum(content: $content, id: $updateAlbumId) {
-      status
+  mutation UpdateRadiology($updateRadiologyId: Int!, $data: RadiologyInputType) {
+    UpdateRadiology(id: $updateRadiologyId, data: $data) {
+      id
     }
   }
 `;
 
 interface VariableProps {
-  updateAlbumId: string;
-  content?: {
+  updateRadiologyId: string;
+  data?: {
     title?: string;
+    images?: string[];
     description?: string;
-    id_sick?: string;
-    pictures?: any;
+    patientsId?: number;
   };
 }
 
-const useUpdateDiagnosis = (): MutationTuple<
-  any,
-  VariableProps,
-  DefaultContext,
-  ApolloCache<any>
-> => {
+const useUpdateDiagnosis = (): MutationTuple<any, VariableProps, DefaultContext, ApolloCache<any>> => {
   let res = useMutation<any, VariableProps>(Update_Album, {
     //   update: (cache, { data: { createBox } }) => {
     //     cache.modify({

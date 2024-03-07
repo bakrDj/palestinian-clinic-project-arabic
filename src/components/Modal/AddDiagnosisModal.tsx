@@ -1,24 +1,10 @@
-import {
-  Box,
-  Divider,
-  Grid,
-  IconButton,
-  InputAdornment,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Grid, IconButton, InputAdornment, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { amber, blue, grey, red } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
 import { Check, Plus, Search, Trash2, Upload, X } from "react-feather";
 import { ClipboardList } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
-import {
-  useCreateShipment,
-  useCreateUploadMultiFiles,
-  useGetProvincesPrices,
-} from "../../graphql/hooks/shipments";
+import { useCreateShipment, useCreateUploadMultiFiles, useGetProvincesPrices } from "../../graphql/hooks/shipments";
 import useStore from "../../store/useStore";
 import Button from "../Button";
 import Input from "../Input/Input";
@@ -80,23 +66,17 @@ const AddDiagnosisModal = ({ open, onClose, id }: Props) => {
     inputWho: "",
   });
 
-  let onFormSubmit = ({
-    complaint,
-    physical_examination,
-    diagnosis,
-    recommendations,
-    medical_history,
-  }: any) => {
+  let onFormSubmit = ({ complaint, physical_examination, diagnosis, recommendations, medical_history }: any) => {
     setSubmitLoading(true);
     createForModal({
       variables: {
-        content: {
+        data: {
           complaint,
           physical_examination,
           diagnosis,
           recommendations,
           medical_history,
-          id_sick: id!,
+          patientsId: parseInt(id!),
         },
       },
       refetchQueries: [All_Diagnosis],
@@ -160,15 +140,25 @@ const AddDiagnosisModal = ({ open, onClose, id }: Props) => {
       }
     >
       <>
-        <form id="add_shipment" onSubmit={handleSubmit(onFormSubmit)}>
-          <Grid container boxSizing={"border-box"} spacing={2}>
+        <form
+          id="add_shipment"
+          onSubmit={handleSubmit(onFormSubmit)}
+        >
+          <Grid
+            container
+            boxSizing={"border-box"}
+            spacing={2}
+          >
             {/* complaint,
     physical_examination,
     diagnosis,
     recommendations,
     nurse_order, */}
 
-            <Grid item xs={12}>
+            <Grid
+              item
+              xs={12}
+            >
               <Input
                 label="الشكوى*"
                 error={errors?.complaint}
@@ -178,36 +168,48 @@ const AddDiagnosisModal = ({ open, onClose, id }: Props) => {
               ></Input>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid
+              item
+              xs={12}
+            >
               <TextArea
                 label="التاريخ المريضي"
                 placeholder="التاريخ المريضي"
                 fullWidth
                 minRows={4}
                 maxRows={8}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end" sx={{ paddingRight: "10px", marginTop: "-5px" }}>
-                      <IconButton
-                        onClick={() =>
-                          setOpenAddTemplateModal({
-                            ...OpenAddTemplateModal,
-                            open: true,
-                            inputWho: "medical_history",
-                          })
-                        }
-                      >
-                        <ClipboardList size={20} color={slate[600]} />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
+                // InputProps={{
+                //   endAdornment: (
+                //     <InputAdornment
+                //       position="end"
+                //       sx={{ paddingRight: "10px", marginTop: "-5px" }}
+                //     >
+                //       <IconButton
+                //         onClick={() =>
+                //           setOpenAddTemplateModal({
+                //             ...OpenAddTemplateModal,
+                //             open: true,
+                //             inputWho: "medical_history",
+                //           })
+                //         }
+                //       >
+                //         <ClipboardList
+                //           size={20}
+                //           color={slate[600]}
+                //         />
+                //       </IconButton>
+                //     </InputAdornment>
+                //   ),
+                // }}
                 error={errors?.medical_history}
                 {...register("medical_history", { required: false })}
               ></TextArea>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid
+              item
+              xs={12}
+            >
               <TextArea
                 label="الفحص البدني"
                 placeholder="الفحص البدني"
@@ -219,7 +221,10 @@ const AddDiagnosisModal = ({ open, onClose, id }: Props) => {
               ></TextArea>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid
+              item
+              xs={12}
+            >
               <TextArea
                 label="التشخيص"
                 placeholder="التشخيص"
@@ -231,30 +236,39 @@ const AddDiagnosisModal = ({ open, onClose, id }: Props) => {
               ></TextArea>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid
+              item
+              xs={12}
+            >
               <TextArea
                 label="توصيات الطبيب"
                 placeholder="توصيات الطبيب"
                 fullWidth
                 minRows={3}
                 maxRows={4}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end" sx={{ paddingRight: "10px", marginTop: "-5px" }}>
-                      <IconButton
-                        onClick={() =>
-                          setOpenAddTemplateModal({
-                            ...OpenAddTemplateModal,
-                            open: true,
-                            inputWho: "recommendations",
-                          })
-                        }
-                      >
-                        <ClipboardList size={20} color={slate[600]} />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
+                // InputProps={{
+                //   endAdornment: (
+                //     <InputAdornment
+                //       position="end"
+                //       sx={{ paddingRight: "10px", marginTop: "-5px" }}
+                //     >
+                //       <IconButton
+                //         onClick={() =>
+                //           setOpenAddTemplateModal({
+                //             ...OpenAddTemplateModal,
+                //             open: true,
+                //             inputWho: "recommendations",
+                //           })
+                //         }
+                //       >
+                //         <ClipboardList
+                //           size={20}
+                //           color={slate[600]}
+                //         />
+                //       </IconButton>
+                //     </InputAdornment>
+                //   ),
+                // }}
                 error={errors?.recommendations}
                 {...register("recommendations", { required: false })}
               ></TextArea>

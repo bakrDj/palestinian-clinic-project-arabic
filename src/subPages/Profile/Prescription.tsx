@@ -34,6 +34,7 @@ const Prescription = React.forwardRef(function Prescription(props: Props, ref) {
   const popupState = usePopupState({ variant: "popover", popupId: "demoMenu" });
   const popupState2 = usePopupState({ variant: "popover", popupId: "demoMenu" });
   const [CardDataInfo, setCardDataInfo] = React.useState<any>(null);
+  console.log("🚀 ~ Prescription ~ CardDataInfo:", CardDataInfo);
 
   let route = useRouter();
 
@@ -43,7 +44,7 @@ const Prescription = React.forwardRef(function Prescription(props: Props, ref) {
   let [getVitalSignLazy, { data: dataRequested }] = useGetPrescription({
     id: parseInt(route.query?.id as any),
   });
-  console.log("dataRequested: ", dataRequested);
+  // console.log("dataRequested: ", dataRequested);
 
   const [OpenAddModal, setOpenAddModal] = React.useState(false);
   const [OpenEditModal, setOpenEditModal] = React.useState(false);

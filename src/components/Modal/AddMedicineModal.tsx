@@ -1,22 +1,9 @@
-import {
-  Box,
-  Divider,
-  Grid,
-  InputAdornment,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Grid, InputAdornment, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { amber, blue, grey, red } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
 import { Check, Plus, Trash2, Upload, X } from "react-feather";
 import { Controller, useForm } from "react-hook-form";
-import {
-  useCreateShipment,
-  useCreateUploadMultiFiles,
-  useGetProvincesPrices,
-} from "../../graphql/hooks/shipments";
+import { useCreateShipment, useCreateUploadMultiFiles, useGetProvincesPrices } from "../../graphql/hooks/shipments";
 import useStore from "../../store/useStore";
 import Button from "../Button";
 import Input from "../Input/Input";
@@ -75,14 +62,14 @@ const AddMedicineModal = ({ open, onClose, id, dataInfo }: Props) => {
     setSubmitLoading(true);
     createForModal({
       variables: {
-        idPrescription: id,
-        content: {
-          duration: parseInt(duration),
+        data: {
+          duration: duration,
           name,
           note,
           quantity,
-          times_per_day: parseInt(times_per_day),
+          times_per_day: times_per_day,
           giving,
+          prescriptionId: parseInt(id as any),
         },
       },
       refetchQueries: [All_Prescription],
@@ -140,8 +127,15 @@ const AddMedicineModal = ({ open, onClose, id, dataInfo }: Props) => {
         </>
       }
     >
-      <form id="add_shipment" onSubmit={handleSubmit(onFormSubmit)}>
-        <Grid container boxSizing={"border-box"} spacing={2}>
+      <form
+        id="add_shipment"
+        onSubmit={handleSubmit(onFormSubmit)}
+      >
+        <Grid
+          container
+          boxSizing={"border-box"}
+          spacing={2}
+        >
           {/* 
          duration: "",
   name: "",
@@ -151,7 +145,11 @@ const AddMedicineModal = ({ open, onClose, id, dataInfo }: Props) => {
          
          */}
 
-          <Grid item xs={12} md={6}>
+          <Grid
+            item
+            xs={12}
+            md={6}
+          >
             <Input
               label="إسم الدواء*"
               error={errors?.name}
@@ -160,7 +158,11 @@ const AddMedicineModal = ({ open, onClose, id, dataInfo }: Props) => {
               {...register("name", { required: true })}
             ></Input>
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid
+            item
+            xs={12}
+            md={6}
+          >
             <Input
               label="طريقة إعطاءه"
               error={errors?.giving}
@@ -170,7 +172,11 @@ const AddMedicineModal = ({ open, onClose, id, dataInfo }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid
+            item
+            xs={12}
+            md={6}
+          >
             <Input
               label="الكمية"
               error={errors?.quantity}
@@ -180,7 +186,11 @@ const AddMedicineModal = ({ open, onClose, id, dataInfo }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid
+            item
+            xs={12}
+            md={6}
+          >
             <Input
               type={"number"}
               label="عدد المرات (في اليوم)"
@@ -191,7 +201,11 @@ const AddMedicineModal = ({ open, onClose, id, dataInfo }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid
+            item
+            xs={12}
+            md={6}
+          >
             <Input
               type={"number"}
               label="المدة (أيام)"

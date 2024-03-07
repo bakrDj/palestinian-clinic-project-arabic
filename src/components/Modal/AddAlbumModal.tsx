@@ -1,22 +1,9 @@
-import {
-  Box,
-  Divider,
-  Grid,
-  InputAdornment,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Grid, InputAdornment, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { amber, blue, grey, red } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
 import { Check, Plus, Trash2, Upload, X } from "react-feather";
 import { Controller, useForm } from "react-hook-form";
-import {
-  useCreateShipment,
-  useCreateUploadMultiFiles,
-  useGetProvincesPrices,
-} from "../../graphql/hooks/shipments";
+import { useCreateShipment, useCreateUploadMultiFiles, useGetProvincesPrices } from "../../graphql/hooks/shipments";
 import useStore from "../../store/useStore";
 import Button from "../Button";
 import Input from "../Input/Input";
@@ -36,6 +23,9 @@ import { All_Diagnosis } from "../../graphql/hooks/diagnosis/useGetDiagnosis";
 import { useCreateAlbum } from "../../graphql/hooks/album";
 import { slate } from "../../styles/theme";
 import { All_Album } from "../../graphql/hooks/album/useGetAlbum";
+import { getStorage, ref as googleRef, uploadBytes } from "firebase/storage";
+import { useRouter } from "next/router";
+import { client } from "../../pages/_app";
 interface Props {
   open: boolean;
   onClose?: () => void;
@@ -70,31 +60,67 @@ const AddAlbumModal = ({ open, onClose, id }: Props) => {
 
   const maxNumber = 69;
 
+  let route = useRouter();
+
   const onChange = (imageList: any, addUpdateIndex: any) => {
     // data for submit
     console.log(imageList, addUpdateIndex);
     setImages(imageList);
   };
 
+  function addTimestampToFilename(filename: string) {
+    const timestamp = Date.now();
+    const parts = filename.split(".");
+    const extension = parts.pop();
+    const name = parts.join(".");
+    return `${name}_${timestamp}${Math.floor(Math.random() * 100)}.${extension}`;
+  }
+
   let onFormSubmit = ({ title, description, pictures }: any) => {
     setSubmitLoading(true);
-
+    // add timestamp to each image
+    let imageNames = images.map((pic: any) => addTimestampToFilename(pic.file.name));
+    // convert the image files to list or FileList
     let list = new DataTransfer();
     let files = images.map((pic: any) => pic.file);
     files.length !== 0 && files?.forEach((file: any) => list.items.add(file));
 
+    const storage = getStorage();
+
     createForModal({
       variables: {
-        content: {
+        data: {
           title,
           description,
-          pictures: list.files,
-          id_sick: id!,
+          images: imageNames,
+          patientsId: parseInt(id! as any),
         },
       },
-      refetchQueries: [All_Album],
+      // refetchQueries: [All_Album],
     })
       .then(() => {
+        // Create an array to hold all the promises for file uploads
+        const uploadPromises = files.map((file, i) => {
+          const storageRef = googleRef(storage, "radiology/" + route.query?.id + "/" + imageNames[i]);
+          console.log("🚀 ~ uploadBytes ~ file:", file);
+          return uploadBytes(storageRef, file)
+            .then((snapshot) => {
+              console.log("Uploaded a blob or file:", imageNames[i]);
+              return Promise.resolve(); // Return a resolved promise
+            })
+            .catch((error) => {
+              console.error("Error uploading file:", imageNames[i], error);
+              return Promise.reject(error); // Return a rejected promise
+            });
+        });
+
+        // Wait for all file uploads to complete
+        return Promise.all(uploadPromises);
+      })
+      .then(async () => {
+        await client!.refetchQueries({
+          include: [All_Album],
+        });
         enqueueSnackbar("הוספת בהצלחה", {
           variant: "success",
         });
@@ -148,9 +174,19 @@ const AddAlbumModal = ({ open, onClose, id }: Props) => {
         </>
       }
     >
-      <form id="add_shipment" onSubmit={handleSubmit(onFormSubmit)}>
-        <Grid container boxSizing={"border-box"} spacing={2}>
-          <Grid item xs={12}>
+      <form
+        id="add_shipment"
+        onSubmit={handleSubmit(onFormSubmit)}
+      >
+        <Grid
+          container
+          boxSizing={"border-box"}
+          spacing={2}
+        >
+          <Grid
+            item
+            xs={12}
+          >
             <Input
               label="عنوان*"
               error={errors?.title}
@@ -160,7 +196,10 @@ const AddAlbumModal = ({ open, onClose, id }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+          >
             <TextArea
               label="وصف"
               placeholder="وصف"
@@ -172,7 +211,10 @@ const AddAlbumModal = ({ open, onClose, id }: Props) => {
             ></TextArea>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+          >
             <ReactImageUploading
               multiple
               value={images}
@@ -181,15 +223,7 @@ const AddAlbumModal = ({ open, onClose, id }: Props) => {
               dataURLKey="data_url"
               acceptType={["jpg", "gif", "png", "jpeg"]}
             >
-              {({
-                imageList,
-                onImageUpload,
-                onImageRemoveAll,
-                onImageUpdate,
-                onImageRemove,
-                isDragging,
-                dragProps,
-              }) => (
+              {({ imageList, onImageUpload, onImageRemoveAll, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
                 <Box
                   bgcolor={"white"}
                   padding={"16px 16px"}
@@ -217,19 +251,38 @@ const AddAlbumModal = ({ open, onClose, id }: Props) => {
                         },
                       }}
                     >
-                      <Stack direction="row" gap={"8px"}>
-                        <Upload size={16} color={blue[400]} />
-                        <Typography variant="sm" color={blue[400]}>
+                      <Stack
+                        direction="row"
+                        gap={"8px"}
+                      >
+                        <Upload
+                          size={16}
+                          color={blue[400]}
+                        />
+                        <Typography
+                          variant="sm"
+                          color={blue[400]}
+                        >
                           رفع صور
                         </Typography>
                       </Stack>
                     </Box>
                     {imageList.length !== 0 && <Divider sx={{ marginBottom: "8px" }}></Divider>}
 
-                    <Grid container spacing={2}>
+                    <Grid
+                      container
+                      spacing={2}
+                    >
                       {imageList.length !== 0 &&
                         imageList.map((image, index) => (
-                          <Grid item xs={4} sm={3} md={3} sx={{ position: "relative" }} key={index}>
+                          <Grid
+                            item
+                            xs={4}
+                            sm={3}
+                            md={3}
+                            sx={{ position: "relative" }}
+                            key={index}
+                          >
                             {/* <Box
                               sx={{
                                 position: "absolute",
@@ -279,7 +332,10 @@ const AddAlbumModal = ({ open, onClose, id }: Props) => {
                                   onImageRemove(index);
                                 }}
                               >
-                                <Trash2 size="24" color={red[500]}></Trash2>
+                                <Trash2
+                                  size="24"
+                                  color={red[500]}
+                                ></Trash2>
                               </Box>
                             </Box>
                             <Box

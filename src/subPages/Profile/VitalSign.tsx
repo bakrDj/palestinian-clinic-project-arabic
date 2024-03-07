@@ -1,17 +1,5 @@
 import { CalendarDaysIcon, CalendarIcon } from "@heroicons/react/24/outline";
-import {
-  alpha,
-  Box,
-  Button,
-  Grid,
-  Chip as MuiChip,
-  Stack,
-  Typography,
-  IconButton,
-  MenuItem,
-  ListItemIcon,
-  DialogContentText,
-} from "@mui/material";
+import { alpha, Box, Button, Grid, Chip as MuiChip, Stack, Typography, IconButton, MenuItem, ListItemIcon, DialogContentText } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { AlertCircle, ArrowLeftRight, ListMinus, Edit2 } from "lucide-react";
 import { useRouter } from "next/router";
@@ -91,8 +79,18 @@ const VitalSign = React.forwardRef(function VitalSign(props: Props, ref) {
         overflow: "hidden",
       }}
     >
-      <Grid container width={"100%"} spacing={1.5}>
-        <Grid item xs={12} sm={6} md={4} lg={4}>
+      <Grid
+        container
+        width={"100%"}
+        spacing={1.5}
+      >
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          md={4}
+          lg={4}
+        >
           <Box
             onClick={() => setOpenAddModal(true)}
             sx={{
@@ -111,137 +109,236 @@ const VitalSign = React.forwardRef(function VitalSign(props: Props, ref) {
               },
             }}
           >
-            <Plus size={45} color={slate[300]} />
+            <Plus
+              size={45}
+              color={slate[300]}
+            />
           </Box>
         </Grid>
 
-        {sortByRecentTime(["createdAt"], dataRequested?.GetAllVitalSignsByPatientID)?.map(
-          (vitalSign: any, i: number) => (
-            <Grid item xs={12} sm={6} md={4} lg={4} key={i}>
-              <Box
-                sx={{
-                  height: "254px",
-                  width: "100%",
-                  borderRadius: "2px",
-                  background: "#FFF",
-                  border: "1px solid " + slate[200],
-                }}
-              >
-                <Stack sx={{ width: "100%", height: "100%" }}>
-                  {/* upper-section */}
+        {sortByRecentTime(["createdAt"], dataRequested?.GetAllVitalSignsByPatientID)?.map((vitalSign: any, i: number) => (
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={4}
+            key={i}
+          >
+            <Box
+              sx={{
+                height: "254px",
+                width: "100%",
+                borderRadius: "2px",
+                background: "#FFF",
+                border: "1px solid " + slate[200],
+              }}
+            >
+              <Stack sx={{ width: "100%", height: "100%" }}>
+                {/* upper-section */}
+                <Stack
+                  direction="row"
+                  justifyContent={"space-between"}
+                  minHeight="48px"
+                  padding="0 16px"
+                  borderBottom={"1px solid " + slate[200]}
+                >
+                  <Stack
+                    direction={"row"}
+                    alignItems="center"
+                    gap={"4px"}
+                  >
+                    <CalendarDaysIcon
+                      color={slate[400]}
+                      width={"20px"}
+                      height={"24px"}
+                    />
+                    <Typography
+                      variant="xs"
+                      color={slate[500]}
+                      marginTop="1px"
+                      sx={{ direction: "rtl" }}
+                    >
+                      {dayjs(vitalSign?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").format("DD/MM/YYYY HH:mm")}
+                    </Typography>
+                  </Stack>
+                  <Stack justifyContent={"center"}>
+                    <IconButton
+                      size={"small"}
+                      {...bindTrigger(popupState)}
+                      onClick={(e) => {
+                        setCardDataInfo(vitalSign);
+
+                        bindTrigger(popupState).onClick(e);
+                      }}
+                    >
+                      <MoreHorizontal
+                        color={grey[500]}
+                        size={18}
+                      />
+                    </IconButton>
+                  </Stack>
+                </Stack>
+                {/* lower-section */}
+                <Stack
+                  padding={"16px"}
+                  justifyContent="space-between"
+                  height="100%"
+                >
                   <Stack
                     direction="row"
                     justifyContent={"space-between"}
-                    minHeight="48px"
-                    padding="0 16px"
-                    borderBottom={"1px solid " + slate[200]}
                   >
-                    <Stack direction={"row"} alignItems="center" gap={"4px"}>
-                      <CalendarDaysIcon color={slate[400]} width={"20px"} height={"24px"} />
+                    <Typography
+                      variant="xs"
+                      color={slate[500]}
+                    >
+                      حرارة الجسم
+                    </Typography>
+                    <Typography
+                      variant="base"
+                      color={slate[500]}
+                      sx={{ direction: "rtl" }}
+                    >
+                      {vitalSign?.body_temperature || "-"}
                       <Typography
-                        variant="xs"
-                        color={slate[500]}
-                        marginTop="1px"
-                        sx={{ direction: "rtl" }}
+                        variant="2xs"
+                        color={slate[400]}
                       >
-                        {dayjs(vitalSign?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").format(
-                          "DD/MM/YYYY HH:mm"
-                        )}
+                        c°
                       </Typography>
-                    </Stack>
-                    <Stack justifyContent={"center"}>
-                      <IconButton
-                        size={"small"}
-                        {...bindTrigger(popupState)}
-                        onClick={(e) => {
-                          setCardDataInfo(vitalSign);
-
-                          bindTrigger(popupState).onClick(e);
-                        }}
-                      >
-                        <MoreHorizontal color={grey[500]} size={18} />
-                      </IconButton>
-                    </Stack>
+                    </Typography>
                   </Stack>
-                  {/* lower-section */}
-                  <Stack padding={"16px"} justifyContent="space-between" height="100%">
-                    <Stack direction="row" justifyContent={"space-between"}>
-                      <Typography variant="xs" color={slate[500]}>
-                        حرارة الجسم
-                      </Typography>
-                      <Typography variant="base" color={slate[500]} sx={{ direction: "rtl" }}>
-                        {vitalSign?.body_temperature || "-"}
-                        <Typography variant="2xs" color={slate[400]}>
-                          c°
-                        </Typography>
-                      </Typography>
-                    </Stack>
 
-                    <Stack direction="row" justifyContent={"space-between"}>
-                      <Typography variant="xs" color={slate[500]}>
-                        نبضات القلب
+                  <Stack
+                    direction="row"
+                    justifyContent={"space-between"}
+                  >
+                    <Typography
+                      variant="xs"
+                      color={slate[500]}
+                    >
+                      نبضات القلب
+                    </Typography>
+                    <Typography
+                      variant="base"
+                      color={slate[500]}
+                      sx={{ direction: "rtl" }}
+                    >
+                      {vitalSign?.heart_beat || "-"}
+                      <Typography
+                        variant="2xs"
+                        color={slate[400]}
+                      >
+                        bpm
                       </Typography>
-                      <Typography variant="base" color={slate[500]} sx={{ direction: "rtl" }}>
-                        {vitalSign?.heart_beat || "-"}
-                        <Typography variant="2xs" color={slate[400]}>
-                          bpm
-                        </Typography>
-                      </Typography>
-                    </Stack>
+                    </Typography>
+                  </Stack>
 
-                    <Stack direction="row" justifyContent={"space-between"}>
-                      <Typography variant="xs" color={slate[500]}>
-                        ضغط الدم
+                  <Stack
+                    direction="row"
+                    justifyContent={"space-between"}
+                  >
+                    <Typography
+                      variant="xs"
+                      color={slate[500]}
+                    >
+                      ضغط الدم
+                    </Typography>
+                    <Typography
+                      variant="base"
+                      color={slate[500]}
+                      sx={{ direction: "rtl" }}
+                    >
+                      {vitalSign?.blood_pressure || "-"}
+                      <Typography
+                        variant="2xs"
+                        color={slate[400]}
+                      >
+                        mmHg
                       </Typography>
-                      <Typography variant="base" color={slate[500]} sx={{ direction: "rtl" }}>
-                        {vitalSign?.blood_pressure || "-"}
-                        <Typography variant="2xs" color={slate[400]}>
-                          mmHg
-                        </Typography>
-                      </Typography>
-                    </Stack>
+                    </Typography>
+                  </Stack>
 
-                    <Stack direction="row" justifyContent={"space-between"}>
-                      <Typography variant="xs" color={slate[500]}>
-                        عدد مرات التنفس
+                  <Stack
+                    direction="row"
+                    justifyContent={"space-between"}
+                  >
+                    <Typography
+                      variant="xs"
+                      color={slate[500]}
+                    >
+                      عدد مرات التنفس
+                    </Typography>
+                    <Typography
+                      variant="base"
+                      color={slate[500]}
+                      sx={{ direction: "rtl" }}
+                    >
+                      {vitalSign?.number_breaths || "-"}
+                      <Typography
+                        variant="2xs"
+                        color={slate[400]}
+                      >
+                        brpm
                       </Typography>
-                      <Typography variant="base" color={slate[500]} sx={{ direction: "rtl" }}>
-                        {vitalSign?.number_breaths || "-"}
-                        <Typography variant="2xs" color={slate[400]}>
-                          brpm
-                        </Typography>
-                      </Typography>
-                    </Stack>
+                    </Typography>
+                  </Stack>
 
-                    <Stack direction="row" justifyContent={"space-between"}>
-                      <Typography variant="xs" color={slate[500]}>
-                        السكري
+                  <Stack
+                    direction="row"
+                    justifyContent={"space-between"}
+                  >
+                    <Typography
+                      variant="xs"
+                      color={slate[500]}
+                    >
+                      السكري
+                    </Typography>
+                    <Typography
+                      variant="base"
+                      color={slate[500]}
+                      sx={{ direction: "rtl" }}
+                    >
+                      {vitalSign?.blood_sugar || "-"}
+                      <Typography
+                        variant="2xs"
+                        color={slate[400]}
+                      >
+                        mg/dl
                       </Typography>
-                      <Typography variant="base" color={slate[500]} sx={{ direction: "rtl" }}>
-                        {vitalSign?.blood_sugar || "-"}
-                        <Typography variant="2xs" color={slate[400]}>
-                          mg/dl
-                        </Typography>
-                      </Typography>
-                    </Stack>
+                    </Typography>
+                  </Stack>
 
-                    <Stack direction="row" justifyContent={"space-between"}>
-                      <Typography variant="xs" color={slate[500]}>
-                        تشبع الأكسجين
+                  <Stack
+                    direction="row"
+                    justifyContent={"space-between"}
+                  >
+                    <Typography
+                      variant="xs"
+                      color={slate[500]}
+                    >
+                      تشبع الأكسجين
+                    </Typography>
+                    <Typography
+                      variant="base"
+                      color={slate[500]}
+                      sx={{ direction: "rtl" }}
+                    >
+                      {vitalSign?.oxygen_saturation || "-"}
+                      <Typography
+                        variant="2xs"
+                        color={slate[400]}
+                      >
+                        %
                       </Typography>
-                      <Typography variant="base" color={slate[500]} sx={{ direction: "rtl" }}>
-                        {vitalSign?.oxygen_saturation || "-"}
-                        <Typography variant="2xs" color={slate[400]}>
-                          %
-                        </Typography>
-                      </Typography>
-                    </Stack>
+                    </Typography>
                   </Stack>
                 </Stack>
-              </Box>
-            </Grid>
-          )
-        )}
+              </Stack>
+            </Box>
+          </Grid>
+        ))}
       </Grid>
 
       <AddVitalSignModal
@@ -269,7 +366,10 @@ const VitalSign = React.forwardRef(function VitalSign(props: Props, ref) {
           }}
         >
           <ListItemIcon>
-            <Edit2 size={18} strokeWidth={2} />
+            <Edit2
+              size={18}
+              strokeWidth={2}
+            />
           </ListItemIcon>
           تعديل العلامة الحيوية
         </MenuItem>
@@ -284,7 +384,7 @@ const VitalSign = React.forwardRef(function VitalSign(props: Props, ref) {
               onAction: () => {
                 deleteCardMutation({
                   variables: {
-                    deleteVitalSignsId: CardDataInfo?.id,
+                    deleteVitalSignId: CardDataInfo?.id,
                   },
                   refetchQueries: [All_VitalSigns],
                 });
@@ -297,7 +397,10 @@ const VitalSign = React.forwardRef(function VitalSign(props: Props, ref) {
           }}
         >
           <ListItemIcon>
-            <Trash2 size={18} strokeWidth={2} />
+            <Trash2
+              size={18}
+              strokeWidth={2}
+            />
           </ListItemIcon>
           حذف العلامة الحيوية
         </MenuItem>
@@ -335,7 +438,10 @@ const VitalSign = React.forwardRef(function VitalSign(props: Props, ref) {
         open={confirmProcessDialog}
         onClose={() => setconfirmProcessDialog(false)}
         title={
-          <Typography variant="base" color={grey[800]}>
+          <Typography
+            variant="base"
+            color={grey[800]}
+          >
             {confirmProcessContent.title}
           </Typography>
         }
@@ -359,9 +465,7 @@ const VitalSign = React.forwardRef(function VitalSign(props: Props, ref) {
           </>
         }
       >
-        <DialogContentText id="alert-dialog-description">
-          {confirmProcessContent.content}
-        </DialogContentText>
+        <DialogContentText id="alert-dialog-description">{confirmProcessContent.content}</DialogContentText>
       </Dialog>
     </Box>
   );

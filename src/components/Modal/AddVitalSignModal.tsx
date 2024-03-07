@@ -1,22 +1,9 @@
-import {
-  Box,
-  Divider,
-  Grid,
-  InputAdornment,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Grid, InputAdornment, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { amber, blue, grey, red } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
 import { Check, Plus, Trash2, Upload, X } from "react-feather";
 import { Controller, useForm } from "react-hook-form";
-import {
-  useCreateShipment,
-  useCreateUploadMultiFiles,
-  useGetProvincesPrices,
-} from "../../graphql/hooks/shipments";
+import { useCreateShipment, useCreateUploadMultiFiles, useGetProvincesPrices } from "../../graphql/hooks/shipments";
 import useStore from "../../store/useStore";
 import Button from "../Button";
 import Input from "../Input/Input";
@@ -65,25 +52,18 @@ const AddVitalSignModal = ({ open, onClose, id }: Props) => {
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  let onFormSubmit = ({
-    body_temperature,
-    blood_pressure,
-    number_breaths,
-    blood_sugar,
-    oxygen_saturation,
-    heart_beat,
-  }: any) => {
+  let onFormSubmit = ({ body_temperature, blood_pressure, number_breaths, blood_sugar, oxygen_saturation, heart_beat }: any) => {
     setSubmitLoading(true);
     createForModal({
       variables: {
-        content: {
+        data: {
+          blood_pressure,
+          blood_sugar,
           body_temperature,
           heart_beat,
-          blood_pressure,
           number_breaths,
-          blood_sugar,
           oxygen_saturation,
-          id_sick: id!,
+          patientsId: parseInt(id as any),
         },
       },
       refetchQueries: [All_VitalSigns],
@@ -141,9 +121,20 @@ const AddVitalSignModal = ({ open, onClose, id }: Props) => {
         </>
       }
     >
-      <form id="add_shipment" onSubmit={handleSubmit(onFormSubmit)}>
-        <Grid container boxSizing={"border-box"} spacing={2}>
-          <Grid item xs={12} sm={6}>
+      <form
+        id="add_shipment"
+        onSubmit={handleSubmit(onFormSubmit)}
+      >
+        <Grid
+          container
+          boxSizing={"border-box"}
+          spacing={2}
+        >
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="حرارة الجسم"
               error={errors?.body_temperature}
@@ -153,7 +144,11 @@ const AddVitalSignModal = ({ open, onClose, id }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="نبضات القلب"
               error={errors?.heart_beat}
@@ -163,7 +158,11 @@ const AddVitalSignModal = ({ open, onClose, id }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="ضغط الدم"
               error={errors?.blood_pressure}
@@ -173,7 +172,11 @@ const AddVitalSignModal = ({ open, onClose, id }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="عدد مرات التنفس"
               error={errors?.number_breaths}
@@ -183,7 +186,11 @@ const AddVitalSignModal = ({ open, onClose, id }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="السكري"
               error={errors?.blood_sugar}
@@ -193,7 +200,11 @@ const AddVitalSignModal = ({ open, onClose, id }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="تشبع الأكسجين
 "

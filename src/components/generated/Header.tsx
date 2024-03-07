@@ -1,19 +1,4 @@
-import {
-  Avatar,
-  Badge,
-  Box,
-  CardActionArea,
-  ClickAwayListener,
-  Container,
-  Divider,
-  Drawer,
-  Grid,
-  IconButton,
-  Skeleton,
-  Stack,
-  Typography,
-  Tabs,
-} from "@mui/material";
+import { Avatar, Badge, Box, CardActionArea, ClickAwayListener, Container, Divider, Drawer, Grid, IconButton, Skeleton, Stack, Typography, Tabs } from "@mui/material";
 import React, { useState } from "react";
 import { ArrowDown, Bell, Menu, Search as SearchIcon } from "react-feather";
 import { useTheme, alpha } from "@mui/material/styles";
@@ -64,7 +49,10 @@ export const Header: React.FC<Props> = (props) => {
 
   return (
     <>
-      <ClickAwayListener disableReactTree onClickAway={() => setOpenSearchbarResponsive(false)}>
+      <ClickAwayListener
+        disableReactTree
+        onClickAway={() => setOpenSearchbarResponsive(false)}
+      >
         <Box
           className="q-header"
           bgcolor={"#FFF"}
@@ -115,14 +103,20 @@ export const Header: React.FC<Props> = (props) => {
               display: openSearchbarResponsive ? "none" : "display",
             }}
           >
-            <Box className="q-container" height={"100%"}>
+            <Box
+              className="q-container"
+              height={"100%"}
+            >
               <Grid
                 container
                 justifyContent={"space-between"}
                 alignItems={"center"}
                 height={"100%"}
               >
-                <Grid item xs>
+                <Grid
+                  item
+                  xs
+                >
                   <Stack
                     direction={"row"}
                     alignItems="center"
@@ -161,8 +155,17 @@ export const Header: React.FC<Props> = (props) => {
                         ></SearchIcon>
                       </Box>
                     </CardActionArea> */}
-                    <Stack direction="row" alignItems={"center"} width="100%" gap="24px">
-                      <img src="/logo.png" alt="" height="28px" />
+                    <Stack
+                      direction="row"
+                      alignItems={"center"}
+                      width="100%"
+                      gap="24px"
+                    >
+                      <img
+                        src="/logo.png"
+                        alt=""
+                        height="28px"
+                      />
                       {/* @ts-ignore */}
                       {/* <Search
                         placeholder="بحث"
@@ -185,8 +188,15 @@ export const Header: React.FC<Props> = (props) => {
                   </Stack>
                 </Grid>
                 {userData?.role !== "Nurse" && (
-                  <Grid item xs>
-                    <Stack width="100%" justifyContent={"center"} height="100%">
+                  <Grid
+                    item
+                    xs
+                  >
+                    <Stack
+                      width="100%"
+                      justifyContent={"center"}
+                      height="100%"
+                    >
                       <Box
                         bgcolor="#FFF"
                         sx={{
@@ -208,21 +218,24 @@ export const Header: React.FC<Props> = (props) => {
                               backgroundColor: secondary[400],
                             },
                           }}
-                          value={route.pathname}
-                          onChange={(_, newVal) =>
-                            useStore.setState({ profilePatientInformationSubPage: newVal })
-                          }
+                          value={route.pathname.includes("/patient") ? "/" : route.pathname}
+                          onChange={(_, newVal) => useStore.setState({ profilePatientInformationSubPage: newVal })}
                           variant={"fullWidth"}
                         >
                           <Tab
                             value="/"
                             color={"secondary"}
                             label={
-                              <Stack direction="row" alignItems={"center"} gap="6px">
-                                <HomeIcon width="18px" height="18px" />
-                                <Typography sx={{ display: { xs: "none", sm: "inline" } }}>
-                                  الرئيسية
-                                </Typography>
+                              <Stack
+                                direction="row"
+                                alignItems={"center"}
+                                gap="6px"
+                              >
+                                <HomeIcon
+                                  width="18px"
+                                  height="18px"
+                                />
+                                <Typography sx={{ display: { xs: "none", sm: "inline" } }}>الرئيسية</Typography>
                               </Stack>
                             }
                             sx={{ height: "63px" }}
@@ -235,11 +248,16 @@ export const Header: React.FC<Props> = (props) => {
                             value="/users"
                             color={"secondary"}
                             label={
-                              <Stack direction="row" alignItems={"center"} gap="6px">
-                                <UserGroupIcon width="18px" height="18px" />
-                                <Typography sx={{ display: { xs: "none", sm: "inline" } }}>
-                                  المستخدمين
-                                </Typography>
+                              <Stack
+                                direction="row"
+                                alignItems={"center"}
+                                gap="6px"
+                              >
+                                <UserGroupIcon
+                                  width="18px"
+                                  height="18px"
+                                />
+                                <Typography sx={{ display: { xs: "none", sm: "inline" } }}>المستخدمين</Typography>
                               </Stack>
                             }
                             sx={{ height: "63px" }}
@@ -253,7 +271,10 @@ export const Header: React.FC<Props> = (props) => {
                     </Stack>
                   </Grid>
                 )}
-                <Grid item xs>
+                <Grid
+                  item
+                  xs
+                >
                   <Stack
                     direction={"row-reverse"}
                     alignItems="center"
@@ -262,7 +283,10 @@ export const Header: React.FC<Props> = (props) => {
                     spacing={{ xs: 2, md: 3 }}
                   >
                     {(userData?.Person && (
-                      <IconButton size="small" {...bindTrigger(popupProfileState)}>
+                      <IconButton
+                        size="small"
+                        {...bindTrigger(popupProfileState)}
+                      >
                         <RAvatar
                           size="42px"
                           name={userData?.Person?.first_name + " " + userData?.Person?.last_name}
@@ -308,25 +332,19 @@ export const Header: React.FC<Props> = (props) => {
           }}
           {...bindPopover(popupNotificationState)}
         >
-          {notificationData
-            ?.slice(0, isNotifyLimited ? 5 : notificationData.length)
-            .map((notification: any, index: any) => {
-              return (
-                <NotificationItem
-                  key={index}
-                  fullName={notification?.recipient_name || notification?.box?.recipient_name}
-                  note={notification?.note || notification?.box?.note}
-                  status={
-                    notification?.status_box ??
-                    notification?.status ??
-                    notification?.box?.status_box
-                  }
-                  date={notification?.createdAt}
-                  shipment_code={notification?.code_box || notification?.box?.code_box}
-                  bottomDivider
-                ></NotificationItem>
-              );
-            })}
+          {notificationData?.slice(0, isNotifyLimited ? 5 : notificationData.length).map((notification: any, index: any) => {
+            return (
+              <NotificationItem
+                key={index}
+                fullName={notification?.recipient_name || notification?.box?.recipient_name}
+                note={notification?.note || notification?.box?.note}
+                status={notification?.status_box ?? notification?.status ?? notification?.box?.status_box}
+                date={notification?.createdAt}
+                shipment_code={notification?.code_box || notification?.box?.code_box}
+                bottomDivider
+              ></NotificationItem>
+            );
+          })}
         </Notification>
       </Box>
       <Profile
@@ -344,7 +362,10 @@ export const Header: React.FC<Props> = (props) => {
         }}
       ></Profile>
 
-      <Drawer open={openDrawerNav} onClose={() => setOpenDrawerNav(false)}>
+      <Drawer
+        open={openDrawerNav}
+        onClose={() => setOpenDrawerNav(false)}
+      >
         <SideBar closeDrawer={() => setOpenDrawerNav(false)}></SideBar>
       </Drawer>
     </>

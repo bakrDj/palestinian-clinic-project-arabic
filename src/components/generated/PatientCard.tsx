@@ -1,5 +1,6 @@
 import { Box, BoxProps, Button, CardActionArea, DialogContentText, Divider, Grid, IconButton, ListItemIcon, MenuItem, Stack, Tooltip, Typography } from "@mui/material";
 import { blue, deepOrange, grey, lightGreen, orange } from "@mui/material/colors";
+// @ts-ignore
 import { styled } from "@mui/system";
 import { bindMenu, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { useEffect, useState } from "react";
@@ -360,10 +361,10 @@ const PatientCard = (props: PatientCardProps) => {
               onAction: () => {
                 deleteCardMutation({
                   variables: {
-                    idPerson: dataInfo?.person?.id,
+                    deletePatientId: dataInfo?.id,
                   },
                   refetchQueries: [Get_All_Patients],
-                });
+                }).finally(() => setconfirmProcessDialog(false));
               },
             });
             // typeof props.setOpenEditPatientModal == "function" &&

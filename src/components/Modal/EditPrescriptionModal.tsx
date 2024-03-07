@@ -1,22 +1,9 @@
-import {
-  Box,
-  Divider,
-  Grid,
-  InputAdornment,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Grid, InputAdornment, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { amber, blue, grey, red } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
 import { Check, Plus, Trash2, Upload, X } from "react-feather";
 import { Controller, useForm } from "react-hook-form";
-import {
-  useCreateShipment,
-  useCreateUploadMultiFiles,
-  useGetProvincesPrices,
-} from "../../graphql/hooks/shipments";
+import { useCreateShipment, useCreateUploadMultiFiles, useGetProvincesPrices } from "../../graphql/hooks/shipments";
 import useStore from "../../store/useStore";
 import Button from "../Button";
 import Input from "../Input/Input";
@@ -33,7 +20,7 @@ import { useCreateVitalSign } from "../../graphql/hooks/vitalSign";
 import { All_VitalSigns } from "../../graphql/hooks/vitalSign/useGetVitalSign";
 import { useCreateDiagnosis } from "../../graphql/hooks/diagnosis";
 import { All_Diagnosis } from "../../graphql/hooks/diagnosis/useGetDiagnosis";
-import { useCreatePrescription } from "../../graphql/hooks/prescription";
+import { useCreatePrescription, useUpdatePrescription } from "../../graphql/hooks/prescription";
 import { All_Prescription } from "../../graphql/hooks/prescription/useGetPrescription";
 interface Props {
   open: boolean;
@@ -61,17 +48,18 @@ const EditPrescriptionModal = ({ open, onClose, id, dataInfo }: Props) => {
   let [submitLoading, setSubmitLoading] = useState<boolean>(false);
 
   let userData = useStore((state: any) => state.userData);
-  let [createForModal] = useCreatePrescription();
+  let [updateForModal] = useUpdatePrescription();
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   let onFormSubmit = ({ title }: any) => {
     setSubmitLoading(true);
-    createForModal({
+    updateForModal({
       variables: {
-        content: {
+        updatePrescriptionId: dataInfo?.id,
+        data: {
           title,
-          id_sick: id!,
+          patientsId: parseInt(id! as any),
         },
       },
       refetchQueries: [All_Prescription],
@@ -129,15 +117,25 @@ const EditPrescriptionModal = ({ open, onClose, id, dataInfo }: Props) => {
         </>
       }
     >
-      <form id="add_shipment" onSubmit={handleSubmit(onFormSubmit)}>
-        <Grid container boxSizing={"border-box"} spacing={2}>
+      <form
+        id="add_shipment"
+        onSubmit={handleSubmit(onFormSubmit)}
+      >
+        <Grid
+          container
+          boxSizing={"border-box"}
+          spacing={2}
+        >
           {/* complaint,
     physical_examination,
     diagnosis,
     recommendations,
     nurse_order, */}
 
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+          >
             <Input
               label="عنوان"
               error={errors?.title}

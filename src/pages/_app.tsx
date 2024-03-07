@@ -1,15 +1,4 @@
-import {
-  ApolloClient,
-  ApolloProvider,
-  createHttpLink,
-  InMemoryCache,
-  concat,
-  from,
-  ApolloLink,
-  Observable,
-  fromPromise,
-  NormalizedCacheObject,
-} from "@apollo/client";
+import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache, concat, from, ApolloLink, Observable, fromPromise, NormalizedCacheObject } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
@@ -64,7 +53,7 @@ function RTL(props: any) {
 
 /****| Apollo related code |****/
 
-let client: ApolloClient<NormalizedCacheObject> | undefined = undefined;
+export let client: ApolloClient<NormalizedCacheObject> | undefined = undefined;
 
 const authLink = setContext((_, { headers, operationName }) => {
   const token = (useStore.getState() as any).token;
@@ -174,7 +163,12 @@ const defaultSnackbarProps = {
   },
   autoHideDuration: 3000,
   // @ts-ignore
-  TransitionComponent: (props) => <Slide {...props} direction="right" />,
+  TransitionComponent: (props) => (
+    <Slide
+      {...props}
+      direction="right"
+    />
+  ),
 };
 
 // console.log = () => {};

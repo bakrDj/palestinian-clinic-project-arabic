@@ -7,6 +7,7 @@ export const Get_All_Patients = gql`
       createdAt
       updatedAt
       personsId
+      last_update
       Person {
         id
         first_name
