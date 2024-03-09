@@ -1,38 +1,10 @@
-import {
-  Box,
-  BoxProps,
-  Button,
-  CardActionArea,
-  DialogContentText,
-  Divider,
-  Grid,
-  IconButton,
-  ListItemIcon,
-  MenuItem,
-  Stack,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, BoxProps, Button, CardActionArea, DialogContentText, Divider, Grid, IconButton, ListItemIcon, MenuItem, Stack, Tooltip, Typography } from "@mui/material";
 import { blue, deepOrange, grey, lightGreen, orange } from "@mui/material/colors";
+// @ts-ignore
 import { styled } from "@mui/system";
 import { bindMenu, bindTrigger, usePopupState } from "material-ui-popup-state/hooks";
 import { useEffect, useState } from "react";
-import {
-  Check,
-  Copy,
-  CornerUpLeft,
-  List,
-  MoreHorizontal,
-  Play,
-  Printer,
-  Repeat,
-  Slash,
-  XOctagon,
-  Image as ImageIcon,
-  Phone,
-  Trash2,
-  Pause,
-} from "react-feather";
+import { Check, Copy, CornerUpLeft, List, MoreHorizontal, Play, Printer, Repeat, Slash, XOctagon, Image as ImageIcon, Phone, Trash2, Pause } from "react-feather";
 import traking_status from "../../utilities/data/tracking_status";
 import Chip from "../Chip/Chip";
 import Menu from "../Menu/Menu";
@@ -43,7 +15,7 @@ import { default as RAvatar } from "react-avatar";
 import { useDebouncedCallback } from "use-debounce";
 import useStore from "../../store/useStore";
 import classNames from "classnames";
-import { BoxSelect, Edit2, History } from "lucide-react";
+import { BoxSelect, Calendar, Edit2, History } from "lucide-react";
 import theme, { primary, secondary, slate } from "../../styles/theme";
 import { IdentificationIcon, EnvelopeIcon } from "@heroicons/react/24/outline";
 import dayjs from "dayjs";
@@ -52,6 +24,8 @@ import useDeletePatient from "../../graphql/hooks/patient/useDeletePatient";
 import { Get_All_Patients } from "../../graphql/hooks/patient/useGetAllPatients";
 import { useActivateUser, useDeleteUser } from "../../graphql/hooks/users";
 import { ALL_USERS } from "../../graphql/hooks/users/useGetAllUsers";
+import { CalendarCheck } from "lucide-react";
+import { CalendarDays } from "lucide-react";
 
 interface UserCardProps extends BoxProps {
   dataInfo?: any;
@@ -160,12 +134,25 @@ const UserCard = (props: UserCardProps) => {
       className={classNames({ "selection-active": props.isSelecting, selected })}
       border={"1px solid " + slate[200]}
     >
-      <Stack height={"100%"} justifyContent="space-between">
+      <Stack
+        height={"100%"}
+        justifyContent="space-between"
+      >
         <Grid container>
-          <Grid item width={"100%"}>
-            <Grid container justifyContent={"space-between"}>
+          <Grid
+            item
+            width={"100%"}
+          >
+            <Grid
+              container
+              justifyContent={"space-between"}
+            >
               <Grid item>
-                <Stack direction={"row"} columnGap={"10px"} alignItems="center">
+                <Stack
+                  direction={"row"}
+                  columnGap={"10px"}
+                  alignItems="center"
+                >
                   {/* <Box sx={{ cursor: "pointer" }}> */}
                   {/* <Link href={"/patient/" + dataInfo?.id}> */}
                   <Box
@@ -176,7 +163,7 @@ const UserCard = (props: UserCardProps) => {
                   >
                     <RAvatar
                       size="38px"
-                      name={dataInfo?.person?.first_name}
+                      name={dataInfo?.Person?.first_name + " " + dataInfo?.Person?.last_name}
                       round
                       style={{
                         fontFamily: "Heebo",
@@ -190,16 +177,30 @@ const UserCard = (props: UserCardProps) => {
                   <Stack rowGap={"2px"}>
                     {/* <Box sx={{ cursor: "pointer" }}> */}
                     {/* <Link href={"/patient/" + dataInfo?.id}> */}
-                    <Typography variant="xs" color={grey[700]}>
-                      {dataInfo?.person?.first_name + " " + dataInfo?.person?.last_name}
+                    <Typography
+                      variant="xs"
+                      color={grey[700]}
+                    >
+                      {dataInfo?.Person?.first_name + " " + dataInfo?.Person?.last_name}
                     </Typography>
                     {/* </Link> */}
                     {/* </Box> */}
-                    <Stack direction="row" gap="2px" alignItems="center">
-                      <Typography variant="2xs" color={slate[500]}>
-                        {dataInfo?.person?.email}
+                    <Stack
+                      direction="row"
+                      gap="2px"
+                      alignItems="center"
+                    >
+                      <Typography
+                        variant="2xs"
+                        color={slate[500]}
+                      >
+                        {dataInfo?.email}
                       </Typography>
-                      <EnvelopeIcon width={15} height={15} color={slate[500]} />
+                      <EnvelopeIcon
+                        width={15}
+                        height={15}
+                        color={slate[500]}
+                      />
                     </Stack>
                   </Stack>
                 </Stack>
@@ -223,9 +224,7 @@ const UserCard = (props: UserCardProps) => {
                       onClick={() => {
                         setSelected(!selected);
                         props.setMultiSelectionSelectedShipments((prev: any) => {
-                          let foundShipmentIndex = [...prev].findIndex(
-                            (v: any) => v.id == props.shipmentRestInfo.id
-                          );
+                          let foundShipmentIndex = [...prev].findIndex((v: any) => v.id == props.shipmentRestInfo.id);
                           // add selection
                           if (foundShipmentIndex > -1) {
                             console.log("removed");
@@ -253,14 +252,24 @@ const UserCard = (props: UserCardProps) => {
                         }}
                       >
                         <div>
-                          <Check size={13} strokeWidth="3" color={selected ? "#FFF" : "#D7D4E1"} />
+                          <Check
+                            size={13}
+                            strokeWidth="3"
+                            color={selected ? "#FFF" : "#D7D4E1"}
+                          />
                         </div>
                       </Box>
                     </CardActionArea>
                   </IconButton>
                 )) || (
-                  <IconButton size={"small"} {...bindTrigger(popupState)}>
-                    <MoreHorizontal color={grey[500]} size={18} />
+                  <IconButton
+                    size={"small"}
+                    {...bindTrigger(popupState)}
+                  >
+                    <MoreHorizontal
+                      color={grey[500]}
+                      size={18}
+                    />
                   </IconButton>
                 )}
               </Grid>
@@ -275,38 +284,51 @@ const UserCard = (props: UserCardProps) => {
           sx={{ direction: "rtl" }}
         >
           <Grid item>
-            <Stack direction={"row"} alignItems="center" height={"100%"} columnGap={"4px"}>
-              <Typography variant="xs" color={slate[500]}>
-                {(dataInfo?.role == "Doctor" && "طبيب") ||
-                  (dataInfo?.role == "Nurse" && "مريض") ||
-                  (dataInfo?.role == "User" && "مستخدم")}
+            <Stack
+              direction={"row"}
+              alignItems="center"
+              height={"100%"}
+              columnGap={"4px"}
+            >
+              <Typography
+                variant="xs"
+                color={slate[500]}
+              >
+                {(dataInfo?.role == "doctor" && "طبيب") || (dataInfo?.role == "nurse" && "ممرضة") || (dataInfo?.role == "User" && "مستخدم")}
               </Typography>
             </Stack>
           </Grid>
+
           <Grid item>
-            <Stack direction={"row"} alignItems="center" gap="6px">
-              <Chip
+            <Stack
+              direction={"row"}
+              alignItems="center"
+              gap="6px"
+            >
+              {/* <Chip
                 size="medium"
                 rounded
-                label={
-                  (dataInfo?.activation == "Desactive" && "محظور") ||
-                  (dataInfo?.activation == "Active" && "نشط")
-                }
-                color={
-                  ((dataInfo?.activation == "Desactive" && "error") ||
-                    (dataInfo?.activation == "Active" && "success") ||
-                    "primary") as any
-                }
-              ></Chip>
-              {/* <Stack alignItems={"flex-end"}>
-                <Typography color={grey[500]} fontSize="9px">
-                  أخر تحديث
+                label={(dataInfo?.activation == "Desactive" && "محظور") || (dataInfo?.activation == "Active" && "نشط")}
+                color={((dataInfo?.activation == "Desactive" && "error") || (dataInfo?.activation == "Active" && "success") || "primary") as any}
+              ></Chip> */}
+              <Stack alignItems={"flex-end"}>
+                <Typography
+                  color={grey[500]}
+                  fontSize="9px"
+                >
+                  تاريخ الإنشاء
                 </Typography>
-                <Typography variant="3xs" color={grey[600]}>
-                  {dayjs(dataInfo?.lastUpdate, "MM/DD/YYYY HH:mm:ss").fromNow()}
+                <Typography
+                  variant="3xs"
+                  color={grey[600]}
+                >
+                  {dayjs(dataInfo?.createdAt).fromNow()}
                 </Typography>
               </Stack>
-              <History color={slate[500]} strokeWidth="1.5px" /> */}
+              <Calendar
+                color={slate[500]}
+                strokeWidth="1.5px"
+              />
             </Stack>
           </Grid>
         </Grid>
@@ -317,13 +339,15 @@ const UserCard = (props: UserCardProps) => {
           onClick={() => {
             // props.onshowDetailsClick();
             grabDataInfoHandler();
-            typeof props.setOpenEditPatientModal == "function" &&
-              props.setOpenEditPatientModal(true);
+            typeof props.setOpenEditPatientModal == "function" && props.setOpenEditPatientModal(true);
             popupState.close();
           }}
         >
           <ListItemIcon>
-            <Edit2 size={18} strokeWidth={2} />
+            <Edit2
+              size={18}
+              strokeWidth={2}
+            />
           </ListItemIcon>
           تعديل المستخدم
         </MenuItem>
@@ -338,7 +362,7 @@ const UserCard = (props: UserCardProps) => {
               onAction: () => {
                 deleteCardMutation({
                   variables: {
-                    idPerson: dataInfo?.person?.id,
+                    deleteUserId: dataInfo?.Person?.id,
                   },
                   refetchQueries: [ALL_USERS],
                 });
@@ -351,15 +375,18 @@ const UserCard = (props: UserCardProps) => {
           }}
         >
           <ListItemIcon>
-            <Trash2 size={18} strokeWidth={2} />
+            <Trash2
+              size={18}
+              strokeWidth={2}
+            />
           </ListItemIcon>
           حذف المستخدم
         </MenuItem>
-        <MenuItem
+        {/* <MenuItem
           onClick={() => {
             activateCardMutation({
               variables: {
-                idPerson: dataInfo?.person?.id,
+                idPerson: dataInfo?.Person?.id,
                 activation: (dataInfo?.activation == "Active" && "Desactive") || "Active",
               },
               refetchQueries: [ALL_USERS],
@@ -369,13 +396,19 @@ const UserCard = (props: UserCardProps) => {
         >
           <ListItemIcon>
             {dataInfo?.activation == "Active" ? (
-              <Pause size={18} strokeWidth={2} />
+              <Pause
+                size={18}
+                strokeWidth={2}
+              />
             ) : (
-              <Play size={18} strokeWidth={2} />
+              <Play
+                size={18}
+                strokeWidth={2}
+              />
             )}
           </ListItemIcon>
           {dataInfo?.activation == "Active" ? "حظر الحساب" : "تنشيط الحساب"}
-        </MenuItem>
+        </MenuItem> */}
         {/* <Divider></Divider> */}
       </Menu>
       {/* @ts-ignore */}
@@ -383,7 +416,10 @@ const UserCard = (props: UserCardProps) => {
         open={confirmProcessDialog}
         onClose={() => setconfirmProcessDialog(false)}
         title={
-          <Typography variant="base" color={grey[800]}>
+          <Typography
+            variant="base"
+            color={grey[800]}
+          >
             {confirmProcessContent.title}
           </Typography>
         }
@@ -407,9 +443,7 @@ const UserCard = (props: UserCardProps) => {
           </>
         }
       >
-        <DialogContentText id="alert-dialog-description">
-          {confirmProcessContent.content}
-        </DialogContentText>
+        <DialogContentText id="alert-dialog-description">{confirmProcessContent.content}</DialogContentText>
       </Dialog>
     </StyledUserCard>
   );

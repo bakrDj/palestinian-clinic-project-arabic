@@ -1,17 +1,4 @@
-import {
-  alpha,
-  Box,
-  Collapse,
-  Container,
-  Divider,
-  Grid,
-  IconButton,
-  ListItemIcon,
-  MenuItem,
-  Skeleton,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { alpha, Box, Collapse, Container, Divider, Grid, IconButton, ListItemIcon, MenuItem, Skeleton, Stack, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { FileText, Minus, MoreHorizontal, Printer, Sheet } from "lucide-react";
 import Head from "next/head";
@@ -61,9 +48,7 @@ export default function ProfilePatient({}: Props): ReactElement {
   const popupState = usePopupState({ variant: "popover", popupId: "multiSelectMenu" });
   const searchValue = useStore((state: any) => state.searchValue);
   const userData = useStore((state: any) => state.userData);
-  const profilePatientInformationTabIndex = useStore(
-    (state: any) => state.profilePatientInformationTabIndex
-  );
+  const profilePatientInformationTabIndex = useStore((state: any) => state.profilePatientInformationTabIndex);
   const openShipScannerModal = useStore((state: any) => state.openShipScannerModal);
   const [openShowDetailDrawer, setOpenShowDetailDrawer] = React.useState(false);
   const [openAddOrderModal, setOpenAddOrderModal] = React.useState(false);
@@ -71,9 +56,7 @@ export default function ProfilePatient({}: Props): ReactElement {
   const [openRequestModal, setOpenRequestModal] = React.useState(false);
   const [isReceiptFormatCollapsed, setIsReceiptFormatCollapsed] = React.useState(false);
   const [oneShipmentInfo, setOneShipmentInfo] = React.useState<any>({});
-  const [multiSelectionSelectedShipments, setMultiSelectionSelectedShipments] = React.useState<any>(
-    []
-  );
+  const [multiSelectionSelectedShipments, setMultiSelectionSelectedShipments] = React.useState<any>([]);
   const [tabvalue, setTabvalue] = React.useState<number | string>(0);
 
   const [requestStatus, setRequestStatus] = React.useState<number | undefined>(undefined);
@@ -113,9 +96,7 @@ export default function ProfilePatient({}: Props): ReactElement {
   filteredData = searchHelper(searchValue?.toLowerCase(), filteredData);
 
   let allShipments = filteredData;
-  let notShippedShipments = filteredData.filter(
-    (v: any) => ![4, 5].includes(v.lastTrace?.[0]?.status)
-  );
+  let notShippedShipments = filteredData.filter((v: any) => ![4, 5].includes(v.lastTrace?.[0]?.status));
   let shippedShipments = filteredData.filter((v: any) => [4].includes(v.lastTrace?.[0]?.status));
   let arrivedShipment = filteredData.filter((v: any) => [5].includes(v.lastTrace?.[0]?.status));
 
@@ -133,10 +114,7 @@ export default function ProfilePatient({}: Props): ReactElement {
   }, [renderedShipmentsData, searchValue]);
 
   const moreDataHendler = () => {
-    let currentChunk = renderedShipmentsData.slice(
-      0,
-      shipmentDataEnqueued.length + loadingDataSize
-    );
+    let currentChunk = renderedShipmentsData.slice(0, shipmentDataEnqueued.length + loadingDataSize);
 
     setTimeout(() => {
       setShipmentDataEnqueued([...currentChunk]);
@@ -258,7 +236,10 @@ export default function ProfilePatient({}: Props): ReactElement {
 
   return (
     <>
-      <Box bgcolor={alpha(theme.palette.primary.main, 0.2)} marginTop="-32px">
+      <Box
+        bgcolor={alpha(theme.palette.primary.main, 0.2)}
+        marginTop="-32px"
+      >
         <Container
           maxWidth="xl"
           sx={{
@@ -269,14 +250,20 @@ export default function ProfilePatient({}: Props): ReactElement {
             backgroundColor: theme.palette.background.body,
           }}
         >
-          <Box className="q-container" height={"100%"}>
+          <Box
+            className="q-container"
+            height={"100%"}
+          >
             <Grid
               container
               spacing={3}
               height={renderedShipmentsData.length == 0 ? "100%" : ""}
               // height="100%"
             >
-              <Grid item xs>
+              <Grid
+                item
+                xs
+              >
                 <SwipeableViews
                   animateTransitions={false}
                   style={{ direction: "rtl" }}

@@ -1,15 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  Page,
-  Text,
-  Image,
-  Document,
-  StyleSheet,
-  View,
-  Font,
-  Line,
-  PDFViewer,
-} from "@react-pdf/renderer";
+import { Page, Text, Image, Document, StyleSheet, View, Font, Line, PDFViewer } from "@react-pdf/renderer";
 import dayjs from "dayjs";
 import { priceFormatHelper } from "../../utilities/helpers";
 import * as R from "ramda";
@@ -110,7 +100,10 @@ const VitalSignTemplate = ({ dataList, userData }: Props) => {
   // }, [loadFonts]);
 
   return (
-    <PDFViewer width={"100%"} style={{ minHeight: "100vh" }}>
+    <PDFViewer
+      width={"100%"}
+      style={{ minHeight: "100vh" }}
+    >
       <Document>
         <Page style={styles.body}>
           {/* header */}
@@ -135,7 +128,10 @@ const VitalSignTemplate = ({ dataList, userData }: Props) => {
                 }}
               >
                 {/* left section */}
-                <Image style={{ width: 46, marginRight: 20 }} src={"/logo.png"}></Image>
+                <Image
+                  style={{ width: 46, marginRight: 20 }}
+                  src={"/logo.png"}
+                ></Image>
                 {/* right section */}
 
                 <View style={{ flex: 1 }}>
@@ -183,9 +179,7 @@ const VitalSignTemplate = ({ dataList, userData }: Props) => {
                             تواصل معنا:
                           </Text>
                         </View>
-                        <Text style={{ fontSize: 16, color: "#575757" }}>
-                          مركز نبض الحياة الطبي
-                        </Text>
+                        <Text style={{ fontSize: 16, color: "#575757" }}>مركز نبض الحياة الطبي</Text>
                       </View>
                       <View
                         style={{
@@ -775,7 +769,7 @@ const VitalSignTemplate = ({ dataList, userData }: Props) => {
                             // height: '32px',
                           }}
                         >
-                          {dayjs(shipment?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").format("HH:mm")}
+                          {dayjs(shipment?.createdAt).format("HH:mm")}
                         </Text>
                       </View>
                     </View>

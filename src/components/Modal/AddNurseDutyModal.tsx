@@ -68,7 +68,7 @@ const AddNurseDutyModal = ({ open, onClose, id }: Props) => {
       refetchQueries: [All_NurseOrder],
     })
       .then(() => {
-        enqueueSnackbar("הוספת בהצלחה", {
+        enqueueSnackbar("تم الإضافة بنجاح", {
           variant: "success",
         });
         setSubmitLoading(false);

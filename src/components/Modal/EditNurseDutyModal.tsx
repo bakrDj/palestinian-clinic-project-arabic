@@ -70,7 +70,7 @@ const EditNurseDutyModal = ({ open, onClose, id, dataInfo }: Props) => {
       refetchQueries: [All_NurseOrder],
     })
       .then(() => {
-        enqueueSnackbar("נערך בהצלחה", {
+        enqueueSnackbar("تم التعديل بنجاح", {
           variant: "success",
         });
         setSubmitLoading(false);

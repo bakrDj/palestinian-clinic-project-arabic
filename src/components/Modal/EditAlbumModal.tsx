@@ -129,7 +129,7 @@ const EditAlbumModal = ({ open, onClose, id, dataInfo }: Props) => {
         await client!.refetchQueries({
           include: [All_Album],
         });
-        enqueueSnackbar("נערך בהצלחה", {
+        enqueueSnackbar("تم التعديل بنجاح", {
           variant: "success",
         });
         setSubmitLoading(false);

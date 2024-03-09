@@ -121,7 +121,7 @@ const AddAlbumModal = ({ open, onClose, id }: Props) => {
         await client!.refetchQueries({
           include: [All_Album],
         });
-        enqueueSnackbar("הוספת בהצלחה", {
+        enqueueSnackbar("تم الإضافة بنجاح", {
           variant: "success",
         });
         setSubmitLoading(false);

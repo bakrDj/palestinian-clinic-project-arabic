@@ -74,7 +74,7 @@ const EditDiagnosisModal = ({ open, onClose, id, dataInfo }: Props) => {
       refetchQueries: [All_Diagnosis],
     })
       .then(() => {
-        enqueueSnackbar("נערך בהצלחה", {
+        enqueueSnackbar("تم التعديل بنجاح", {
           variant: "success",
         });
         setSubmitLoading(false);

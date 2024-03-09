@@ -65,7 +65,7 @@ const EditPrescriptionModal = ({ open, onClose, id, dataInfo }: Props) => {
       refetchQueries: [All_Prescription],
     })
       .then(() => {
-        enqueueSnackbar("נערך בהצלחה", {
+        enqueueSnackbar("تم التعديل بنجاح", {
           variant: "success",
         });
         setSubmitLoading(false);

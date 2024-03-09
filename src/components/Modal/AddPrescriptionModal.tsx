@@ -63,7 +63,7 @@ const AddPrescriptionModal = ({ open, onClose, id }: Props) => {
       refetchQueries: [All_Prescription],
     })
       .then(() => {
-        enqueueSnackbar("הוספת בהצלחה", {
+        enqueueSnackbar("تم الإضافة بنجاح", {
           variant: "success",
         });
         setSubmitLoading(false);

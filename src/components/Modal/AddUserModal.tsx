@@ -1,22 +1,9 @@
-import {
-  Box,
-  Divider,
-  Grid,
-  InputAdornment,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Grid, InputAdornment, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { amber, blue, grey, red } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
 import { Check, Plus, Trash2, Upload, X } from "react-feather";
 import { Controller, useForm } from "react-hook-form";
-import {
-  useCreateShipment,
-  useCreateUploadMultiFiles,
-  useGetProvincesPrices,
-} from "../../graphql/hooks/shipments";
+import { useCreateShipment, useCreateUploadMultiFiles, useGetProvincesPrices } from "../../graphql/hooks/shipments";
 import useStore from "../../store/useStore";
 import Button from "../Button";
 import Input from "../Input/Input";
@@ -32,6 +19,7 @@ import { Get_All_Patients } from "../../graphql/hooks/patient/useGetAllPatients"
 import { useCreateUser } from "../../graphql/hooks/users";
 import { ALL_USERS } from "../../graphql/hooks/users/useGetAllUsers";
 import { Alert } from "@mui/lab";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 interface Props {
   open: boolean;
   onClose?: () => void;
@@ -72,38 +60,31 @@ const AddUserModal = ({ open, onClose }: Props) => {
     status?: string;
     msg?: string;
   }>({});
-  let onFormSubmit = ({
-    first_name,
-    last_name,
-    email,
-    address,
-    ID_number,
-    phone,
-    password,
-    role,
-    user_name,
-  }: any) => {
+  let onFormSubmit = ({ first_name, last_name, email, address, ID_number, phone, password, role, user_name }: any) => {
     setSubmitLoading(true);
+
     createForModal({
       variables: {
-        content: {
-          password,
+        data: {
+          email,
+          // password,
           role,
-          user_name,
-          person: {
-            first_name,
-            last_name,
-            email,
-            address,
-            ID_number,
-            phone,
-          },
+          username: user_name,
+        },
+        personData: {
+          first_name,
+          last_name,
+          address,
+          identification_number: ID_number,
+          phone,
+          age: "",
+          gender: "",
         },
       },
       refetchQueries: [ALL_USERS],
     })
       .then(() => {
-        enqueueSnackbar("הוספת בהצלחה", {
+        enqueueSnackbar("تم الإضافة بنجاح", {
           variant: "success",
         });
         setSubmitLoading(false);
@@ -115,19 +96,19 @@ const AddUserModal = ({ open, onClose }: Props) => {
           setAlert({
             // code: err?.graphQLErrors[0]?.extensions?.code,
             status: "error",
-            msg: "הטלפון כבר קיים!",
+            msg: "إن رقم الهاتف موجود مسبقا!",
           });
         } else if (err?.graphQLErrors[0]?.extensions?.code == "EMAIL_EXIST") {
           setAlert({
             // code: err?.graphQLErrors[0]?.extensions?.code,
             status: "error",
-            msg: "האימייל כבר קיים!",
+            msg: "إن هذا البريد الإلكتروني موجود بالفعل!",
           });
         } else if (err?.graphQLErrors[0]?.extensions?.code) {
           setAlert({
             // code: err?.graphQLErrors[0]?.extensions?.code,
             status: "error",
-            msg: "אירעה שגיאה במהלך הרישום!",
+            msg: "حدث خطأ أثناء التسجيل!",
           });
         }
         // closeHandler();
@@ -176,10 +157,20 @@ const AddUserModal = ({ open, onClose }: Props) => {
         </>
       }
     >
-      <form id="add_shipment" onSubmit={handleSubmit(onFormSubmit)}>
-        <Grid container boxSizing={"border-box"} spacing={2}>
+      <form
+        id="add_shipment"
+        onSubmit={handleSubmit(onFormSubmit)}
+      >
+        <Grid
+          container
+          boxSizing={"border-box"}
+          spacing={2}
+        >
           {alert?.status && (
-            <Grid item xs={12}>
+            <Grid
+              item
+              xs={12}
+            >
               <Alert
                 variant="filled"
                 severity={"error"}
@@ -190,7 +181,11 @@ const AddUserModal = ({ open, onClose }: Props) => {
               </Alert>
             </Grid>
           )}
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="إسم المستخدم*"
               error={errors?.user_name}
@@ -200,7 +195,11 @@ const AddUserModal = ({ open, onClose }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               type={"password"}
               label="كلمة مرور*"
@@ -210,7 +209,10 @@ const AddUserModal = ({ open, onClose }: Props) => {
               {...register("password", { required: true })}
             ></Input>
           </Grid>
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+          >
             <Select
               error={errors?.role}
               placeholder="نوع الحساب*"
@@ -218,15 +220,22 @@ const AddUserModal = ({ open, onClose }: Props) => {
               fullWidth
               {...register("role", { required: true })}
             >
-              <MenuItem value={"Doctor"}>طبيب</MenuItem>
-              <MenuItem value={"Nurse"}>ممرضة</MenuItem>
+              <MenuItem value={"doctor"}>طبيب</MenuItem>
+              <MenuItem value={"nurse"}>ممرضة</MenuItem>
             </Select>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+          >
             <Divider></Divider>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="الاسم الاول*"
               error={errors?.first_name}
@@ -236,7 +245,11 @@ const AddUserModal = ({ open, onClose }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="الاسم الثاني*"
               error={errors?.last_name}
@@ -246,7 +259,11 @@ const AddUserModal = ({ open, onClose }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="الايميل الالكتروني*"
               error={errors?.email}
@@ -255,7 +272,11 @@ const AddUserModal = ({ open, onClose }: Props) => {
               {...register("email", { required: true })}
             ></Input>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="رقم الجواز"
               error={errors?.ID_number}
@@ -265,7 +286,11 @@ const AddUserModal = ({ open, onClose }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="رقم الهاتق"
               error={errors?.phone}
@@ -274,7 +299,11 @@ const AddUserModal = ({ open, onClose }: Props) => {
               {...register("phone", { required: false })}
             ></Input>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="العنوان"
               error={errors?.address}

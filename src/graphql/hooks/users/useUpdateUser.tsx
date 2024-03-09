@@ -1,36 +1,31 @@
-import {
-  ApolloCache,
-  DefaultContext,
-  gql,
-  MutationTuple,
-  OperationVariables,
-  useMutation,
-  useQuery,
-} from "@apollo/client";
+import { ApolloCache, DefaultContext, gql, MutationTuple, OperationVariables, useMutation, useQuery } from "@apollo/client";
 import { Box } from "react-feather";
 
 export const Update_User = gql`
-  mutation UpdateUsers($idPerson: ID!, $content: contentUpdateUser) {
-    updateUsers(id_person: $idPerson, content: $content) {
-      status
+  mutation UpdateUser($data: UserInputType, $updateUserId: Int!, $personId: Int!, $personData: PersonInputType) {
+    UpdateUser(data: $data, id: $updateUserId, personId: $personId, personData: $personData) {
+      id
     }
   }
 `;
 
 interface VariableProps {
-  idPerson?: string;
-  content: {
-    user_name?: string;
-    newPassword?: string;
+  updateUserId?: number;
+  personId?: number;
+  data: {
+    email?: string;
+    // google_account_id?: string;
     role?: string;
-    person?: {
-      first_name?: string;
-      last_name?: string;
-      email?: string;
-      phone?: string;
-      address?: string;
-      ID_number?: string;
-    };
+    username?: string;
+  };
+  personData: {
+    address: string;
+    age: string;
+    first_name: string;
+    gender: string;
+    identification_number: string;
+    last_name: string;
+    phone: string;
   };
 }
 const useUpdateUser = (): MutationTuple<any, VariableProps, DefaultContext, ApolloCache<any>> => {

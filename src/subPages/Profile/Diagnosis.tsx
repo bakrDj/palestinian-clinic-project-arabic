@@ -1,18 +1,5 @@
 import { CalendarDaysIcon, CalendarIcon } from "@heroicons/react/24/outline";
-import {
-  alpha,
-  Box,
-  Button,
-  Grid,
-  Chip as MuiChip,
-  Stack,
-  Typography,
-  IconButton,
-  MenuItem,
-  ListItemIcon,
-  DialogContentText,
-  Divider,
-} from "@mui/material";
+import { alpha, Box, Button, Grid, Chip as MuiChip, Stack, Typography, IconButton, MenuItem, ListItemIcon, DialogContentText, Divider } from "@mui/material";
 import { blue, grey } from "@mui/material/colors";
 import dayjs from "dayjs";
 import { AlertCircle, ArrowLeftRight, ListMinus, Edit2, History } from "lucide-react";
@@ -101,8 +88,18 @@ const Diagnosis = React.forwardRef(function Diagnosis(props: Props, ref) {
         overflow: "hidden",
       }}
     >
-      <Grid container width={"100%"} spacing={1.5}>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
+      <Grid
+        container
+        width={"100%"}
+        spacing={1.5}
+      >
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          md={4}
+          lg={3}
+        >
           <Box
             onClick={() => setOpenAddModal(true)}
             sx={{
@@ -121,95 +118,122 @@ const Diagnosis = React.forwardRef(function Diagnosis(props: Props, ref) {
               },
             }}
           >
-            <Plus size={45} color={slate[300]} />
+            <Plus
+              size={45}
+              color={slate[300]}
+            />
           </Box>
         </Grid>
-        {sortByRecentTime(["createdAt"], dataRequested?.GetAllDiagnosesByPatientID)?.map(
-          (item: any, i: number) => (
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Box
-                sx={{
-                  height: "188px",
-                  width: "100%",
-                  borderRadius: "2px",
-                  background: "#FFF",
-                  border: "1px solid " + slate[200],
-                }}
-              >
-                <Stack sx={{ width: "100%", height: "100%" }}>
-                  {/* upper-section */}
+        {sortByRecentTime(["createdAt"], dataRequested?.GetAllDiagnosesByPatientID)?.map((item: any, i: number) => (
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={3}
+          >
+            <Box
+              sx={{
+                height: "188px",
+                width: "100%",
+                borderRadius: "2px",
+                background: "#FFF",
+                border: "1px solid " + slate[200],
+              }}
+            >
+              <Stack sx={{ width: "100%", height: "100%" }}>
+                {/* upper-section */}
+                <Stack
+                  direction="row"
+                  justifyContent={"space-between"}
+                  minHeight="48px"
+                  padding="0 16px"
+                  borderBottom={"1px solid " + slate[200]}
+                >
                   <Stack
-                    direction="row"
-                    justifyContent={"space-between"}
-                    minHeight="48px"
-                    padding="0 16px"
-                    borderBottom={"1px solid " + slate[200]}
+                    direction={"row"}
+                    alignItems="center"
+                    gap={"4px"}
                   >
-                    <Stack direction={"row"} alignItems="center" gap={"4px"}>
-                      <CalendarDaysIcon color={slate[400]} width={"20px"} height={"24px"} />
-                      <Typography
-                        variant="xs"
-                        color={slate[500]}
-                        marginTop="1px"
-                        sx={{ direction: "rtl" }}
-                      >
-                        {dayjs(item?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").format(
-                          "DD/MM/YYYY HH:mm"
-                        )}
-                      </Typography>
-                    </Stack>
-                    <Stack justifyContent={"center"}>
-                      <IconButton
-                        size={"small"}
-                        {...bindTrigger(popupState)}
-                        onClick={(e) => {
-                          setCardDataInfo(item);
-
-                          bindTrigger(popupState).onClick(e);
-                        }}
-                      >
-                        <MoreHorizontal color={grey[500]} size={18} />
-                      </IconButton>
-                    </Stack>
+                    <CalendarDaysIcon
+                      color={slate[400]}
+                      width={"20px"}
+                      height={"24px"}
+                    />
+                    <Typography
+                      variant="xs"
+                      color={slate[500]}
+                      marginTop="1px"
+                      sx={{ direction: "rtl" }}
+                    >
+                      {dayjs(item?.createdAt).format("DD/MM/YYYY HH:mm")}
+                    </Typography>
                   </Stack>
-                  {/* lower-section */}
-                  <Stack padding={"16px"} justifyContent="space-between" height="100%">
-                    <Stack justifyContent={"space-between"} gap="10px">
-                      <Typography variant="xs" color={slate[500]}>
-                        {item?.complaint}
-                      </Typography>
+                  <Stack justifyContent={"center"}>
+                    <IconButton
+                      size={"small"}
+                      {...bindTrigger(popupState)}
+                      onClick={(e) => {
+                        setCardDataInfo(item);
+
+                        bindTrigger(popupState).onClick(e);
+                      }}
+                    >
+                      <MoreHorizontal
+                        color={grey[500]}
+                        size={18}
+                      />
+                    </IconButton>
+                  </Stack>
+                </Stack>
+                {/* lower-section */}
+                <Stack
+                  padding={"16px"}
+                  justifyContent="space-between"
+                  height="100%"
+                >
+                  <Stack
+                    justifyContent={"space-between"}
+                    gap="10px"
+                  >
+                    <Typography
+                      variant="xs"
+                      color={slate[500]}
+                    >
+                      {item?.complaint}
+                    </Typography>
+                    <Typography
+                      component={"span"}
+                      variant="2xs"
+                      color={slate[400]}
+                      lineHeight="142%"
+                      sx={{ direction: "rtl" }}
+                    >
+                      {item?.diagnosis.length < 127 ? (!item?.diagnosis ? "(بدون وصف)" : item?.diagnosis) : `${item?.diagnosis} ...`}
                       <Typography
+                        display={item?.diagnosis.length < 127 ? "none" : "inline"}
                         component={"span"}
                         variant="2xs"
-                        color={slate[400]}
-                        lineHeight="142%"
-                        sx={{ direction: "rtl" }}
+                        color={blue[400]}
+                        sx={{ cursor: "pointer", ":hover": { textDecoration: "underline" } }}
+                        onClick={() => {
+                          setconfirmProcessDialog(true);
+                          setconfirmProcessContent({
+                            content: item?.diagnosis,
+                            onAction: false,
+                          });
+                        }}
                       >
-                        {item?.diagnosis.length < 127
-                          ? !item?.diagnosis
-                            ? "(ללא הערה)"
-                            : item?.diagnosis
-                          : `${item?.diagnosis} ...`}
-                        <Typography
-                          display={item?.diagnosis.length < 127 ? "none" : "inline"}
-                          component={"span"}
-                          variant="2xs"
-                          color={blue[400]}
-                          sx={{ cursor: "pointer", ":hover": { textDecoration: "underline" } }}
-                          onClick={() => {
-                            setconfirmProcessDialog(true);
-                            setconfirmProcessContent({
-                              content: item?.diagnosis,
-                              onAction: false,
-                            });
-                          }}
-                        >
-                          להראות יותר
-                        </Typography>
+                        عرض المزيد
                       </Typography>
-                    </Stack>
-                    <Stack direction="row" alignItems={"center"} justifyContent="flex-end">
-                      {/* <Stack direction={"row"} alignItems="flex-end" gap="6px" paddingLeft={"2px"}>
+                    </Typography>
+                  </Stack>
+                  <Stack
+                    direction="row"
+                    alignItems={"center"}
+                    justifyContent="flex-end"
+                  >
+                    {/* <Stack direction={"row"} alignItems="flex-end" gap="6px" paddingLeft={"2px"}>
                         <img
                           src="/stethoscope.svg"
                           width={25}
@@ -226,24 +250,39 @@ const Diagnosis = React.forwardRef(function Diagnosis(props: Props, ref) {
                           </Typography>
                         </Stack>
                       </Stack> */}
-                      <Stack direction="row" justifyContent={"flex-end"} gap="10px">
-                        {item?.medical_history && (
-                          <img src="/medical-history.svg" width="22px" height="22px" />
-                        )}
-                        {item?.physical_examination && (
-                          <img src="/heart-pulse.png" width="22px" height="22px" />
-                        )}
-                        {item?.recommendations && (
-                          <img src="/good-feedback.png" width="22px" height="22px" />
-                        )}
-                      </Stack>
+                    <Stack
+                      direction="row"
+                      justifyContent={"flex-end"}
+                      gap="10px"
+                    >
+                      {item?.medical_history && (
+                        <img
+                          src="/medical-history.svg"
+                          width="22px"
+                          height="22px"
+                        />
+                      )}
+                      {item?.physical_examination && (
+                        <img
+                          src="/heart-pulse.png"
+                          width="22px"
+                          height="22px"
+                        />
+                      )}
+                      {item?.recommendations && (
+                        <img
+                          src="/good-feedback.png"
+                          width="22px"
+                          height="22px"
+                        />
+                      )}
                     </Stack>
                   </Stack>
                 </Stack>
-              </Box>
-            </Grid>
-          )
-        )}
+              </Stack>
+            </Box>
+          </Grid>
+        ))}
       </Grid>
 
       <AddDiagnosisModal
@@ -271,7 +310,10 @@ const Diagnosis = React.forwardRef(function Diagnosis(props: Props, ref) {
           }}
         >
           <ListItemIcon>
-            <Edit2 size={18} strokeWidth={2} />
+            <Edit2
+              size={18}
+              strokeWidth={2}
+            />
           </ListItemIcon>
           تعديل التشخيص
         </MenuItem>
@@ -299,21 +341,22 @@ const Diagnosis = React.forwardRef(function Diagnosis(props: Props, ref) {
           }}
         >
           <ListItemIcon>
-            <Trash2 size={18} strokeWidth={2} />
+            <Trash2
+              size={18}
+              strokeWidth={2}
+            />
           </ListItemIcon>
           حذف التشخيص
         </MenuItem>
-        <Divider></Divider>
-        <Box marginBottom={"6px"}>
+        {/* <Divider></Divider> */}
+        {/* <Box marginBottom={"6px"}>
           <Link
             href={{
               pathname: "/printer",
               query: {
                 diagnosis: true,
                 sickID: route?.query?.id,
-                date: dayjs(CardDataInfo?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").format(
-                  "YYYY-MM-DD"
-                ),
+                date: dayjs(CardDataInfo?.createdAt).format("YYYY-MM-DD"),
                 // bordereau: true,
                 // format: "pdf",
               },
@@ -327,13 +370,16 @@ const Diagnosis = React.forwardRef(function Diagnosis(props: Props, ref) {
                 }}
               >
                 <ListItemIcon>
-                  <Printer size={18} strokeWidth={2} />
+                  <Printer
+                    size={18}
+                    strokeWidth={2}
+                  />
                 </ListItemIcon>
                 طباعة التشخيص
               </MenuItem>
             </a>
           </Link>
-        </Box>
+        </Box> */}
         {/* <Divider></Divider> */}
       </Menu>
       {/* @ts-ignore */}
@@ -341,7 +387,10 @@ const Diagnosis = React.forwardRef(function Diagnosis(props: Props, ref) {
         open={confirmProcessDialog}
         onClose={() => setconfirmProcessDialog(false)}
         title={
-          <Typography variant="base" color={grey[800]}>
+          <Typography
+            variant="base"
+            color={grey[800]}
+          >
             {confirmProcessContent.title}
           </Typography>
         }
@@ -366,9 +415,7 @@ const Diagnosis = React.forwardRef(function Diagnosis(props: Props, ref) {
           </>
         }
       >
-        <DialogContentText id="alert-dialog-description">
-          {confirmProcessContent.content}
-        </DialogContentText>
+        <DialogContentText id="alert-dialog-description">{confirmProcessContent.content}</DialogContentText>
       </Dialog>
     </Box>
   );

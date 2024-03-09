@@ -45,7 +45,11 @@ const DetailsDrawer = (props: Props) => {
       // transitionDuration={{ appear: 1000, exit: 3000 }}
     >
       <Box bgcolor="#FFF">
-        <Tabs value={tabvalue} onChange={tabshandler} variant={"fullWidth"}>
+        <Tabs
+          value={tabvalue}
+          onChange={tabshandler}
+          variant={"fullWidth"}
+        >
           <Tab label="التقدم" />
           <Tab label="التفاصيل" />
         </Tabs>
@@ -73,7 +77,7 @@ const DetailsDrawer = (props: Props) => {
                   name={`${spot.person?.first_name} ${spot.person?.last_name}`}
                   status={tracking_status[spot.status].nameAr}
                   reside={spot.stock?.name}
-                  time={dayjs(spot?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").fromNow()}
+                  time={dayjs(spot?.createdAt).fromNow()}
                   note={spot.note}
                 ></TimelineContent>
               </TimelineItem>
@@ -88,22 +92,39 @@ const DetailsDrawer = (props: Props) => {
         >
           <Stack gap="20px">
             {/* Card 1 */}
-            <Box padding="18px 20px" bgcolor={"#FFF"} borderRadius="4px">
+            <Box
+              padding="18px 20px"
+              bgcolor={"#FFF"}
+              borderRadius="4px"
+            >
               <Stack gap="18px">
-                <Typography variant="base" color={grey[800]}>
+                <Typography
+                  variant="base"
+                  color={grey[800]}
+                >
                   تفاصيل عامة
                 </Typography>
-                <Stack
-                  divider={
-                    <Divider style={{ borderColor: grey[300], borderStyle: "dashed" }}></Divider>
-                  }
-                >
-                  <Box borderColor={grey[200]} padding="8px 0">
-                    <Stack direction={"row"} justifyContent="space-between" alignItems={"center"}>
-                      <Typography variant="xs" color={grey[500]}>
+                <Stack divider={<Divider style={{ borderColor: grey[300], borderStyle: "dashed" }}></Divider>}>
+                  <Box
+                    borderColor={grey[200]}
+                    padding="8px 0"
+                  >
+                    <Stack
+                      direction={"row"}
+                      justifyContent="space-between"
+                      alignItems={"center"}
+                    >
+                      <Typography
+                        variant="xs"
+                        color={grey[500]}
+                      >
                         الحالة
                       </Typography>
-                      <Typography variant="xs" color={grey[700]} component="div">
+                      <Typography
+                        variant="xs"
+                        color={grey[700]}
+                        component="div"
+                      >
                         <Chip
                           // @ts-ignore
                           rounded={true}
@@ -117,20 +138,42 @@ const DetailsDrawer = (props: Props) => {
                   </Box>
 
                   {/* next row */}
-                  <Box borderColor={grey[200]} padding="12px 0">
-                    <Stack direction={"row"} justifyContent="space-between" alignItems={"center"}>
-                      <Typography variant="xs" color={grey[500]}>
+                  <Box
+                    borderColor={grey[200]}
+                    padding="12px 0"
+                  >
+                    <Stack
+                      direction={"row"}
+                      justifyContent="space-between"
+                      alignItems={"center"}
+                    >
+                      <Typography
+                        variant="xs"
+                        color={grey[500]}
+                      >
                         الكود
                       </Typography>
-                      <Typography variant="xs" color={grey[700]} component="div" dir="ltr">
+                      <Typography
+                        variant="xs"
+                        color={grey[700]}
+                        component="div"
+                        dir="ltr"
+                      >
                         <Stack
                           direction={"row"}
                           alignItems="center"
                           height={"100%"}
                           columnGap={"1px"}
                         >
-                          <Hash strokeWidth={3} size={"12px"} color={grey[300]} />
-                          <Typography variant="2xs" color={grey[500]}>
+                          <Hash
+                            strokeWidth={3}
+                            size={"12px"}
+                            color={grey[300]}
+                          />
+                          <Typography
+                            variant="2xs"
+                            color={grey[500]}
+                          >
                             {detailsData?.code_box}
                           </Typography>
                         </Stack>
@@ -139,52 +182,114 @@ const DetailsDrawer = (props: Props) => {
                   </Box>
 
                   {/* next row */}
-                  <Box borderColor={grey[200]} padding="12px 0">
-                    <Stack direction={"row"} justifyContent="space-between" alignItems={"center"}>
-                      <Typography variant="xs" color={grey[500]}>
+                  <Box
+                    borderColor={grey[200]}
+                    padding="12px 0"
+                  >
+                    <Stack
+                      direction={"row"}
+                      justifyContent="space-between"
+                      alignItems={"center"}
+                    >
+                      <Typography
+                        variant="xs"
+                        color={grey[500]}
+                      >
                         تأمين
                       </Typography>
-                      <Typography variant="xs" color={grey[700]} component="div">
+                      <Typography
+                        variant="xs"
+                        color={grey[700]}
+                        component="div"
+                      >
                         {detailsData?.insurance ? (
-                          <Check size={16} color={green[400]}></Check>
+                          <Check
+                            size={16}
+                            color={green[400]}
+                          ></Check>
                         ) : (
-                          <X size={16} color={red[400]}></X>
+                          <X
+                            size={16}
+                            color={red[400]}
+                          ></X>
                         )}
                       </Typography>
                     </Stack>
                   </Box>
 
                   {/* next row */}
-                  <Box borderColor={grey[200]} padding="12px 0">
-                    <Stack direction={"row"} justifyContent="space-between" alignItems={"center"}>
-                      <Typography variant="xs" color={grey[500]}>
+                  <Box
+                    borderColor={grey[200]}
+                    padding="12px 0"
+                  >
+                    <Stack
+                      direction={"row"}
+                      justifyContent="space-between"
+                      alignItems={"center"}
+                    >
+                      <Typography
+                        variant="xs"
+                        color={grey[500]}
+                      >
                         عمولة النقل
                       </Typography>
-                      <Typography variant="2xs" color={grey[700]} component="div">
+                      <Typography
+                        variant="2xs"
+                        color={grey[700]}
+                        component="div"
+                      >
                         {priceFormatHelper(detailsData?.price_delivery, "ر.ي")}
                       </Typography>
                     </Stack>
                   </Box>
 
                   {/* next row */}
-                  <Box borderColor={grey[200]} padding="12px 0">
-                    <Stack direction={"row"} justifyContent="space-between" alignItems={"center"}>
-                      <Typography variant="xs" color={grey[500]}>
+                  <Box
+                    borderColor={grey[200]}
+                    padding="12px 0"
+                  >
+                    <Stack
+                      direction={"row"}
+                      justifyContent="space-between"
+                      alignItems={"center"}
+                    >
+                      <Typography
+                        variant="xs"
+                        color={grey[500]}
+                      >
                         سعر الفاتورة
                       </Typography>
-                      <Typography variant="2xs" color={grey[700]} component="div">
+                      <Typography
+                        variant="2xs"
+                        color={grey[700]}
+                        component="div"
+                      >
                         {priceFormatHelper(detailsData?.invoice_amount, "ر.ي")}
                       </Typography>
                     </Stack>
                   </Box>
 
                   {/* next row */}
-                  <Box borderColor={grey[200]} padding="12px 0">
-                    <Stack direction={"row"} justifyContent="space-between" alignItems={"center"}>
-                      <Typography variant="xs" color={grey[500]}>
+                  <Box
+                    borderColor={grey[200]}
+                    padding="12px 0"
+                  >
+                    <Stack
+                      direction={"row"}
+                      justifyContent="space-between"
+                      alignItems={"center"}
+                    >
+                      <Typography
+                        variant="xs"
+                        color={grey[500]}
+                      >
                         صور
                       </Typography>
-                      <Typography variant="xs" color={grey[700]} component="div">
+                      <Typography
+                        variant="xs"
+                        color={grey[700]}
+                        component="div"
+                      >
                         <Viewer
                           visible={visibleImage}
                           onClose={() => {
@@ -200,7 +305,11 @@ const DetailsDrawer = (props: Props) => {
                           scalable={false}
                         />
                         {detailsData?.picture?.length !== 0 ? (
-                          <Tooltip title="إضغط هنا للعرض" placement="top" arrow>
+                          <Tooltip
+                            title="إضغط هنا للعرض"
+                            placement="top"
+                            arrow
+                          >
                             <Typography
                               variant="2xs"
                               color={grey[700]}
@@ -218,7 +327,11 @@ const DetailsDrawer = (props: Props) => {
                             </Typography>
                           </Tooltip>
                         ) : (
-                          <Typography variant="2xs" color={grey[500]} component="div">
+                          <Typography
+                            variant="2xs"
+                            color={grey[500]}
+                            component="div"
+                          >
                             لايوجد صور
                           </Typography>
                         )}
@@ -227,12 +340,27 @@ const DetailsDrawer = (props: Props) => {
                   </Box>
 
                   {/* next row */}
-                  <Box borderColor={grey[200]} padding="12px 0">
-                    <Stack direction={"row"} justifyContent="space-between" alignItems={"center"}>
-                      <Typography variant="xs" color={grey[500]}>
+                  <Box
+                    borderColor={grey[200]}
+                    padding="12px 0"
+                  >
+                    <Stack
+                      direction={"row"}
+                      justifyContent="space-between"
+                      alignItems={"center"}
+                    >
+                      <Typography
+                        variant="xs"
+                        color={grey[500]}
+                      >
                         تاريخ الإنشاء
                       </Typography>
-                      <Typography variant="2xs" color={grey[700]} component="div" dir="ltr">
+                      <Typography
+                        variant="2xs"
+                        color={grey[700]}
+                        component="div"
+                        dir="ltr"
+                      >
                         {detailsData?.createdAt}
                       </Typography>
                     </Stack>
@@ -242,24 +370,45 @@ const DetailsDrawer = (props: Props) => {
             </Box>
 
             {/* Card 2 */}
-            <Box padding="18px 20px" bgcolor={"#FFF"} borderRadius="4px">
+            <Box
+              padding="18px 20px"
+              bgcolor={"#FFF"}
+              borderRadius="4px"
+            >
               <Stack gap="18px">
-                <Typography variant="base" color={grey[800]}>
+                <Typography
+                  variant="base"
+                  color={grey[800]}
+                >
                   معلومات المستلم
                 </Typography>
-                <Stack
-                  divider={
-                    <Divider style={{ borderColor: grey[300], borderStyle: "dashed" }}></Divider>
-                  }
-                >
+                <Stack divider={<Divider style={{ borderColor: grey[300], borderStyle: "dashed" }}></Divider>}>
                   {/* next row */}
-                  <Box borderColor={grey[200]} padding="12px 0">
-                    <Stack direction={"row"} justifyContent="space-between" alignItems={"center"}>
-                      <Typography variant="xs" color={grey[500]}>
+                  <Box
+                    borderColor={grey[200]}
+                    padding="12px 0"
+                  >
+                    <Stack
+                      direction={"row"}
+                      justifyContent="space-between"
+                      alignItems={"center"}
+                    >
+                      <Typography
+                        variant="xs"
+                        color={grey[500]}
+                      >
                         الإسم
                       </Typography>
-                      <Typography variant="2xs" color={grey[700]} component="div">
-                        <Stack direction={"row"} columnGap={"6px"} alignItems="center">
+                      <Typography
+                        variant="2xs"
+                        color={grey[700]}
+                        component="div"
+                      >
+                        <Stack
+                          direction={"row"}
+                          columnGap={"6px"}
+                          alignItems="center"
+                        >
                           <RAvatar
                             size="18px"
                             name={props.fullname}
@@ -267,7 +416,10 @@ const DetailsDrawer = (props: Props) => {
                             style={{ fontFamily: "Heebo" }}
                             maxInitials={1}
                           ></RAvatar>
-                          <Typography variant="2xs" color={grey[700]}>
+                          <Typography
+                            variant="2xs"
+                            color={grey[700]}
+                          >
                             {detailsData?.recipient_name}
                           </Typography>
                         </Stack>
@@ -276,54 +428,104 @@ const DetailsDrawer = (props: Props) => {
                   </Box>
 
                   {/* next row */}
-                  <Box borderColor={grey[200]} padding="12px 0">
-                    <Stack direction={"row"} justifyContent="space-between" alignItems={"center"}>
-                      <Typography variant="xs" color={grey[500]}>
+                  <Box
+                    borderColor={grey[200]}
+                    padding="12px 0"
+                  >
+                    <Stack
+                      direction={"row"}
+                      justifyContent="space-between"
+                      alignItems={"center"}
+                    >
+                      <Typography
+                        variant="xs"
+                        color={grey[500]}
+                      >
                         رقم الهاتف
                       </Typography>
-                      <Typography variant="2xs" color={grey[700]} component="div">
+                      <Typography
+                        variant="2xs"
+                        color={grey[700]}
+                        component="div"
+                      >
                         {detailsData?.recipient_phone1}
                       </Typography>
                     </Stack>
                   </Box>
 
                   {/* next row */}
-                  <Box borderColor={grey[200]} padding="12px 0">
-                    <Stack direction={"row"} justifyContent="space-between" alignItems={"center"}>
-                      <Typography variant="xs" color={grey[500]}>
+                  <Box
+                    borderColor={grey[200]}
+                    padding="12px 0"
+                  >
+                    <Stack
+                      direction={"row"}
+                      justifyContent="space-between"
+                      alignItems={"center"}
+                    >
+                      <Typography
+                        variant="xs"
+                        color={grey[500]}
+                      >
                         المدينة
                       </Typography>
-                      <Typography variant="2xs" color={grey[700]} component="div">
-                        {
-                          yaman_provinces?.[
-                            yaman_provinces.findIndex(
-                              (item: any) => item?.wilaya_code == detailsData?.recipient_city
-                            )
-                          ]?.wilaya_name
-                        }
+                      <Typography
+                        variant="2xs"
+                        color={grey[700]}
+                        component="div"
+                      >
+                        {yaman_provinces?.[yaman_provinces.findIndex((item: any) => item?.wilaya_code == detailsData?.recipient_city)]?.wilaya_name}
                       </Typography>
                     </Stack>
                   </Box>
 
                   {/* next row */}
-                  <Box borderColor={grey[200]} padding="12px 0">
-                    <Stack direction={"row"} justifyContent="space-between" alignItems={"center"}>
-                      <Typography variant="xs" color={grey[500]}>
+                  <Box
+                    borderColor={grey[200]}
+                    padding="12px 0"
+                  >
+                    <Stack
+                      direction={"row"}
+                      justifyContent="space-between"
+                      alignItems={"center"}
+                    >
+                      <Typography
+                        variant="xs"
+                        color={grey[500]}
+                      >
                         العنوان
                       </Typography>
-                      <Typography variant="2xs" color={grey[700]} component="div">
+                      <Typography
+                        variant="2xs"
+                        color={grey[700]}
+                        component="div"
+                      >
                         {detailsData?.recipient_address}
                       </Typography>
                     </Stack>
                   </Box>
 
                   {/* next row */}
-                  <Box borderColor={grey[200]} padding="12px 0">
-                    <Stack direction={"row"} justifyContent="space-between" alignItems={"center"}>
-                      <Typography variant="xs" color={grey[500]}>
+                  <Box
+                    borderColor={grey[200]}
+                    padding="12px 0"
+                  >
+                    <Stack
+                      direction={"row"}
+                      justifyContent="space-between"
+                      alignItems={"center"}
+                    >
+                      <Typography
+                        variant="xs"
+                        color={grey[500]}
+                      >
                         رقم الهوية
                       </Typography>
-                      <Typography variant="2xs" color={grey[700]} component="div">
+                      <Typography
+                        variant="2xs"
+                        color={grey[700]}
+                        component="div"
+                      >
                         {detailsData?.ID_number}
                       </Typography>
                     </Stack>
@@ -333,83 +535,172 @@ const DetailsDrawer = (props: Props) => {
             </Box>
 
             {/* Card 3 */}
-            <Box padding="18px 20px" bgcolor={"#FFF"} borderRadius="4px">
+            <Box
+              padding="18px 20px"
+              bgcolor={"#FFF"}
+              borderRadius="4px"
+            >
               <Stack gap="18px">
-                <Typography variant="base" color={grey[800]}>
+                <Typography
+                  variant="base"
+                  color={grey[800]}
+                >
                   تفاصيل الطرد
                 </Typography>
-                <Stack
-                  divider={
-                    <Divider style={{ borderColor: grey[300], borderStyle: "dashed" }}></Divider>
-                  }
-                >
+                <Stack divider={<Divider style={{ borderColor: grey[300], borderStyle: "dashed" }}></Divider>}>
                   {/* next row */}
-                  <Box borderColor={grey[200]} padding="12px 0">
-                    <Stack direction={"row"} justifyContent="space-between" alignItems={"center"}>
-                      <Typography variant="xs" color={grey[500]}>
+                  <Box
+                    borderColor={grey[200]}
+                    padding="12px 0"
+                  >
+                    <Stack
+                      direction={"row"}
+                      justifyContent="space-between"
+                      alignItems={"center"}
+                    >
+                      <Typography
+                        variant="xs"
+                        color={grey[500]}
+                      >
                         المحتوى
                       </Typography>
-                      <Typography variant="2xs" color={grey[700]} component="div">
+                      <Typography
+                        variant="2xs"
+                        color={grey[700]}
+                        component="div"
+                      >
                         {detailsData?.product_name || "--"}
                       </Typography>
                     </Stack>
                   </Box>
 
                   {/* next row */}
-                  <Box borderColor={grey[200]} padding="12px 0">
-                    <Stack direction={"row"} justifyContent="space-between" alignItems={"center"}>
-                      <Typography variant="xs" color={grey[500]}>
+                  <Box
+                    borderColor={grey[200]}
+                    padding="12px 0"
+                  >
+                    <Stack
+                      direction={"row"}
+                      justifyContent="space-between"
+                      alignItems={"center"}
+                    >
+                      <Typography
+                        variant="xs"
+                        color={grey[500]}
+                      >
                         مادة المصنعة
                       </Typography>
-                      <Typography variant="2xs" color={grey[700]} component="div">
+                      <Typography
+                        variant="2xs"
+                        color={grey[700]}
+                        component="div"
+                      >
                         {detailsData?.manufactured_material}
                       </Typography>
                     </Stack>
                   </Box>
 
                   {/* next row */}
-                  <Box borderColor={grey[200]} padding="12px 0">
-                    <Stack direction={"row"} justifyContent="space-between" alignItems={"center"}>
-                      <Typography variant="xs" color={grey[500]}>
+                  <Box
+                    borderColor={grey[200]}
+                    padding="12px 0"
+                  >
+                    <Stack
+                      direction={"row"}
+                      justifyContent="space-between"
+                      alignItems={"center"}
+                    >
+                      <Typography
+                        variant="xs"
+                        color={grey[500]}
+                      >
                         عدد الكراتين
                       </Typography>
-                      <Typography variant="2xs" color={grey[700]} component="div">
+                      <Typography
+                        variant="2xs"
+                        color={grey[700]}
+                        component="div"
+                      >
                         {detailsData?.number_cartons}
                       </Typography>
                     </Stack>
                   </Box>
 
                   {/* next row */}
-                  <Box borderColor={grey[200]} padding="12px 0">
-                    <Stack direction={"row"} justifyContent="space-between" alignItems={"center"}>
-                      <Typography variant="xs" color={grey[500]}>
+                  <Box
+                    borderColor={grey[200]}
+                    padding="12px 0"
+                  >
+                    <Stack
+                      direction={"row"}
+                      justifyContent="space-between"
+                      alignItems={"center"}
+                    >
+                      <Typography
+                        variant="xs"
+                        color={grey[500]}
+                      >
                         الابعاد
                       </Typography>
-                      <Typography variant="2xs" color={grey[700]} component="div" dir="ltr">
+                      <Typography
+                        variant="2xs"
+                        color={grey[700]}
+                        component="div"
+                        dir="ltr"
+                      >
                         {detailsData?.size} m³
                       </Typography>
                     </Stack>
                   </Box>
 
                   {/* next row */}
-                  <Box borderColor={grey[200]} padding="12px 0">
-                    <Stack direction={"row"} justifyContent="space-between" alignItems={"center"}>
-                      <Typography variant="xs" color={grey[500]}>
+                  <Box
+                    borderColor={grey[200]}
+                    padding="12px 0"
+                  >
+                    <Stack
+                      direction={"row"}
+                      justifyContent="space-between"
+                      alignItems={"center"}
+                    >
+                      <Typography
+                        variant="xs"
+                        color={grey[500]}
+                      >
                         الوزن
                       </Typography>
-                      <Typography variant="2xs" color={grey[700]} component="div" dir="ltr">
+                      <Typography
+                        variant="2xs"
+                        color={grey[700]}
+                        component="div"
+                        dir="ltr"
+                      >
                         {detailsData?.weight || 0} kg
                       </Typography>
                     </Stack>
                   </Box>
 
                   {/* next row */}
-                  <Box borderColor={grey[200]} padding="12px 0">
-                    <Stack direction={"row"} justifyContent="space-between" alignItems={"center"}>
-                      <Typography variant="xs" color={grey[500]}>
+                  <Box
+                    borderColor={grey[200]}
+                    padding="12px 0"
+                  >
+                    <Stack
+                      direction={"row"}
+                      justifyContent="space-between"
+                      alignItems={"center"}
+                    >
+                      <Typography
+                        variant="xs"
+                        color={grey[500]}
+                      >
                         ملاحظة
                       </Typography>
-                      <Typography variant="2xs" color={grey[700]} component="div">
+                      <Typography
+                        variant="2xs"
+                        color={grey[700]}
+                        component="div"
+                      >
                         {detailsData?.note || "لا يوجد ملاحظة"}
                       </Typography>
                     </Stack>

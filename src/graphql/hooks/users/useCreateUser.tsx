@@ -1,52 +1,40 @@
-import {
-  ApolloCache,
-  DefaultContext,
-  gql,
-  MutationTuple,
-  OperationVariables,
-  useMutation,
-  useQuery,
-} from "@apollo/client";
+import { ApolloCache, DefaultContext, gql, MutationTuple, OperationVariables, useMutation, useQuery } from "@apollo/client";
 import { Box } from "react-feather";
 
 export const Create_User = gql`
-  mutation CreateUser($content: contentUser) {
-    createUser(content: $content) {
-      token
-      user {
+  mutation CreateUser($data: UserInputType, $personData: PersonInputType) {
+    CreateUser(data: $data, personData: $personData) {
+      id
+      email
+      username
+      role
+      google_account_id
+      personsId
+      Person {
         id
-        user_name
-        role
-        activation
-        person {
-          id
-          first_name
-          last_name
-          email
-          phone
-          address
-          ID_number
-          createdAt
-          updatedAt
-        }
+        first_name
       }
+      createdAt
+      updatedAt
     }
   }
 `;
 
 interface VariableProps {
-  content: {
-    user_name?: string;
-    password?: string;
+  data: {
+    email?: string;
+    // google_account_id?: string;
     role?: string;
-    person?: {
-      first_name?: string;
-      last_name?: string;
-      email?: string;
-      phone?: string;
-      address?: string;
-      ID_number?: string;
-    };
+    username?: string;
+  };
+  personData: {
+    address: string;
+    age: string;
+    first_name: string;
+    gender: string;
+    identification_number: string;
+    last_name: string;
+    phone: string;
   };
 }
 const useCreateUser = (): MutationTuple<any, VariableProps, DefaultContext, ApolloCache<any>> => {

@@ -73,7 +73,7 @@ const AddPatientModal = ({ open, onClose }: Props) => {
       refetchQueries: [Get_All_Patients],
     })
       .then(() => {
-        enqueueSnackbar("הוספת בהצלחה", {
+        enqueueSnackbar("تم الإضافة بنجاح", {
           variant: "success",
         });
         setSubmitLoading(false);
@@ -85,19 +85,19 @@ const AddPatientModal = ({ open, onClose }: Props) => {
           setAlert({
             // code: err?.graphQLErrors[0]?.extensions?.code,
             status: "error",
-            msg: "הטלפון כבר קיים!",
+            msg: "إن رقم الهاتف موجود مسبقا!",
           });
         } else if (err?.graphQLErrors[0]?.extensions?.code == "EMAIL_EXIST") {
           setAlert({
             // code: err?.graphQLErrors[0]?.extensions?.code,
             status: "error",
-            msg: "האימייל כבר קיים!",
+            msg: "إن هذا البريد الإلكتروني موجود بالفعل!",
           });
         } else if (err?.graphQLErrors[0]?.extensions?.code) {
           setAlert({
             // code: err?.graphQLErrors[0]?.extensions?.code,
             status: "error",
-            msg: "אירעה שגיאה במהלך הרישום!",
+            msg: "حدث خطأ أثناء التسجيل!",
           });
         }
         // closeHandler();

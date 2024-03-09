@@ -7,6 +7,7 @@ export const Get_One_Patient = gql`
       personsId
       createdAt
       updatedAt
+      last_update
       Person {
         address
         age

@@ -159,7 +159,7 @@ const VitalSign = React.forwardRef(function VitalSign(props: Props, ref) {
                       marginTop="1px"
                       sx={{ direction: "rtl" }}
                     >
-                      {dayjs(vitalSign?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").format("DD/MM/YYYY HH:mm")}
+                      {dayjs(vitalSign?.createdAt).format("DD/MM/YYYY HH:mm")}
                     </Typography>
                   </Stack>
                   <Stack justifyContent={"center"}>

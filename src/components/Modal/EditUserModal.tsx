@@ -1,22 +1,9 @@
-import {
-  Box,
-  Divider,
-  Grid,
-  InputAdornment,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Grid, InputAdornment, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { amber, blue, grey, red } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
 import { Check, Plus, Trash2, Upload, X } from "react-feather";
 import { Controller, useForm } from "react-hook-form";
-import {
-  useCreateShipment,
-  useCreateUploadMultiFiles,
-  useGetProvincesPrices,
-} from "../../graphql/hooks/shipments";
+import { useCreateShipment, useCreateUploadMultiFiles, useGetProvincesPrices } from "../../graphql/hooks/shipments";
 import useStore from "../../store/useStore";
 import Button from "../Button";
 import Input from "../Input/Input";
@@ -39,19 +26,20 @@ interface Props {
 }
 
 const initialInputs = (data?: any) => ({
-  first_name: data?.person?.first_name,
-  last_name: data?.person?.last_name,
-  email: data?.person?.email,
-  address: data?.person?.address,
-  ID_number: data?.person?.ID_number,
-  phone: data?.person?.phone,
+  first_name: data?.Person?.first_name,
+  last_name: data?.Person?.last_name,
+  address: data?.Person?.address,
+  ID_number: data?.Person?.ID_number,
+  phone: data?.Person?.phone,
 
+  email: data?.email,
   password: data?.password,
   role: data?.role,
-  user_name: data?.user_name,
+  user_name: data?.username,
 });
 
 const EditUserModal = ({ open, onClose, dataInfo }: Props) => {
+  console.log("🚀 ~ EditUserModal ~ dataInfo:", dataInfo);
   let {
     register,
     handleSubmit,
@@ -74,39 +62,32 @@ const EditUserModal = ({ open, onClose, dataInfo }: Props) => {
   }>({});
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  let onFormSubmit = ({
-    first_name,
-    last_name,
-    email,
-    address,
-    ID_number,
-    phone,
-    password,
-    role,
-    user_name,
-  }: any) => {
+  let onFormSubmit = ({ first_name, last_name, email, address, ID_number, phone, password, role, user_name }: any) => {
     setSubmitLoading(true);
     updateForModal({
       variables: {
-        idPerson: dataInfo?.person?.id,
-        content: {
-          ...(password && { newPassword: password }),
+        personId: dataInfo?.Person?.id,
+        updateUserId: dataInfo?.id,
+        data: {
+          email,
+          // password,
           role,
-          user_name,
-          person: {
-            first_name,
-            last_name,
-            email,
-            address,
-            ID_number,
-            phone,
-          },
+          username: user_name,
+        },
+        personData: {
+          first_name,
+          last_name,
+          address,
+          identification_number: ID_number,
+          phone,
+          age: "",
+          gender: "",
         },
       },
       refetchQueries: [ALL_USERS],
     })
       .then(() => {
-        enqueueSnackbar("נערך בהצלחה", {
+        enqueueSnackbar("تم التعديل بنجاح", {
           variant: "success",
         });
         setSubmitLoading(false);
@@ -118,19 +99,19 @@ const EditUserModal = ({ open, onClose, dataInfo }: Props) => {
           setAlert({
             // code: err?.graphQLErrors[0]?.extensions?.code,
             status: "error",
-            msg: "הטלפון כבר קיים!",
+            msg: "إن رقم الهاتف موجود مسبقا!",
           });
         } else if (err?.graphQLErrors[0]?.extensions?.code == "EMAIL_EXIST") {
           setAlert({
             // code: err?.graphQLErrors[0]?.extensions?.code,
             status: "error",
-            msg: "האימייל כבר קיים!",
+            msg: "إن هذا البريد الإلكتروني موجود بالفعل!",
           });
         } else if (err?.graphQLErrors[0]?.extensions?.code) {
           setAlert({
             // code: err?.graphQLErrors[0]?.extensions?.code,
             status: "error",
-            msg: "אירעה שגיאה במהלך הרישום!",
+            msg: "حدث خطأ أثناء التسجيل!",
           });
         }
         // closeHandler();
@@ -179,10 +160,20 @@ const EditUserModal = ({ open, onClose, dataInfo }: Props) => {
         </>
       }
     >
-      <form id="add_shipment" onSubmit={handleSubmit(onFormSubmit)}>
-        <Grid container boxSizing={"border-box"} spacing={2}>
+      <form
+        id="add_shipment"
+        onSubmit={handleSubmit(onFormSubmit)}
+      >
+        <Grid
+          container
+          boxSizing={"border-box"}
+          spacing={2}
+        >
           {alert?.status && (
-            <Grid item xs={12}>
+            <Grid
+              item
+              xs={12}
+            >
               <Alert
                 variant="filled"
                 severity={"error"}
@@ -193,7 +184,11 @@ const EditUserModal = ({ open, onClose, dataInfo }: Props) => {
               </Alert>
             </Grid>
           )}
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="إسم المستخدم*"
               error={errors?.user_name}
@@ -203,17 +198,24 @@ const EditUserModal = ({ open, onClose, dataInfo }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               type={"password"}
-              label=" كلمة مرور جديدة*"
+              label=" كلمة مرور جديدة"
               error={errors?.password}
-              placeholder=" كلمة مرور جديدة*"
+              placeholder=" كلمة مرور جديدة"
               fullWidth
-              {...register("password", { required: true })}
+              {...register("password", { required: false })}
             ></Input>
           </Grid>
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+          >
             <Select
               error={errors?.role}
               placeholder="نوع الحساب*"
@@ -221,15 +223,22 @@ const EditUserModal = ({ open, onClose, dataInfo }: Props) => {
               fullWidth
               {...register("role", { required: true })}
             >
-              <MenuItem value={"Doctor"}>طبيب</MenuItem>
-              <MenuItem value={"Nurse"}>ممرضة</MenuItem>
+              <MenuItem value={"doctor"}>طبيب</MenuItem>
+              <MenuItem value={"nurse"}>ممرضة</MenuItem>
             </Select>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+          >
             <Divider></Divider>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="الاسم الاول*"
               error={errors?.first_name}
@@ -239,7 +248,11 @@ const EditUserModal = ({ open, onClose, dataInfo }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="الاسم الثاني*"
               error={errors?.last_name}
@@ -249,7 +262,11 @@ const EditUserModal = ({ open, onClose, dataInfo }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="الايميل الالكتروني*"
               error={errors?.email}
@@ -258,7 +275,11 @@ const EditUserModal = ({ open, onClose, dataInfo }: Props) => {
               {...register("email", { required: true })}
             ></Input>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="رقم الجواز"
               error={errors?.ID_number}
@@ -268,7 +289,11 @@ const EditUserModal = ({ open, onClose, dataInfo }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="رقم الهاتق"
               error={errors?.phone}
@@ -277,7 +302,11 @@ const EditUserModal = ({ open, onClose, dataInfo }: Props) => {
               {...register("phone", { required: false })}
             ></Input>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               label="العنوان"
               error={errors?.address}

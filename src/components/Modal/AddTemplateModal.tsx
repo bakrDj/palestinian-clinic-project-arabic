@@ -1,22 +1,9 @@
-import {
-  Box,
-  Divider,
-  Grid,
-  InputAdornment,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Grid, InputAdornment, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { amber, blue, grey, red } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
 import { Check, Plus, Trash2, Upload, X } from "react-feather";
 import { Controller, useForm } from "react-hook-form";
-import {
-  useCreateShipment,
-  useCreateUploadMultiFiles,
-  useGetProvincesPrices,
-} from "../../graphql/hooks/shipments";
+import { useCreateShipment, useCreateUploadMultiFiles, useGetProvincesPrices } from "../../graphql/hooks/shipments";
 import useStore from "../../store/useStore";
 import Button from "../Button";
 import Input from "../Input/Input";
@@ -73,7 +60,7 @@ const AddTemplateModal = ({ open, onClose, inputWho }: Props) => {
       refetchQueries: [all_Formats],
     })
       .then(() => {
-        enqueueSnackbar("הוספת בהצלחה", {
+        enqueueSnackbar("تم الإضافة بنجاح", {
           variant: "success",
         });
         setSubmitLoading(false);
@@ -128,9 +115,19 @@ const AddTemplateModal = ({ open, onClose, inputWho }: Props) => {
         </>
       }
     >
-      <form id="add_shipment1324" onSubmit={handleSubmit(onFormSubmit)}>
-        <Grid container boxSizing={"border-box"} spacing={2}>
-          <Grid item xs={12}>
+      <form
+        id="add_shipment1324"
+        onSubmit={handleSubmit(onFormSubmit)}
+      >
+        <Grid
+          container
+          boxSizing={"border-box"}
+          spacing={2}
+        >
+          <Grid
+            item
+            xs={12}
+          >
             <TextArea
               label="תוכן תבנית*"
               placeholder="תוכן תבנית*"

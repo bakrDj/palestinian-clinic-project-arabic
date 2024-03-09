@@ -178,7 +178,7 @@ const NurseDuties = React.forwardRef(function NurseDuties(props: Props, ref) {
                       marginTop="1px"
                       sx={{ direction: "rtl" }}
                     >
-                      {dayjs(item?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").format("DD/MM/YYYY HH:mm")}
+                      {dayjs(item?.createdAt).format("DD/MM/YYYY HH:mm")}
                     </Typography>
                   </Stack>
                   <Stack justifyContent={"center"}>
@@ -216,7 +216,7 @@ const NurseDuties = React.forwardRef(function NurseDuties(props: Props, ref) {
                         color={slate[400]}
                         lineHeight="142%"
                       >
-                        {item?.note.length < 296 ? (!item?.note ? "(ללא הערה)" : item?.note) : `${item?.note} ...`}
+                        {item?.note.length < 296 ? (!item?.note ? "(بدون وصف)" : item?.note) : `${item?.note} ...`}
                         <Typography
                           display={item?.note.length < 296 ? "none" : "inline"}
                           component={"span"}
@@ -231,7 +231,7 @@ const NurseDuties = React.forwardRef(function NurseDuties(props: Props, ref) {
                             });
                           }}
                         >
-                          להראות יותר
+                          عرض المزيد
                         </Typography>
                       </Typography>
                     </Stack>

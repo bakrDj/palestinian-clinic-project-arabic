@@ -189,7 +189,7 @@ const Prescription = React.forwardRef(function Prescription(props: Props, ref) {
                   variant="2xs"
                   color={slate[400]}
                 >
-                  {dayjs(item?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").format("DD/MM/YYYY HH:mm")}
+                  {dayjs(item?.createdAt).format("DD/MM/YYYY HH:mm")}
                 </Typography>
               </Stack>
               <Stack justifyContent={"center"}>
@@ -465,8 +465,8 @@ const Prescription = React.forwardRef(function Prescription(props: Props, ref) {
           </ListItemIcon>
           حذف الروشيتا
         </MenuItem>
-        <Divider></Divider>
-        <Box marginBottom={"6px"}>
+        {/* <Divider></Divider> */}
+        {/* <Box marginBottom={"6px"}>
           <Link
             href={{
               pathname: CardDataInfo?.Medicines?.length ? "/printer" : "/",
@@ -494,7 +494,7 @@ const Prescription = React.forwardRef(function Prescription(props: Props, ref) {
               </MenuItem>
             </a>
           </Link>
-        </Box>
+        </Box> */}
       </Menu>
 
       <Menu {...bindMenu(popupState2)}>

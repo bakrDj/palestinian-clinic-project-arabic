@@ -63,7 +63,7 @@ const ProfilePatientInformationSubPage = (props: Props) => {
   return (
     <>
       <Head>
-        <title>{patientData?.person ? patientData?.Person?.first_name + " " + patientData?.Person?.last_name + " | نبض" : ""}</title>
+        <title>{patientData?.Person ? patientData?.Person?.first_name + " " + patientData?.Person?.last_name + " | نبض" : ""}</title>
       </Head>
       <Box
         sx={{
@@ -237,7 +237,7 @@ const ProfilePatientInformationSubPage = (props: Props) => {
                           color={slate[500]}
                           sx={{ direction: "rtl" }}
                         >
-                          {dayjs(patientData?.Person?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").format("DD/MM/YYYY HH:mm")}
+                          {dayjs(patientData?.Person?.createdAt).format("DD/MM/YYYY HH:mm")}
                         </Typography>
                       </Stack>
                     </Stack>
@@ -276,15 +276,15 @@ const ProfilePatientInformationSubPage = (props: Props) => {
                             direction={"row"}
                             gap={"4px"}
                             sx={{
-                              borderBottom: "1px dashed " + slate[400],
+                              // cursor: "pointer",
                               color: slate[400],
-                              cursor: "pointer",
-                              "&:hover": {
-                                color: slate[500],
-                              },
+                              // borderBottom: "1px dashed " + slate[400],
+                              // "&:hover": {
+                              //   color: slate[500],
+                              // },
                             }}
                             onClick={() => {
-                              setconfirmProcessDialog2(true);
+                              // setconfirmProcessDialog2(true);
                             }}
                           >
                             <History
@@ -305,7 +305,7 @@ const ProfilePatientInformationSubPage = (props: Props) => {
                           color={slate[500]}
                           sx={{ direction: "rtl" }}
                         >
-                          {dayjs(patientData?.lastUpdate, "YYYY-MM-DD[T]HH:mm:ss[Z]").format("DD/MM/YYYY HH:mm")}
+                          {dayjs(patientData?.last_update).format("DD/MM/YYYY HH:mm")}
                         </Typography>
                       </Stack>
                     </Stack>

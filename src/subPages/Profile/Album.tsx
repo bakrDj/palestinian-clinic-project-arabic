@@ -217,7 +217,7 @@ const Album = React.forwardRef(function Album(props: Props, ref) {
                       marginTop="1px"
                       sx={{ direction: "rtl" }}
                     >
-                      {dayjs(item?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").format("DD/MM/YYYY HH:mm")}
+                      {dayjs(item?.createdAt).format("DD/MM/YYYY HH:mm")}
                     </Typography>
                   </Stack>
                   <Stack justifyContent={"center"}>
@@ -322,7 +322,7 @@ const Album = React.forwardRef(function Album(props: Props, ref) {
                         color={slate[400]}
                         lineHeight="142%"
                       >
-                        {item?.description.length < 190 ? (!item?.description ? "(ללא הערה)" : item?.description) : `${item?.description} ...`}
+                        {item?.description.length < 190 ? (!item?.description ? "(بدون وصف)" : item?.description) : `${item?.description} ...`}
                         <Typography
                           display={item?.description.length < 190 ? "none" : "inline"}
                           component={"span"}
@@ -337,7 +337,7 @@ const Album = React.forwardRef(function Album(props: Props, ref) {
                             });
                           }}
                         >
-                          להראות יותר
+                          عرض المزيد
                         </Typography>
                       </Typography>
                     </Stack>

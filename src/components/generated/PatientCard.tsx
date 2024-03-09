@@ -72,7 +72,6 @@ const StyledPatientCard = styled(Box)(({ theme }: { theme: any }) => {
 
 const PatientCard = (props: PatientCardProps) => {
   let { dataInfo } = props;
-  console.log("🚀 ~ PatientCard ~ dataInfo:", dataInfo);
 
   let [deleteCardMutation] = useDeletePatient();
 
@@ -321,7 +320,7 @@ const PatientCard = (props: PatientCardProps) => {
                   variant="3xs"
                   color={grey[600]}
                 >
-                  {dayjs(dataInfo?.updatedAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").fromNow()}
+                  {dayjs(dataInfo?.last_update).fromNow()}
                 </Typography>
               </Stack>
               <History

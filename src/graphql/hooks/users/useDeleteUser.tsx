@@ -1,24 +1,16 @@
-import {
-  ApolloCache,
-  DefaultContext,
-  gql,
-  MutationTuple,
-  OperationVariables,
-  useMutation,
-  useQuery,
-} from "@apollo/client";
+import { ApolloCache, DefaultContext, gql, MutationTuple, OperationVariables, useMutation, useQuery } from "@apollo/client";
 import { Box } from "react-feather";
 
 export const Delete_User = gql`
-  mutation DeleteUser($idPerson: ID!) {
-    deleteUser(id_person: $idPerson) {
-      status
+  mutation DeleteUser($deleteUserId: Int!) {
+    DeleteUser(id: $deleteUserId) {
+      id
     }
   }
 `;
 
 interface VariableProps {
-  idPerson?: string;
+  deleteUserId?: number;
 }
 
 const useDeleteUser = (): MutationTuple<any, VariableProps, DefaultContext, ApolloCache<any>> => {

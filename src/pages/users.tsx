@@ -1,17 +1,4 @@
-import {
-  alpha,
-  Box,
-  Collapse,
-  Container,
-  Divider,
-  Grid,
-  IconButton,
-  ListItemIcon,
-  MenuItem,
-  Skeleton,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { alpha, Box, Collapse, Container, Divider, Grid, IconButton, ListItemIcon, MenuItem, Skeleton, Stack, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { FileText, Minus, MoreHorizontal, Printer, Sheet } from "lucide-react";
 import Head from "next/head";
@@ -39,11 +26,7 @@ import useGetAllClientShipments from "../graphql/hooks/shipments/useGetAllClient
 import useStore from "../store/useStore";
 import theme, { slate } from "../styles/theme";
 import algerian_provinces from "../utilities/data/api/yaman_provinces.json";
-import {
-  fuzzySearchMultipleWords,
-  searchHelper,
-  sortByRecentTime,
-} from "../utilities/helpers/filters";
+import { fuzzySearchMultipleWords, searchHelper, sortByRecentTime } from "../utilities/helpers/filters";
 import Menu from "../components/Menu/Menu";
 import { isMobile, isTablet } from "react-device-detect";
 import PullToRefresh from "react-simple-pull-to-refresh";
@@ -77,9 +60,7 @@ export default function Users({}: Props): ReactElement {
   const [openRequestModal, setOpenRequestModal] = React.useState(false);
   const [isReceiptFormatCollapsed, setIsReceiptFormatCollapsed] = React.useState(false);
   const [oneShipmentInfo, setOneShipmentInfo] = React.useState<any>({});
-  const [multiSelectionSelectedShipments, setMultiSelectionSelectedShipments] = React.useState<any>(
-    []
-  );
+  const [multiSelectionSelectedShipments, setMultiSelectionSelectedShipments] = React.useState<any>([]);
 
   const [requestStatus, setRequestStatus] = React.useState<number | undefined>(undefined);
   const [tab2value, setTab2value] = React.useState(0);
@@ -113,22 +94,20 @@ export default function Users({}: Props): ReactElement {
   let filteredData: object[] = [];
   filteredData = fuzzySearchMultipleWords(allShipmentsData, searchValue, [
     // keys: [
-    "person.first_name",
-    "person.last_name",
-    "person.ID_number",
-    "person.phone",
-    "person.address",
-    "person.email",
+    "Person.first_name",
+    "Person.last_name",
+    "Person.ID_number",
+    "Person.phone",
+    "Person.address",
+    "Person.email",
     "role",
-    "user_name",
+    "username",
     // ],
   ]);
-  filteredData = sortByRecentTime(["person", "createdAt"], filteredData);
+  filteredData = sortByRecentTime(["createdAt"], filteredData);
 
   let allShipments = filteredData;
-  let notShippedShipments = filteredData.filter(
-    (v: any) => ![4, 5].includes(v.lastTrace?.[0]?.status)
-  );
+  let notShippedShipments = filteredData.filter((v: any) => ![4, 5].includes(v.lastTrace?.[0]?.status));
   let shippedShipments = filteredData.filter((v: any) => [4].includes(v.lastTrace?.[0]?.status));
   let arrivedShipment = filteredData.filter((v: any) => [5].includes(v.lastTrace?.[0]?.status));
 
@@ -147,10 +126,7 @@ export default function Users({}: Props): ReactElement {
   }, [renderedShipmentsData, searchValue]);
 
   const moreDataHendler = () => {
-    let currentChunk = renderedShipmentsData.slice(
-      0,
-      shipmentDataEnqueued.length + loadingDataSize
-    );
+    let currentChunk = renderedShipmentsData.slice(0, shipmentDataEnqueued.length + loadingDataSize);
 
     setTimeout(() => {
       setShipmentDataEnqueued([...currentChunk]);
@@ -277,9 +253,12 @@ export default function Users({}: Props): ReactElement {
   return (
     <>
       <Head>
-        <title>משתמשים | نبض</title>
+        <title>المستخدمين | نبض</title>
       </Head>
-      <Box bgcolor={alpha(theme.palette.primary.main, 0.2)} marginTop="-32px">
+      <Box
+        bgcolor={alpha(theme.palette.primary.main, 0.2)}
+        marginTop="-32px"
+      >
         <PullToRefresh
           isPullable={isMobile || isTablet}
           pullDownThreshold={85}
@@ -342,7 +321,10 @@ export default function Users({}: Props): ReactElement {
               backgroundColor: theme.palette.background.body,
             }}
           >
-            <Box className="q-container" height={"100%"}>
+            <Box
+              className="q-container"
+              height={"100%"}
+            >
               <Grid
                 container
                 spacing={3}
@@ -351,14 +333,21 @@ export default function Users({}: Props): ReactElement {
               >
                 {/* pull on refresh */}
 
-                <Grid item xs={12}>
+                <Grid
+                  item
+                  xs={12}
+                >
                   <Grid
                     container
                     flexDirection={"row-reverse"}
                     justifyContent="space-between"
                     rowSpacing={2}
                   >
-                    <Grid item xs={12} sm="auto">
+                    <Grid
+                      item
+                      xs={12}
+                      sm="auto"
+                    >
                       <Button
                         endIcon={<UserPlusIcon />}
                         variant="contained"
@@ -370,7 +359,11 @@ export default function Users({}: Props): ReactElement {
                       </Button>
                     </Grid>
 
-                    <Grid item xs={12} sm="auto">
+                    <Grid
+                      item
+                      xs={12}
+                      sm="auto"
+                    >
                       {/* @ts-ignore */}
                       <Search
                         placeholder="بحث"
@@ -393,7 +386,11 @@ export default function Users({}: Props): ReactElement {
                   <Divider sx={{ borderBottomColor: slate[200], marginTop: "10px" }}></Divider>
                 </Grid>
 
-                <Grid item xs={12} paddingBottom="32px">
+                <Grid
+                  item
+                  xs={12}
+                  paddingBottom="32px"
+                >
                   <InfiniteScroll
                     pageStart={0}
                     loadMore={moreDataHendler}
@@ -414,16 +411,29 @@ export default function Users({}: Props): ReactElement {
                             padding: "20px 0",
                           }}
                         >
-                          <PuffLoader size={38} color={theme.palette.primary.main}></PuffLoader>
+                          <PuffLoader
+                            size={38}
+                            color={theme.palette.primary.main}
+                          ></PuffLoader>
                         </Box>
                       )
                     }
                   >
-                    <Grid container spacing={3}>
+                    <Grid
+                      container
+                      spacing={3}
+                    >
                       {shipmentDataEnqueued.length != 0 ? (
                         shipmentDataEnqueued?.map((user: any, index: any) => {
                           return (
-                            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                            <Grid
+                              item
+                              xs={12}
+                              sm={6}
+                              md={4}
+                              lg={3}
+                              key={index}
+                            >
                               <UserCard
                                 dataInfo={user}
                                 setCardDataInfo={setCardDataInfo}
@@ -461,8 +471,11 @@ export default function Users({}: Props): ReactElement {
                           );
                         })
                       ) : (
-                        <Grid item xs={12}>
-                          <EmptyStat title="אין משתמשים"></EmptyStat>
+                        <Grid
+                          item
+                          xs={12}
+                        >
+                          <EmptyStat title="لايوجد مستخدمين"></EmptyStat>
                         </Grid>
                       )}
                     </Grid>
@@ -474,7 +487,10 @@ export default function Users({}: Props): ReactElement {
         </PullToRefresh>
       </Box>
       {/* Add Shipment */}
-      <AddUserModal open={OpenAddModal} onClose={() => setOpenAddModal(false)}></AddUserModal>
+      <AddUserModal
+        open={OpenAddModal}
+        onClose={() => setOpenAddModal(false)}
+      ></AddUserModal>
       {/* Edit Shipment */}
       <EditUserModal
         open={OpenEditPatientModal}
@@ -503,12 +519,20 @@ export default function Users({}: Props): ReactElement {
           }}
         >
           <ListItemIcon>
-            <img src="/receipt.svg" width={17} height={17} />
+            <img
+              src="/receipt.svg"
+              width={17}
+              height={17}
+            />
             {/* <BoxSelect size={18} strokeWidth={2} /> */}
           </ListItemIcon>
           <Box marginLeft={"-8px"}>إنشاء وصل إستلام</Box>
         </MenuItem>
-        <Collapse in={isReceiptFormatCollapsed} timeout="auto" unmountOnExit>
+        <Collapse
+          in={isReceiptFormatCollapsed}
+          timeout="auto"
+          unmountOnExit
+        >
           {/* <Menu> */}
           <Link
             href={{
@@ -532,9 +556,15 @@ export default function Users({}: Props): ReactElement {
                 }}
               >
                 <ListItemIcon sx={{ marginLeft: "2px" }}>
-                  <FileText size={15} strokeWidth={2} />
+                  <FileText
+                    size={15}
+                    strokeWidth={2}
+                  />
                 </ListItemIcon>
-                <Box marginLeft={"-8px"} fontSize="12px">
+                <Box
+                  marginLeft={"-8px"}
+                  fontSize="12px"
+                >
                   بصيغة PDF
                 </Box>
               </MenuItem>
@@ -562,9 +592,15 @@ export default function Users({}: Props): ReactElement {
                 }}
               >
                 <ListItemIcon sx={{ marginLeft: "2px" }}>
-                  <Sheet size={15} strokeWidth={2} />
+                  <Sheet
+                    size={15}
+                    strokeWidth={2}
+                  />
                 </ListItemIcon>
-                <Box marginLeft={"-8px"} fontSize="12px">
+                <Box
+                  marginLeft={"-8px"}
+                  fontSize="12px"
+                >
                   بصيغة Excel
                 </Box>
               </MenuItem>

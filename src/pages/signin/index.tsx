@@ -159,7 +159,7 @@ const SignIn = (props: Props) => {
   return (
     <>
       <Head>
-        <title>להתחבר | نبض</title>
+        <title>تسجيل الدخول | نبض</title>
       </Head>
       <Box
         sx={{

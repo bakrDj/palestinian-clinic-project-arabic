@@ -1,23 +1,28 @@
 import { gql, OperationVariables, QueryTuple, useLazyQuery, useQuery } from "@apollo/client";
 
 export const ALL_USERS = gql`
-  query AllUsers {
-    allUsers {
+  query GetAllUsers {
+    GetAllUsers {
       id
-      user_name
+      email
+      username
       role
-      activation
-      person {
-        email
-        last_name
-        first_name
+      google_account_id
+      personsId
+      Person {
         id
-        phone
+        first_name
+        last_name
+        age
+        gender
         address
-        ID_number
+        phone
+        identification_number
         createdAt
         updatedAt
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -26,7 +31,7 @@ interface Props {}
 
 const useGetAllUsers = () => {
   let { data, loading, refetch } = useQuery(ALL_USERS);
-  return [data?.allUsers || [], loading, refetch];
+  return [data?.GetAllUsers || [], loading, refetch];
 };
 
 export default useGetAllUsers;

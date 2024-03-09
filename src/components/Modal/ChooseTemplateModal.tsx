@@ -1,25 +1,9 @@
-import {
-  Box,
-  Divider,
-  Grid,
-  InputAdornment,
-  MenuItem,
-  ListItemIcon,
-  Stack,
-  TextField,
-  IconButton,
-  Typography,
-  iconButtonClasses,
-} from "@mui/material";
+import { Box, Divider, Grid, InputAdornment, MenuItem, ListItemIcon, Stack, TextField, IconButton, Typography, iconButtonClasses } from "@mui/material";
 import { amber, blue, grey, red } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
 import { Check, Edit2, MoreHorizontal, Plus, Trash2, Upload, X } from "react-feather";
 import { Controller, useForm } from "react-hook-form";
-import {
-  useCreateShipment,
-  useCreateUploadMultiFiles,
-  useGetProvincesPrices,
-} from "../../graphql/hooks/shipments";
+import { useCreateShipment, useCreateUploadMultiFiles, useGetProvincesPrices } from "../../graphql/hooks/shipments";
 import useStore from "../../store/useStore";
 import Button from "../Button";
 import Input from "../Input/Input";
@@ -103,7 +87,7 @@ const ChooseTemplateModal = (props: Props) => {
   //     refetchQueries: [All_Sicks],
   //   })
   //     .then(() => {
-  //       enqueueSnackbar("הוספת בהצלחה", {
+  //       enqueueSnackbar("تم الإضافة بنجاح", {
   //         variant: "success",
   //       });
   //       setSubmitLoading(false);
@@ -137,7 +121,11 @@ const ChooseTemplateModal = (props: Props) => {
       sx={{ zIndex: 99999999 }}
       footer={
         <>
-          <Stack direction="row" justifyContent={"space-between"} width="100%">
+          <Stack
+            direction="row"
+            justifyContent={"space-between"}
+            width="100%"
+          >
             <Button
               // loading={submitLoading}
               startIcon={<Plus></Plus>}
@@ -151,7 +139,10 @@ const ChooseTemplateModal = (props: Props) => {
             >
               تأكيد
             </Button>
-            <Stack direction={"row"} gap="6px">
+            <Stack
+              direction={"row"}
+              gap="6px"
+            >
               <Button
                 startIcon={<X></X>}
                 variant="outlined"
@@ -177,7 +168,10 @@ const ChooseTemplateModal = (props: Props) => {
     >
       <>
         <form id="add_shipment" /* onSubmit={handleSubmit(onFormSubmit)} */>
-          <Masonry columns={2} spacing="2">
+          <Masonry
+            columns={2}
+            spacing="2"
+          >
             {templatesData
               ?.filter((template: any, i: number) => template?.type == inputWho)
               ?.map((template: any, i: number) => (
@@ -204,8 +198,7 @@ const ChooseTemplateModal = (props: Props) => {
                     },
                   }}
                   onClick={() => {
-                    typeof props?.setTemplateInputData == "function" &&
-                      props?.setTemplateInputData(template?.message);
+                    typeof props?.setTemplateInputData == "function" && props?.setTemplateInputData(template?.message);
                     closeHandler();
                   }}
                 >
@@ -228,10 +221,17 @@ const ChooseTemplateModal = (props: Props) => {
                       bindTrigger(popupState23).onClick(e);
                     }}
                   >
-                    <MoreHorizontal color={"#FFF"} size={10} />
+                    <MoreHorizontal
+                      color={"#FFF"}
+                      size={10}
+                    />
                   </IconButton>
 
-                  <Typography variant="xs" color={grey[700]} sx={{ pointerEvents: "unset" }}>
+                  <Typography
+                    variant="xs"
+                    color={grey[700]}
+                    sx={{ pointerEvents: "unset" }}
+                  >
                     {template?.message}
                   </Typography>
                 </Box>
@@ -270,12 +270,7 @@ const ChooseTemplateModal = (props: Props) => {
               <MoreHorizontal color={"#FFF"} size={10} />
             </IconButton>
             <Typography variant="xs" color={grey[700]}>
-              בריא בדרך כלל ללא מחלות רקע מהיום שיעול עם כאב חזה בזמן שיעול וכאבי גרון ללא חום מציין
-              חולשה כללית בבדיקה: מצב כללי טוב, נראה מעט כאוב כניסת אוויר טובה ושווה דו"צ ללא
-              חרחורים או צפצופים קולות לב סדירים ללא אוושה בטן רכה לא רגישה לוע אודם קל
-              --------------------- בדיקת קורונה אנטיגן - שלילית יא בדרך כלל ללא מחלות רקע מהיום
-              שיעול עם כאב חזה בזמן שיעול וכאבי גרון ללא חום מציין חולשה כללית בבדיקה: מצב כללי טוב,
-              נראה מעט כאוב כניסת אוויר טובה ושווה דו"צ ללא חר
+              dqsdqs
             </Typography>
           </Box> */}
           </Masonry>
@@ -315,7 +310,10 @@ const ChooseTemplateModal = (props: Props) => {
             }}
           >
             <ListItemIcon>
-              <Edit2 size={18} strokeWidth={2} />
+              <Edit2
+                size={18}
+                strokeWidth={2}
+              />
             </ListItemIcon>
             לַעֲרוֹך
           </MenuItem>
@@ -336,7 +334,10 @@ const ChooseTemplateModal = (props: Props) => {
             }}
           >
             <ListItemIcon>
-              <Trash2 size={18} strokeWidth={2} />
+              <Trash2
+                size={18}
+                strokeWidth={2}
+              />
             </ListItemIcon>
             לִמְחוֹק
           </MenuItem>

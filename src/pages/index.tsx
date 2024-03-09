@@ -73,6 +73,7 @@ export default function Home({}: Props): ReactElement {
 
   // get all shipments
   let [getPatientsData, getPatientsLoading, refetch] = useGetAllPatients({});
+  console.log("🚀 ~ Home ~ getPatientsData:", getPatientsData);
 
   const [loadingPage, setLoadingPage] = React.useState<boolean>(getPatientsLoading);
 
@@ -89,12 +90,12 @@ export default function Home({}: Props): ReactElement {
   let filteredData: object[] = [];
   filteredData = fuzzySearchMultipleWords(allPatientsData, searchValue, [
     // keys: [
-    "person.first_name",
-    "person.last_name",
-    "person.ID_number",
-    "person.phone",
-    "person.address",
-    "person.email",
+    "Person.first_name",
+    "Person.last_name",
+    "Person.ID_number",
+    "Person.phone",
+    "Person.address",
+    "Person.email",
     // ],
   ]);
   // filteredData = matchSorter(allShipmentsData, searchValue, {
@@ -107,7 +108,7 @@ export default function Home({}: Props): ReactElement {
   //     "person.email",
   //   ],
   // });
-  filteredData = sortByRecentTime(["lastUpdate"], filteredData);
+  filteredData = sortByRecentTime(["last_update"], filteredData);
 
   let allPatients = filteredData;
   // let notShippedShipments = filteredData.filter(
@@ -481,7 +482,7 @@ export default function Home({}: Props): ReactElement {
                           item
                           xs={12}
                         >
-                          <EmptyStat title="אין מחלה"></EmptyStat>
+                          <EmptyStat title="لا يوجد مرضى"></EmptyStat>
                         </Grid>
                       )}
                     </Grid>

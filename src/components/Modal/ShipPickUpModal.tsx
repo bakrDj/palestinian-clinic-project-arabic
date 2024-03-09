@@ -1,14 +1,5 @@
 // import Quagga from "@ericblade/quagga2";
-import {
-  Chip as MuiChip,
-  IconButton,
-  Popover,
-  Stack,
-  Typography,
-  alpha,
-  Tabs,
-  Divider,
-} from "@mui/material";
+import { Chip as MuiChip, IconButton, Popover, Stack, Typography, alpha, Tabs, Divider } from "@mui/material";
 import { blue, grey } from "@mui/material/colors";
 import { Box } from "@mui/system";
 import dayjs from "dayjs";
@@ -18,11 +9,7 @@ import { bindPopover, bindTrigger, usePopupState } from "material-ui-popup-state
 import { useEffect, useState } from "react";
 import { Camera, Check, X } from "react-feather";
 import SwipeableViews from "react-swipeable-views";
-import {
-  useCreateChangeMultiStatus,
-  useGetAllPickupShipments,
-  useUpdatePickupGroup,
-} from "../../graphql/hooks/shipments";
+import { useCreateChangeMultiStatus, useGetAllPickupShipments, useUpdatePickupGroup } from "../../graphql/hooks/shipments";
 import { LIST_PICKUP_CLIENT } from "../../graphql/hooks/shipments/useGetAllPickupShipments";
 // import useCreateChangeMultiStatus from "../../graphql/hooks/shipments/useCreateChangeMultiStatus";
 import useStore from "../../store/useStore";
@@ -49,12 +36,8 @@ interface Props extends ModalProps {
 const ShipPickUpModal = (props: Props) => {
   const [updatePickUpGroupMutation] = useUpdatePickupGroup();
   const [createRequestMutation, { data: requestData }] = useCreateChangeMultiStatus();
-  const [getAllPickupsShipmentsLazy, { data: pickUpShipmentData, loading: pickUpShipmentLoading }] =
-    useGetAllPickupShipments();
-  let pickUpShipmentDataSorted: any = sortByRecentTime(
-    ["createdAt"],
-    pickUpShipmentData?.listPickUpClient
-  );
+  const [getAllPickupsShipmentsLazy, { data: pickUpShipmentData, loading: pickUpShipmentLoading }] = useGetAllPickupShipments();
+  let pickUpShipmentDataSorted: any = sortByRecentTime(["createdAt"], pickUpShipmentData?.listPickUpClient);
   let userData = useStore((state: any) => state.userData);
   let scanShipmentResult: any = useStore((state: any) => state.scanShipmentResult);
   const [tabvalue, setTabvalue] = useState<number | string>(0);
@@ -110,9 +93,7 @@ const ShipPickUpModal = (props: Props) => {
                     boxClient(existedBoxes = [], { readField }) {
                       let newdata = produce((existedBoxes: any, draft: any) => {
                         for (let i = 0; i < res.length; i++) {
-                          let index = existedBoxes.findIndex(
-                            (item: any) => item.id === res[i].id_box
-                          );
+                          let index = existedBoxes.findIndex((item: any) => item.id === res[i].id_box);
                           draft[index].lastTrace[0].status = res[i].status;
                         }
                         return draft;
@@ -227,7 +208,10 @@ const ShipPickUpModal = (props: Props) => {
                   إعادة تعيين
                 </Button>
               )) || <div></div>}
-              <Stack direction="row" gap="6px">
+              <Stack
+                direction="row"
+                gap="6px"
+              >
                 <Button
                   startIcon={<X></X>}
                   variant="outlined"
@@ -257,7 +241,10 @@ const ShipPickUpModal = (props: Props) => {
         }
       >
         <Box>
-          <Box bgcolor="#FFF" sx={{ margin: "-16px -20px", marginBottom: "8px" }}>
+          <Box
+            bgcolor="#FFF"
+            sx={{ margin: "-16px -20px", marginBottom: "8px" }}
+          >
             <Tabs
               value={tabvalue}
               onChange={(_, newVal) => setTabvalue(newVal)}
@@ -265,8 +252,16 @@ const ShipPickUpModal = (props: Props) => {
             >
               <Tab
                 label={
-                  <Stack direction={"row"} alignItems="center" gap="4px">
-                    <img src="/pickup.png" width="24px" height="24px" />
+                  <Stack
+                    direction={"row"}
+                    alignItems="center"
+                    gap="4px"
+                  >
+                    <img
+                      src="/pickup.png"
+                      width="24px"
+                      height="24px"
+                    />
                     {/* <Plus width="20px" height="20px" color={theme.palette.primary.main} /> */}
                     <Typography variant="sm">طلب سائق</Typography>
                   </Stack>
@@ -274,8 +269,16 @@ const ShipPickUpModal = (props: Props) => {
               />
               <Tab
                 label={
-                  <Stack direction={"row"} alignItems="center" gap="4px">
-                    <ClipboardList width="18px" height="18px" color={theme.palette.primary.main} />
+                  <Stack
+                    direction={"row"}
+                    alignItems="center"
+                    gap="4px"
+                  >
+                    <ClipboardList
+                      width="18px"
+                      height="18px"
+                      color={theme.palette.primary.main}
+                    />
                     <Typography variant="sm">قائمة الطلبات</Typography>
                   </Stack>
                 }
@@ -295,7 +298,10 @@ const ShipPickUpModal = (props: Props) => {
             >
               <Box dir="rtl">
                 {(isScanning && <></>) || (
-                  <Stack rowGap={"16px"} padding="10px 20px">
+                  <Stack
+                    rowGap={"16px"}
+                    padding="10px 20px"
+                  >
                     <Box>
                       <Stack
                         direction="row"
@@ -314,16 +320,26 @@ const ShipPickUpModal = (props: Props) => {
                           {...bindTrigger(popupPickUpPlanState)}
                         >
                           {/* <Box component="img" src="help-circle.png" width="19px"></Box> */}
-                          <HelpCircle color={theme.palette.secondary.main} size="19" />
+                          <HelpCircle
+                            color={theme.palette.secondary.main}
+                            size="19"
+                          />
                         </IconButton>
-                        <Typography variant="xs" flex="1 0" color={grey[600]}>
+                        <Typography
+                          variant="xs"
+                          flex="1 0"
+                          color={grey[600]}
+                        >
                           <Stack
                             direction="row"
                             justifyContent={"flex-end"}
                             alignItems="center"
                             gap="4px"
                           >
-                            <Box component={"span"} fontSize="18">
+                            <Box
+                              component={"span"}
+                              fontSize="18"
+                            >
                               إجمالي الطرود:
                             </Box>
                             <Box
@@ -347,14 +363,28 @@ const ShipPickUpModal = (props: Props) => {
                         borderRadius: "4px",
                       }}
                     >
-                      <Stack direction="row" gap="10px" alignItems={"center"}>
-                        <AlertTriangle size={18} color={alpha(theme.palette.warning.main, 0.8)} />
-                        <Typography variant="xs" color={alpha(theme.palette.warning.main, 0.7)}>
+                      <Stack
+                        direction="row"
+                        gap="10px"
+                        alignItems={"center"}
+                      >
+                        <AlertTriangle
+                          size={18}
+                          color={alpha(theme.palette.warning.main, 0.8)}
+                        />
+                        <Typography
+                          variant="xs"
+                          color={alpha(theme.palette.warning.main, 0.7)}
+                        >
                           سيتم تعيين سائق لأخذ الشحنات بعد تأكيد الطلب !
                         </Typography>
                       </Stack>
                     </Box>
-                    <Stack direction={"row"} gap="8px" flexWrap={"wrap"}>
+                    <Stack
+                      direction={"row"}
+                      gap="8px"
+                      flexWrap={"wrap"}
+                    >
                       {scannedShipments?.map((shipment: any, i: number) => (
                         <MuiChip
                           key={i}
@@ -369,9 +399,7 @@ const ShipPickUpModal = (props: Props) => {
                           }}
                           onDelete={() => {
                             setScannedShipments((prev: any) => {
-                              return prev?.filter(
-                                (prevshipment: any) => prevshipment.code != shipment.code
-                              );
+                              return prev?.filter((prevshipment: any) => prevshipment.code != shipment.code);
                             });
                           }}
                         ></MuiChip>
@@ -396,14 +424,23 @@ const ShipPickUpModal = (props: Props) => {
                         marginBottom: "10px",
                       }}
                     ></Box>
-                    <Typography variant="sm" color={grey[500]}>
+                    <Typography
+                      variant="sm"
+                      color={grey[500]}
+                    >
                       لايوجد طرود
                     </Typography>
                   </Stack>
                 )}
               </Box>
-              <Box dir="rtl" sx={{ outline: "1px solid transparent" }}>
-                <Stack rowGap={"16px"} margin="12px 0">
+              <Box
+                dir="rtl"
+                sx={{ outline: "1px solid transparent" }}
+              >
+                <Stack
+                  rowGap={"16px"}
+                  margin="12px 0"
+                >
                   <Box>
                     <Stack
                       direction="row"
@@ -414,16 +451,32 @@ const ShipPickUpModal = (props: Props) => {
                         padding: "14px 22px",
                       }}
                     >
-                      <Typography variant="xs" flex="1 0" color={grey[600]}>
+                      <Typography
+                        variant="xs"
+                        flex="1 0"
+                        color={grey[600]}
+                      >
                         كود الطلب
                       </Typography>
-                      <Typography variant="xs" flex="1 0" color={grey[600]}>
+                      <Typography
+                        variant="xs"
+                        flex="1 0"
+                        color={grey[600]}
+                      >
                         عدد الطرود
                       </Typography>
-                      <Typography variant="xs" flex="1 0" color={grey[600]}>
+                      <Typography
+                        variant="xs"
+                        flex="1 0"
+                        color={grey[600]}
+                      >
                         حالة الطلب
                       </Typography>
-                      <Typography variant="xs" flex="1 0" color={grey[600]}>
+                      <Typography
+                        variant="xs"
+                        flex="1 0"
+                        color={grey[600]}
+                      >
                         تاريخ الإضافة
                       </Typography>
                     </Stack>
@@ -473,13 +526,25 @@ const ShipPickUpModal = (props: Props) => {
                                 padding: "12px 0",
                               }}
                             >
-                              <Typography variant="xs" flex="1 0" color={grey[700]}>
+                              <Typography
+                                variant="xs"
+                                flex="1 0"
+                                color={grey[700]}
+                              >
                                 {pickUp?.code}
                               </Typography>
-                              <Typography variant="xs" flex="1 0" color={grey[700]}>
+                              <Typography
+                                variant="xs"
+                                flex="1 0"
+                                color={grey[700]}
+                              >
                                 {pickUp?.numberBox}
                               </Typography>
-                              <Typography variant="xs" flex="1 0" color={grey[700]}>
+                              <Typography
+                                variant="xs"
+                                flex="1 0"
+                                color={grey[700]}
+                              >
                                 <Chip
                                   size={"medium"}
                                   variant="filled"
@@ -492,18 +557,18 @@ const ShipPickUpModal = (props: Props) => {
                                   // customColor={"#4DABF5"}
                                   customColor={
                                     // traking_status?.[props.status == 9 ? 8 : props.status || 0]?.color
-                                    pickUp?.status == 2
-                                      ? traking_status?.[26]?.color
-                                      : traking_status?.[8]?.color
+                                    pickUp?.status == 2 ? traking_status?.[26]?.color : traking_status?.[8]?.color
                                   }
                                   rounded
                                   dir="rtl"
                                 ></Chip>
                               </Typography>
-                              <Typography variant="2xs" flex="1 0" color={grey[700]}>
-                                {dayjs(pickUp?.createdAt, "YYYY-MM-DD[T]HH:mm:ss[Z]").format(
-                                  "DD / MMMM / YYYY"
-                                )}
+                              <Typography
+                                variant="2xs"
+                                flex="1 0"
+                                color={grey[700]}
+                              >
+                                {dayjs(pickUp?.createdAt).format("DD / MMMM / YYYY")}
                               </Typography>
                             </Stack>
                           </Box>

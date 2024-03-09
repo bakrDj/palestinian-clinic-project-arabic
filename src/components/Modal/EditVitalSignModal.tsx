@@ -71,7 +71,7 @@ const EditVitalSignModal = ({ open, onClose, id, boxData }: Props) => {
       refetchQueries: [All_VitalSigns],
     })
       .then(() => {
-        enqueueSnackbar("נערך בהצלחה", {
+        enqueueSnackbar("تم التعديل بنجاح", {
           variant: "success",
         });
         setSubmitLoading(false);
