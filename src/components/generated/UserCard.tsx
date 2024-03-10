@@ -362,13 +362,13 @@ const UserCard = (props: UserCardProps) => {
               onAction: () => {
                 deleteCardMutation({
                   variables: {
-                    deleteUserId: dataInfo?.Person?.id,
+                    deleteUserId: dataInfo?.id,
                   },
                   refetchQueries: [ALL_USERS],
-                });
+                }).finally(() => setconfirmProcessDialog(false));
               },
             });
-            setconfirmProcessDialog(false);
+            // setconfirmProcessDialog(false);
             // typeof props.setOpenEditPatientModal == "function" &&
             //   props.setOpenEditPatientModal(true);
             popupState.close();
