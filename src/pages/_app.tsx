@@ -122,7 +122,7 @@ const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) 
 //   credentials: "include",
 // });
 const httpLink = createUploadLink({
-  uri: "http://localhost:4001/graphql",
+  uri: process.env.NEXT_PUBLIC_GRAPHQL_SERVER_URL || "http://localhost:4001/graphql",
   credentials: "include",
 });
 
