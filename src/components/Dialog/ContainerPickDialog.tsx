@@ -6,6 +6,7 @@ import { Button as MuiButton, CardActionArea, IconButton, Stack, Typography } fr
 import { useForm } from "react-hook-form";
 import useStore from "../../store/useStore";
 import { blue, green, grey, lightGreen } from "@mui/material/colors";
+// @ts-ignore
 import { Box } from "@mui/system";
 import { ArrowLeft, MessageSquare, Phone, X } from "lucide-react";
 import { default as RAvatar } from "react-avatar";
@@ -74,11 +75,17 @@ const ContainerPickDialog = (props: Props) => {
           sx={{ padding: "10px 14px", borderBottom: "1px solid " + grey[100], width: "100%" }}
         >
           {(tabvalue === 0 && (
-            <Typography variant="xs" color={grey[700]}>
+            <Typography
+              variant="xs"
+              color={grey[700]}
+            >
               مراسلة العميل
             </Typography>
           )) || (
-            <Typography variant="xs" color={grey[700]}>
+            <Typography
+              variant="xs"
+              color={grey[700]}
+            >
               إختيار رسالة
             </Typography>
           )}
@@ -93,7 +100,10 @@ const ContainerPickDialog = (props: Props) => {
                   reset();
                 }}
               >
-                <X size="18" color={grey[800]} />
+                <X
+                  size="18"
+                  color={grey[800]}
+                />
               </IconButton>
             )) || (
               <IconButton
@@ -105,7 +115,10 @@ const ContainerPickDialog = (props: Props) => {
                   // reset();
                 }}
               >
-                <ArrowLeft size="18" color={grey[800]} />
+                <ArrowLeft
+                  size="18"
+                  color={grey[800]}
+                />
               </IconButton>
             )}
           </Box>
@@ -135,34 +148,54 @@ const ContainerPickDialog = (props: Props) => {
                 maxInitials={1}
               ></RAvatar>
             </Box>
-            <Stack gap="6px" alignItems="center">
-              <Typography variant="xs" color={grey[700]}>
-                {props.oneShipmentInfo?.client?.person?.first_name +
-                  " " +
-                  props.oneShipmentInfo?.client?.person?.last_name}
+            <Stack
+              gap="6px"
+              alignItems="center"
+            >
+              <Typography
+                variant="xs"
+                color={grey[700]}
+              >
+                {props.oneShipmentInfo?.client?.person?.first_name + " " + props.oneShipmentInfo?.client?.person?.last_name}
                 {/* محمد مصطفى */}
               </Typography>
-              <Typography variant="xs" color={grey[600]}>
+              <Typography
+                variant="xs"
+                color={grey[600]}
+              >
                 {algerian_provinces?.[props.oneShipmentInfo?.client?.person?.city - 1]?.wilaya_name}
                 {/* مستغانم */}
               </Typography>
-              <Typography variant="xs" color={grey[700]}>
+              <Typography
+                variant="xs"
+                color={grey[700]}
+              >
                 {props.oneShipmentInfo?.client?.person?.phone01}
                 {/* +312 664 48 20 20 */}
               </Typography>
             </Stack>
 
-            <Stack direction={"row"} gap="16px" alignItems="center">
+            <Stack
+              direction={"row"}
+              gap="16px"
+              alignItems="center"
+            >
               <a href={`tel:${props.oneShipmentInfo?.client?.person?.phone01}`}>
                 <IconButton sx={{ background: lightGreen[500], color: lightGreen[500] }}>
-                  <Phone size="18" color={lightGreen[100]} />
+                  <Phone
+                    size="18"
+                    color={lightGreen[100]}
+                  />
                 </IconButton>
               </a>
               <IconButton
                 sx={{ background: blue[500], color: blue[500] }}
                 onClick={() => setTabvalue(1)}
               >
-                <MessageSquare size="18" color={blue[100]} />
+                <MessageSquare
+                  size="18"
+                  color={blue[100]}
+                />
               </IconButton>
             </Stack>
           </Stack>
@@ -184,9 +217,7 @@ const ContainerPickDialog = (props: Props) => {
               .map((msg: any, index: any) => (
                 <a
                   key={index}
-                  href={`sms:${
-                    props.oneShipmentInfo?.client?.person?.phone01
-                  }?body=${encodeURIComponent(msg?.message)}`}
+                  href={`sms:${props.oneShipmentInfo?.client?.person?.phone01}?body=${encodeURIComponent(msg?.message)}`}
                 >
                   <Box
                     sx={{
@@ -204,7 +235,10 @@ const ContainerPickDialog = (props: Props) => {
                       },
                     }}
                   >
-                    <Typography variant="xs" color={grey[700]}>
+                    <Typography
+                      variant="xs"
+                      color={grey[700]}
+                    >
                       {msg.message}
                     </Typography>
                   </Box>

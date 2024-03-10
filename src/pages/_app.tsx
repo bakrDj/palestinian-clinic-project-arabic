@@ -75,46 +75,46 @@ const resolvePendingRequests = () => {
   pendingRequests = [];
 };
 
-const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
-  if (graphQLErrors) {
-    const { extensions, path, message, locations } = graphQLErrors[0];
+// const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
+//   if (graphQLErrors) {
+//     const { extensions, path, message, locations } = graphQLErrors[0];
 
-    const { authorization } = operation.getContext().headers;
-    if (extensions.code === "UNAUTHENTICATED" && path?.[0] != "refreshToken") {
-      let innerForward;
-      if (!isRefreshing) {
-        isRefreshing = true;
-        innerForward = fromPromise(
-          useAuth(client)
-            .checkRefreshToken()
-            .then(() => {
-              resolvePendingRequests();
-              return true;
-            })
-            .catch(() => {
-              pendingRequests = [];
-              return false;
-            })
-            .finally(() => {
-              isRefreshing = false;
-            })
-        ).filter((value) => Boolean(value));
-      } else {
-        innerForward = fromPromise(
-          new Promise<void>((resolve) => {
-            pendingRequests.push(() => resolve());
-          })
-        );
-      }
+//     const { authorization } = operation.getContext().headers;
+//     if (extensions.code === "UNAUTHENTICATED" && path?.[0] != "refreshToken") {
+//       let innerForward;
+//       if (!isRefreshing) {
+//         isRefreshing = true;
+//         innerForward = fromPromise(
+//           useAuth(client)
+//             .checkRefreshToken()
+//             .then(() => {
+//               resolvePendingRequests();
+//               return true;
+//             })
+//             .catch(() => {
+//               pendingRequests = [];
+//               return false;
+//             })
+//             .finally(() => {
+//               isRefreshing = false;
+//             })
+//         ).filter((value) => Boolean(value));
+//       } else {
+//         innerForward = fromPromise(
+//           new Promise<void>((resolve) => {
+//             pendingRequests.push(() => resolve());
+//           })
+//         );
+//       }
 
-      return innerForward.flatMap(() => {
-        return forward(operation);
-      });
-    } else {
-      console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
-    }
-  }
-});
+//       return innerForward.flatMap(() => {
+//         return forward(operation);
+//       });
+//     } else {
+//       console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
+//     }
+//   }
+// });
 
 // const httpLink = createHttpLink({
 //   // uri: "https://rrkpgd2a7f.qafilaty.com/graphql",
@@ -129,7 +129,7 @@ const httpLink = createUploadLink({
 let cache = new InMemoryCache();
 client = new ApolloClient({
   // link: errorLink.concat(authLink.concat(httpLink)),
-  link: from([errorLink, authLink, httpLink]),
+  link: from([, /* errorLink */ authLink, httpLink as any]),
   cache: cache,
   credentials: "include",
   // defaultOptions: {

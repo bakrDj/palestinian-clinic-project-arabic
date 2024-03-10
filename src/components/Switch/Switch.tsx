@@ -1,6 +1,7 @@
 import { Switch as MuiSwitch } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { styled } from "@mui/system";
+// @ts-ignore
 import { useSwitch, UseSwitchProps } from "@mui/base/SwitchUnstyled";
 import clsx from "clsx";
 import { Check, X } from "react-feather";
@@ -46,10 +47,7 @@ const SwitchThumb = styled("span")(({ theme, color }: { theme: any; color?: any 
     transition: "all 150ms cubic-bezier(0.4, 0, 0.2, 1)",
     color: grey[300],
     "&.checked": {
-      transform:
-        theme.direction === "ltr"
-          ? "translateX(calc(40px - 18px))"
-          : "translateX(calc(-18px - 4px))",
+      transform: theme.direction === "ltr" ? "translateX(calc(40px - 18px))" : "translateX(calc(-18px - 4px))",
       // transform: "translateX(calc(-18px - 4px))",
       color: theme.palette[color || "primary"].main,
     },
@@ -85,10 +83,24 @@ const Switch = React.forwardRef(function Switch(props: Props, ref) {
 
   return (
     <>
-      <SwitchRoot {...props} ref={ref as any} className={clsx(stateClasses)}>
+      <SwitchRoot
+        {...props}
+        ref={ref as any}
+        className={clsx(stateClasses)}
+      >
         <SwitchTrack className={clsx(stateClasses)}>
           <SwitchThumb className={clsx(stateClasses)}>
-            {checked ? <Check size={12} strokeWidth={3} /> : <X size={12} strokeWidth={3} />}
+            {checked ? (
+              <Check
+                size={12}
+                strokeWidth={3}
+              />
+            ) : (
+              <X
+                size={12}
+                strokeWidth={3}
+              />
+            )}
           </SwitchThumb>
         </SwitchTrack>
         <SwitchInput {...getInputProps()} />

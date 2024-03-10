@@ -1,24 +1,9 @@
-import {
-  Box,
-  Divider,
-  Grid,
-  InputAdornment,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Grid, InputAdornment, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import { amber, blue, grey, red } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
 import { Check, Edit, Edit2, Plus, Trash2, Upload, X } from "react-feather";
 import { Controller, useForm } from "react-hook-form";
-import {
-  useCreateShipment,
-  useCreateUploadMultiFiles,
-  useDeleteImage,
-  useGetProvincesPrices,
-  useUpdateShipment,
-} from "../../graphql/hooks/shipments";
+import { useCreateShipment, useCreateUploadMultiFiles, useDeleteImage, useGetProvincesPrices, useUpdateShipment } from "../../graphql/hooks/shipments";
 import useStore from "../../store/useStore";
 import Button from "../Button";
 import Input from "../Input/Input";
@@ -226,9 +211,20 @@ const EditShipmentModal = ({ open, onClose, boxData }: Props) => {
         </>
       }
     >
-      <form id="add_shipment" onSubmit={handleSubmit(onFormSubmit)}>
-        <Grid container boxSizing={"border-box"} spacing={2}>
-          <Grid item xs={12} sm={6}>
+      <form
+        id="add_shipment"
+        onSubmit={handleSubmit(onFormSubmit)}
+      >
+        <Grid
+          container
+          boxSizing={"border-box"}
+          spacing={2}
+        >
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               error={errors?.recipient_name}
               placeholder="إسم المستلم"
@@ -236,7 +232,11 @@ const EditShipmentModal = ({ open, onClose, boxData }: Props) => {
               {...register("recipient_name", { required: true })}
             ></Input>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               error={errors?.recipient_phone1}
               placeholder="رقم الهاتف"
@@ -244,7 +244,11 @@ const EditShipmentModal = ({ open, onClose, boxData }: Props) => {
               {...register("recipient_phone1", { required: true })}
             ></Input>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Select
               error={errors?.recipient_city}
               placeholder="إختر المدينة"
@@ -258,14 +262,21 @@ const EditShipmentModal = ({ open, onClose, boxData }: Props) => {
             >
               {[...JSON.parse(JSON.stringify(yaman_provinces))]?.map((wilaya: any, index: any) => {
                 return (
-                  <MenuItem value={wilaya.wilaya_code} key={index}>
+                  <MenuItem
+                    value={wilaya.wilaya_code}
+                    key={index}
+                  >
                     {wilaya.wilaya_name}
                   </MenuItem>
                 );
               })}
             </Select>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               error={errors?.recipient_address}
               placeholder="العنوان"
@@ -274,7 +285,11 @@ const EditShipmentModal = ({ open, onClose, boxData }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               error={errors?.manufactured_material}
               placeholder="اسم المنتج (إختياري)"
@@ -283,7 +298,11 @@ const EditShipmentModal = ({ open, onClose, boxData }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               error={errors?.manufactured_material}
               placeholder="رقم الهوية (جواز او بطاقة شخصية)"
@@ -292,7 +311,11 @@ const EditShipmentModal = ({ open, onClose, boxData }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               error={errors?.manufactured_material}
               placeholder="المادة المصنعة"
@@ -300,7 +323,11 @@ const EditShipmentModal = ({ open, onClose, boxData }: Props) => {
               {...register("manufactured_material", { required: true })}
             ></Input>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               error={errors?.number_cartons}
               type="number"
@@ -311,7 +338,11 @@ const EditShipmentModal = ({ open, onClose, boxData }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               error={errors?.size}
               type="number"
@@ -324,7 +355,11 @@ const EditShipmentModal = ({ open, onClose, boxData }: Props) => {
               }}
             ></Input>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+          >
             <Input
               error={errors?.weight}
               type="number"
@@ -338,28 +373,48 @@ const EditShipmentModal = ({ open, onClose, boxData }: Props) => {
             ></Input>
           </Grid>
 
-          <Grid item xs={12}>
-            <Box bgcolor={"white"} height={"48px"} padding={"0 16px"} borderRadius="2px">
+          <Grid
+            item
+            xs={12}
+          >
+            <Box
+              bgcolor={"white"}
+              height={"48px"}
+              padding={"0 16px"}
+              borderRadius="2px"
+            >
               <Stack
                 direction={"row"}
                 justifyContent={"space-between"}
                 alignItems="center"
                 height={"100%"}
               >
-                <Typography variant="sm" color={grey[600]}>
+                <Typography
+                  variant="sm"
+                  color={grey[600]}
+                >
                   هل على الشحنة تأمين؟
                 </Typography>
                 <Controller
                   control={control}
                   name="isInsurance"
                   render={({ field: { onChange, onBlur, value } }) => {
-                    return <Switch checked={value} onChange={onChange as any}></Switch>;
+                    return (
+                      <Switch
+                        // @ts-ignore
+                        checked={value as any}
+                        onChange={onChange as any}
+                      ></Switch>
+                    );
                   }}
                 />
               </Stack>
             </Box>
           </Grid>
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+          >
             <TextArea
               placeholder="ملاحظة (إختياري) "
               fullWidth
@@ -368,7 +423,10 @@ const EditShipmentModal = ({ open, onClose, boxData }: Props) => {
               {...register("note")}
             ></TextArea>
           </Grid>
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+          >
             <ReactImageUploading
               multiple
               value={images}
@@ -377,16 +435,12 @@ const EditShipmentModal = ({ open, onClose, boxData }: Props) => {
               dataURLKey="data_url"
               acceptType={["jpg", "gif", "png", "jpeg"]}
             >
-              {({
-                imageList,
-                onImageUpload,
-                onImageRemoveAll,
-                onImageUpdate,
-                onImageRemove,
-                isDragging,
-                dragProps,
-              }) => (
-                <Box bgcolor={"white"} padding={"16px 16px"} borderRadius="2px">
+              {({ imageList, onImageUpload, onImageRemoveAll, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
+                <Box
+                  bgcolor={"white"}
+                  padding={"16px 16px"}
+                  borderRadius="2px"
+                >
                   <Stack gap="12px">
                     <Box
                       onClick={onImageUpload}
@@ -408,16 +462,23 @@ const EditShipmentModal = ({ open, onClose, boxData }: Props) => {
                         },
                       }}
                     >
-                      <Stack direction="row" gap={"8px"}>
-                        <Upload size={16} color={blue[400]} />
-                        <Typography variant="sm" color={blue[400]}>
+                      <Stack
+                        direction="row"
+                        gap={"8px"}
+                      >
+                        <Upload
+                          size={16}
+                          color={blue[400]}
+                        />
+                        <Typography
+                          variant="sm"
+                          color={blue[400]}
+                        >
                           رفع صورة
                         </Typography>
                       </Stack>
                     </Box>
-                    {(imageList.length !== 0 || boxData?.picture?.length !== 0) && (
-                      <Divider sx={{ marginBottom: "8px" }}></Divider>
-                    )}
+                    {(imageList.length !== 0 || boxData?.picture?.length !== 0) && <Divider sx={{ marginBottom: "8px" }}></Divider>}
 
                     <Grid
                       container
@@ -440,7 +501,14 @@ const EditShipmentModal = ({ open, onClose, boxData }: Props) => {
                     >
                       {imageList.length !== 0 &&
                         imageList.map((image, index) => (
-                          <Grid item xs={4} sm={3} md={3} sx={{ position: "relative" }} key={index}>
+                          <Grid
+                            item
+                            xs={4}
+                            sm={3}
+                            md={3}
+                            sx={{ position: "relative" }}
+                            key={index}
+                          >
                             <Box
                               sx={{
                                 position: "absolute",
@@ -473,7 +541,10 @@ const EditShipmentModal = ({ open, onClose, boxData }: Props) => {
                                   onImageRemove(index);
                                 }}
                               >
-                                <Trash2 size="24" color={red[500]}></Trash2>
+                                <Trash2
+                                  size="24"
+                                  color={red[500]}
+                                ></Trash2>
                               </Box>
                             </Box>
                             <Box
@@ -496,7 +567,14 @@ const EditShipmentModal = ({ open, onClose, boxData }: Props) => {
 
                       {savedPictures?.length !== 0 &&
                         savedPictures?.map((image: any, index: number) => (
-                          <Grid item xs={4} sm={3} md={3} sx={{ position: "relative" }} key={index}>
+                          <Grid
+                            item
+                            xs={4}
+                            sm={3}
+                            md={3}
+                            sx={{ position: "relative" }}
+                            key={index}
+                          >
                             <Box
                               sx={{
                                 position: "absolute",
@@ -533,18 +611,17 @@ const EditShipmentModal = ({ open, onClose, boxData }: Props) => {
                                     },
                                   })
                                     .then(() => {
-                                      setSavedPictures(() => [
-                                        ...savedPictures.filter(
-                                          (pic: any) => pic.name != image.name
-                                        ),
-                                      ]);
+                                      setSavedPictures(() => [...savedPictures.filter((pic: any) => pic.name != image.name)]);
                                     })
                                     .finally(() => {
                                       SetIsDeletePrevented(false);
                                     });
                                 }}
                               >
-                                <Trash2 size="24" color={red[500]}></Trash2>
+                                <Trash2
+                                  size="24"
+                                  color={red[500]}
+                                ></Trash2>
                               </Box>
                             </Box>
                             <Box
