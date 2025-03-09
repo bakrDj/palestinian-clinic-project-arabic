@@ -8,8 +8,9 @@ import { REFRESH_TOKEN } from "../../graphql/hooks/users/useGetNewToken";
 import { CURRENT_USER } from "../../graphql/hooks/users/useGetCurrentUser";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../lib/firebase";
-import { Box } from "@mui/material";
+import { Alert, Box } from "@mui/material";
 import { BeatLoader, ClockLoader } from "react-spinners";
+import { useDebounce, useDebouncedCallback } from "use-debounce";
 
 const useAuth = (client: ApolloClient<NormalizedCacheObject> | undefined) => {
   // const [getCurrentUserLazy]: any = useGetCurrentUser();
@@ -100,16 +101,23 @@ interface Props {
 
 const ProtectedPage = ({ client, children }: Props): any => {
   // let isAuth = useStore((state: any) => state.isAuth);
+
   let isAuth = (useStore.getState() as any)?.isAuth;
   let userData = useStore((state: any) => state.userData);
 
   const [loading, setloading] = React.useState(true);
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  const [showAlert, setshowAlert] = React.useState(false);
 
   let route = useRouter();
 
   const { checkAuth } = useAuth(client);
   // const auth = auth();
+  useEffect(() => {
+    setTimeout(() => {
+      setshowAlert(true);
+    }, 4000);
+  }, []);
 
   useEffect(() => {
     (async function () {
@@ -134,11 +142,7 @@ const ProtectedPage = ({ client, children }: Props): any => {
             setIsAuthenticated(["/signin"].includes(route.pathname) || !!user);
             // window.location.reload();
           });
-          console.log(
-            "🚀 ~ file: Auth.tsx:140 ~ ProtectedPage ~ isAuthenticated:",
-            isAuthenticated,
-            ["/signin"].includes(route.pathname)
-          );
+          console.log("🚀 ~ file: Auth.tsx:140 ~ ProtectedPage ~ isAuthenticated:", isAuthenticated, ["/signin"].includes(route.pathname));
         }
       });
     })();
@@ -155,7 +159,24 @@ const ProtectedPage = ({ client, children }: Props): any => {
             placeItems: "center",
           }}
         >
-          <BeatLoader color="rgb(53, 142, 144)" />
+          <Box sx={{ height: "100vh", display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <Box
+              sx={{ flex: "1", padding: "1rem 0" }}
+              dir="ltr"
+            >
+              {showAlert && (
+                <Alert
+                  severity="warning"
+                  icon={<div />}
+                  dir="ltr"
+                >
+                  Loading... Please wait while the backend initializes
+                </Alert>
+              )}
+            </Box>
+            <BeatLoader color="rgb(53, 142, 144)" />
+            <Box sx={{ flex: "1" }}></Box>
+          </Box>
         </Box>
       </>
     );
